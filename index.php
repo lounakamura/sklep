@@ -6,57 +6,28 @@
     $connection = new mysqli ($servername, $username, $password, $database);
 
     $maincategories = [];
-    //$brands = []; - for brands
     $products = [];
 
-    //This is for storing the main categories
+    // Storing the main categories
     $query = "SELECT * FROM kategoria";
-    $result = $connection->query( $query );
+    $result = $connection->query($query);
     fetchAllToArray( $maincategories, $result );
     $result->free();
 
-    // This is for storing all the products
+    // Storing products
     $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)";
-    $result = $connection->query( $query );
+    $result = $connection->query($query);
     fetchAllToArray( $products, $result );
     $result->free();
 
-    /* This is for storing brands
+    // Version for filters
+    // $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)$baseSelectionOn";
 
-    $query = "SELECT * FROM marka";
-    $result = $connection->query($query);
-    fetchAllToArray($brands, $result);
-    $result->free();
-    */
-
-    /* This is for product display based on chosen category - category.php
-
-    $setCategory = '';
-    if (isset($_GET['subcategory'])) {
-        $setCategory = ' WHERE kategoria_2.kategoria_id=' . $_GET['subcategory'];
-    }
-    if (isset($_GET['category'])) {
-        $setCategory = ' WHERE kategoria_1.kategoria_id=' . $_GET['category'];
-    }
-    if (isset($_GET['maincategory'])) {
-        $setCategory = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
-    }
-
-    This is for product display based on brand
+    /* // Product display based on brand
+    $baseSelectionOn = '';
     if (isset($_GET['brand'])) {
-        $setCategory = ' WHERE produkt.marka_id=' . $_GET['brand'];
-    }
-
-    This is for brands.php
-    $query = "SELECT DISTINCT UPPER(SUBSTRING(marka, 1, 1)) AS litera FROM marka ORDER BY marka";
-    $result = $connect->query($query);
-    $i = 0;
-    while ($row = $result->fetch_assoc()) {
-        $litery[$i] = $row;
-        $i++;
-    }
-    
-    */   
+        $baseSelectionOn = ' WHERE produkt.marka_id=' . $_GET['brand'];
+    } */
 ?>
 
 <!DOCTYPE html>

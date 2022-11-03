@@ -1,3 +1,39 @@
+<?php
+    session_start();
+
+    require_once "config.php";
+
+    $connection = new mysqli ($servername, $username, $password, $database);
+
+    $maincategories = [];
+    $brands = [];
+    $products = [];
+
+    // Product display based on brand
+    $baseSelectionOn = '';
+    if (isset($_GET['brand'])) {
+        $baseSelectionOn = ' WHERE produkt.marka_id=' . $_GET['brand'];
+    }
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query( $query );
+    fetchAllToArray( $maincategories, $result );
+    $result->free();
+
+    // Storing brands
+    $query = "SELECT * FROM marka";
+    $result = $connection->query($query);
+    fetchAllToArray($brands, $result);
+    $result->free();
+
+    // Storing products
+    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)$baseSelectionOn";
+    $result = $connection->query( $query );
+    fetchAllToArray( $products, $result );
+    $result->free();
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -59,7 +95,7 @@
                 $categories = [];
                 $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
                 $result = $connection->query($query);
-                fetchalltoarray( $categories, $result );
+                fetchAllToArray( $categories, $result );
                 $result->free();
 
                 echo "<li class='category'>
@@ -70,7 +106,7 @@
                                 $subcategories = [];
                                 $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
                                 $result = $connection->query($query);
-                                fetchalltoarray( $subcategories, $result );
+                                fetchAllToArray( $subcategories, $result );
                                 $result->free();
 
                                 echo "<li>
@@ -100,21 +136,29 @@
 
     <main>
         <?php
-        echo "<div style='display:flex'>";
-        echo "<div class='categories-container'></div>";
-        echo "<div class='products-container'>";
-        foreach ($produkty as $produkt) {
-            echo "<div class='product-container'>";
-            echo "<a href='produkt.php?id=" . $produkt['produkt_id'] . "'><img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'></a>"; //PLACEHOLDER
-            echo
-            "<a href='marka.php?brand=" . $produkt['marka_id'] . "'><h4>" . $produkt['marka'] . "</h4></a>
-            <a href='produkt.php?id=" . $produkt['produkt_id'] . "'><h3>" . $produkt['nazwa'] . "</h3></a>
-            <span>" . number_format($produkt['cena'], 2, ',') . " zł</span><br>
-            <button>Do koszyka</button>";
+            echo "<div style='display:flex'>";
+                echo "<div class='categories-container'>";
 
-            echo "</a></div>";
-        }
-        echo "</div></div>";
+                echo "</div>";
+
+                echo "<div class='products-container'>";
+                    foreach ($products as $product) {
+                        echo "<div class='product-container'>";
+                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
+                            echo "</a>"; 
+                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                <h4>" . $product['marka'] . "</h4>";
+                            echo "</a>";
+                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                <h3>" . $product['nazwa'] . "</h3>";
+                            echo "</a>";
+                            echo "<span>" . number_format($product['cena'], 2, ',') . " zł</span><br>";
+                            echo "<button>Do koszyka</button>";
+                        echo "</div>";
+                    }
+                echo "</div>";
+            echo "</div>";
         ?>
     </main>
 

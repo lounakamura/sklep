@@ -1,5 +1,33 @@
 <?php
+    session_start();
     ob_start();
+
+    require_once "config.php";
+
+    $connection = new mysqli ($servername, $username, $password, $database);
+
+    $maincategories = [];
+    $products = [];
+    $product = [];
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query($query);
+    fetchAllToArray( $maincategories, $result );
+    $result->free();
+
+    // Storing products
+    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)";
+    $result = $connection->query($query);
+    fetchAllToArray( $products, $result );
+    $result->free();
+    
+    $id = $_GET['id'];
+
+    $query = "SELECT nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=$id";
+    $result = $connection->query($query);
+    $product = $result->fetch_assoc();
+    $result->free();
 ?>
 
 <!DOCTYPE html>
@@ -104,67 +132,51 @@
 
     <main>
         <?php
-        $id = $_GET['id'];
+         // $query = "SELECT nazwa_pliku FROM zdjecie WHERE produkt_id=$id"; zdjecia nadal do implementacji
 
-        $query = "SELECT nazwa,cena,opis,kategoria_2.kategoria AS kategoria2,kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=$id";
-
-        $result = $connect->query($query);
-        $produkt = $result->fetch_assoc();
-
-        $query = "SELECT nazwa_pliku FROM zdjecie WHERE produkt_id=$id";
-        $result = $connect->query($query);
-
-        $i = 0;
-        while ($row = $result->fetch_assoc()) {
-            $zdjecia[$i] = $row;
-            $i++;
-        }
-
-        echo
+        echo // to implement: breadcrumbs
         "<div class='category-tree'>
             <a href='index.php' class='uppercase'>Strona Główna</a> >
-            <a href='kategoria.php?maincategory=" . $produkt['kategoria_id'] . "' class='uppercase'>" . $produkt['kategoria'] . "</a> >
-            <a href='kategoria.php?category=" . $produkt['kategoria1_id'] . "' class='uppercase'>" . $produkt['kategoria1'] . "</a> >
-            <a href='kategoria.php?subcategory=" . $produkt['kategoria2_id'] . "' class='uppercase'>" . $produkt['kategoria2'] . "</a>
+            <a href='kategoria.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
+            <a href='kategoria.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
+            <a href='kategoria.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
         </div>
 
-
-        
         <div class='product-information'>
-            <div class='img-gallery'>" . //statycznie ustawione, do poprawki || zrobione za pomoca pluginu jq xzoom - czy to dozwolone?
+            <div class='img-gallery'>" . //statycznie ustawione, do poprawki || zrobione za pomoca pluginu jq xzoom
             "<div class='xzoom-container'>
-                    <img class='xzoom' src='product_img/1_1_min.jpg' xoriginal='product_img/1_1.jpg'>
+                    <img class='xzoom' src='images/product-images/1_1_min.jpg' xoriginal='images/product-images/1_1.jpg'>
                     <div class='xzoom-thumbs'>
-                        <a href='product_img/1_1.jpg'>
-                            <img class='xzoom-gallery' src='product_img/1_1_min.jpg' xpreview='product_img/1_1_min.jpg'>
+                        <a href='images/product-images/1_1.jpg'>
+                            <img class='xzoom-gallery' src='images/product-images/1_1_min.jpg' xpreview='images/product-images/1_1_min.jpg'>
                         </a>
-                        <a href='product_img/1_2.jpg'>
-                            <img class='xzoom-gallery' src='product_img/1_2_min.jpg'>
+                        <a href='images/product-images/1_2.jpg'>
+                            <img class='xzoom-gallery' src='images/product-images/1_2_min.jpg'>
                         </a>
-                        <a href='product_img/1_3.jpg'>
-                            <img class='xzoom-gallery' src='product_img/1_3_min.jpg'>
+                        <a href='images/product-images/1_3.jpg'>
+                            <img class='xzoom-gallery' src='images/product-images/1_3_min.jpg'>
                         </a>
                     </div>
                 </div>
             </div>
             
             <div class='info'>
-                <a href='marka.php?brand=" . $produkt['marka_id'] . "'><h4>" . $produkt['marka'] . "</h4></a>
-                <h3>" . $produkt['nazwa'] . "</h3>
-                <span>" . number_format($produkt['cena'], 2, ',') . " zł</span><br>
+                <a href='marka.php?brand=" . $product['marka_id'] . "'>
+                    <h4>" . $product['marka'] . "</h4>
+                </a>
+                <h3>" . $product['nazwa'] . "</h3>
+                <span>" . number_format($product['cena'], 2, ',') . " zł</span><br>
                 <div class='product-quantity'>
                     <div class='quantity-input'>
                         <button onclick='subtract()' class='quantity-square'>-</button>
-                        
                         <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
-                        
                         <button onclick='add()' class='quantity-square'>+</button>
                     </div>
                     <div class='add-to-cart'>
                         <button>Dodaj do koszyka</button>
                     </div>
                 </div>
-                <p>" . nl2br($produkt['opis']) . "</p>
+                <p>" . nl2br($product['opis']) . "</p>
             </div>
         </div>";
         ?>
@@ -241,6 +253,6 @@
 <?php
     $buffer = ob_get_contents();
     ob_end_clean();
-    echo str_replace("%TITLE%", $produkt['nazwa'], $buffer);
+    echo str_replace("%TITLE%", $product['nazwa'], $buffer);
     $connection->close();
 ?>

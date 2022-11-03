@@ -1,3 +1,27 @@
+<?php
+    session_start();
+
+    require_once "config.php";
+
+    $connection = new mysqli ($servername, $username, $password, $database);
+
+    $maincategories = [];
+    $products = [];
+    $letters = [];
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query($query);
+    fetchAllToArray( $maincategories, $result );
+    $result->free();
+
+    // Storing brands' first letter of name alphabetically
+    $query = "SELECT DISTINCT UPPER(SUBSTRING(marka, 1, 1)) AS litera FROM marka ORDER BY marka";
+    $result = $connection->query($query);
+    fetchAllToArray( $letters, $result );
+    $result->free();
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -59,7 +83,7 @@
                 $categories = [];
                 $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
                 $result = $connection->query($query);
-                fetchalltoarray( $categories, $result );
+                fetchAllToArray( $categories, $result );
                 $result->free();
 
                 echo "<li class='category'>
@@ -70,7 +94,7 @@
                                 $subcategories = [];
                                 $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
                                 $result = $connection->query($query);
-                                fetchalltoarray( $subcategories, $result );
+                                fetchAllToArray( $subcategories, $result );
                                 $result->free();
 
                                 echo "<li>
@@ -101,32 +125,30 @@
     <main>
         <section class="alphabet-ref">
             <?php
-            foreach ($litery as $litera) {
-                echo "<a href='#" . $litera['litera'] . "'>" . $litera['litera'] . "</a>";
-            }
+                foreach ($letters as $letter) {
+                    echo "<a href='#" . $letter['litera'] . "'>" . $letter['litera'] . "</a>";
+                }
             ?>
         </section>
         <section>
             <?php
-            foreach ($litery as $litera) {
-                echo "<div id='" . $litera['litera'] . "' class='brand'><h2>" . $litera['litera'] . "</h2>";
+                foreach ($letters as $letter) {
+                    $brands = [];
+                    echo "<div id='" . $letter['litera'] . "' class='brand'>";
+                        echo "<h2>" . $letter['litera'] . "</h2>";
 
-                $query = "SELECT * FROM marka WHERE UPPER(SUBSTRING(marka, 1, 1))='" . $litera['litera'] . "'";
-                $result = $connect->query($query);
+                        $query = "SELECT * FROM marka WHERE UPPER(SUBSTRING(marka, 1, 1))='" . $letter['litera'] . "'";
+                        $result = $connection->query($query);
+                        fetchAllToArray( $brands, $result );
+                        $result->free();
 
-                $i = 0;
-                while ($row = $result->fetch_assoc()) {
-                    $marki[$i] = $row;
-                    $i++;
+                        foreach ( $brands as $brand ) {
+                            echo "<a href='brand.php?brand=" . $brand['marka_id'] . "'>" . $brand['marka'] . "</a>";
+                        }
+
+                    echo "</div>";
+                    unset($brands);
                 }
-
-                foreach ($marki as $marka) {
-                    echo "<a href='marka.php?brand=" . $marka['marka_id'] . "'>" . $marka['marka'] . "</a>";
-                }
-
-                echo "</div>";
-                unset($marki);
-            }
             ?>
         </section>
     </main>

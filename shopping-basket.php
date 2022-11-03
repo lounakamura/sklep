@@ -1,3 +1,26 @@
+<?php
+    session_start();
+
+    require_once "config.php";
+
+    $connection = new mysqli ($servername, $username, $password, $database);
+
+    $maincategories = [];
+    $products = [];
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query($query);
+    fetchAllToArray( $maincategories, $result );
+    $result->free();
+
+    // Storing products
+    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)";
+    $result = $connection->query($query);
+    fetchAllToArray( $products, $result );
+    $result->free();
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -58,7 +81,7 @@
                 $categories = [];
                 $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
                 $result = $connection->query($query);
-                fetchalltoarray( $categories, $result );
+                fetchAllToArray( $categories, $result );
                 $result->free();
 
                 echo "<li class='category'>
@@ -69,7 +92,7 @@
                                 $subcategories = [];
                                 $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
                                 $result = $connection->query($query);
-                                fetchalltoarray( $subcategories, $result );
+                                fetchAllToArray( $subcategories, $result );
                                 $result->free();
 
                                 echo "<li>
@@ -100,7 +123,7 @@
     <main>
         <h1>Koszyk</h1>
         <table>
-            <img src='product_img/1_1_min.jpg' style='height:200px'>
+            <img src='images/product-images/1_1_min.jpg' style='height:200px'>
             <h4>Firma</h4>
             <h3>Nazwa</h3>
         </table>
