@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
+/* General  */
+
 body {
     margin: 0;
     padding: 0;
@@ -21,15 +23,16 @@ a {
     color: black;
 }
 
-a:hover {
+a:hover,
+button:hover {
     cursor: pointer;
 }
 
-.pink-text {
+.pink-text { /*unsure if necessary?*/
     color: #E83F6F;
 }
 
-.uppercase {
+.uppercase { /*unsure if necessary?*/
     text-transform: uppercase;
 }
 
@@ -54,7 +57,7 @@ main,
 }
 
 
-
+/* Header */
 
 header {
     height: 7vh;
@@ -108,7 +111,7 @@ header {
     width: 23px;
     border: none;
     background-color: white;
-    background-image: url("../ui/search.svg");
+    background-image: url("../images/ui/search.svg");
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -141,16 +144,16 @@ header {
 }
 
 #header-account {
-    background-image: url("../ui/user.svg");
+    background-image: url("../images/ui/user.svg");
 }
 
 #header-basket {
-    background-image: url("../ui/shopping-basket.svg");
+    background-image: url("../images/ui/shopping-basket.svg");
 }
 
 
 
-
+/* Small version of header */
 
 .header-small {
     position: fixed;
@@ -171,7 +174,7 @@ header {
 
 
 
-
+/* Navigation bar */
 
 .navigation-categories {
     background-color: white;
@@ -246,7 +249,7 @@ header {
 }
 
 
-
+/* Newsletter - currently not used */
 
 .newsletter-container {
     background-color: #E83F6F;
@@ -260,7 +263,7 @@ header {
 
 
 
-
+/* Social media links */
 
 .social-media {
     margin-top: 4vh;
@@ -283,7 +286,7 @@ header {
 
 
 
-
+/* Footer */
 
 footer {
     border-top: 1px solid #e0e0e0;
@@ -315,7 +318,7 @@ footer h4 {
 
 
 
-
+/* Button sending to the top of the site */
 
 .to-top {
     display: none;
@@ -327,7 +330,7 @@ footer h4 {
     border: none;
     background-color: transparent;
     background-repeat: no-repeat;
-    background-image: url("../ui/arrow-up.svg");
+    background-image: url("../images/ui/arrow-up.svg");
 }
 
 .to-top:hover {

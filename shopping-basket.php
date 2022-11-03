@@ -13,7 +13,7 @@
 <body>
     <header>
         <div class="logo_big-container">
-            <a href="index.php"><img class="logo_big" src="ui/logo_big.svg" /></a>
+            <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
         </div>
 
         <div class="search-container">
@@ -25,13 +25,13 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='koszyk.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
         </div>
     </header>
 
     <header class="header-small off">
         <div class="logo_big-container">
-            <a href="index.php"><img class="logo_big" src="ui/logo_big.svg" /></a>
+            <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
         </div>
 
         <div class="search-container">
@@ -43,7 +43,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='koszyk.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
         </div>
     </header>
 
@@ -92,7 +92,7 @@
             ?>
 
             <li class="category">
-                <a href="marki.php" class="uppercase">MARKI</a>
+                <a href="brands.php" class="uppercase">Marki</a>
             </li>
         </ul>
     </nav>
@@ -127,9 +127,9 @@
 
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com"><img src="ui/facebook.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com"><img src="ui/tiktok.svg"></a>
-                <a id="social-insta" href="https://instagram.com"><img src="ui/instagram.svg"></a>
+                <a id="social-fb" href="https://facebook.com"><img src="images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com"><img src="images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com"><img src="images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>
