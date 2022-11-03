@@ -1,0 +1,5 @@
+.alphabet-ref {
+    display: flex;
+    font-size: 20px;
+    justify-content: space-evenly;
+}
