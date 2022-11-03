@@ -1,46 +1,13 @@
 <!DOCTYPE html>
 <html lang="pl">
-
-<?php
-$connect = new mysqli('localhost', 'root', '', 'sklep');
-
-$query = "SELECT kategoria_2.kategoria_id,kategoria_2.kategoria AS kategoria_2,kategoria_1.kategoria AS kategoria_2,kategoria.kategoria AS kategoria FROM kategoria_2 JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id)";
-$result = $connect->query($query);
-
-$i = 0;
-while ($row = $result->fetch_assoc()) {
-    $kategorie[$i] = $row;
-    $i++;
-}
-
-$query = "SELECT * FROM kategoria";
-$result = $connect->query($query);
-
-$i = 0;
-while ($row = $result->fetch_assoc()) {
-    $glowneKategorie[$i] = $row;
-    $i++;
-}
-
-$query = "SELECT * FROM marka";
-$result = $connect->query($query);
-
-$i = 0;
-while ($row = $result->fetch_assoc()) {
-    $marki[$i] = $row;
-    $i++;
-}
-
-?>
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="ui/logo_small.svg">
-    <link rel="stylesheet" href="styles/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
@@ -82,49 +49,50 @@ while ($row = $result->fetch_assoc()) {
 
     <nav class="navigation-categories">
         <ul>
-            <li><a class="pink-text" href="#">PROMOCJE</a></li>
+            <li>
+                <a class="pink-text" href="#">PROMOCJE</a>
+            </li>
+
             <?php
-            foreach ($glowneKategorie as $glownaKategoria) {
-                $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id=" . $glownaKategoria['kategoria_id'];
-                $result = $connect->query($query);
+            foreach ( $maincategories as $maincategory ) {
+                $categories = [];
+                $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
+                $result = $connection->query($query);
+                fetchalltoarray( $categories, $result );
+                $result->free();
 
-                $i = 0;
-                while ($row = $result->fetch_assoc()) {
-                    $podkategorie[$i] = $row;
-                    $i++;
-                }
+                echo "<li class='category'>
+                    <a class='uppercase' href='category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    echo "<section class='categories-bg off'>
+                        <ul class='categories-main'>";
+                            foreach ( $categories as $category ) {
+                                $subcategories = [];
+                                $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
+                                $result = $connection->query($query);
+                                fetchalltoarray( $subcategories, $result );
+                                $result->free();
 
-                echo
-                "<li class='category'><a class='uppercase' href='kategoria.php?maincategory=" . $glownaKategoria['kategoria_id'] . "'>" . $glownaKategoria['kategoria'] . "</a>
-                <section class='categories-bg off'><ul class='categories-main'>";
-
-                foreach ($podkategorie as $podkategoria) {
-                    $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $podkategoria['kategoria_id'];
-                    $result = $connect->query($query);
-
-                    $i = 0;
-                    while ($row = $result->fetch_assoc()) {
-                        $podpodkategorie[$i] = $row;
-                        $i++;
-                    }
-
-                    echo "<li>
-                    <a class='subcategory uppercase' href='kategoria.php?category=" . $podkategoria['kategoria_id'] . "'>" . $podkategoria['kategoria'] . "</a><ul>";
-
-                    foreach ($podpodkategorie as $podpodkategoria) {
-                        echo "<li><a class='subsubcategory' href='kategoria.php?subcategory=" . $podpodkategoria['kategoria_id'] . "'>" . $podpodkategoria['kategoria'] . "</a></li>";
-                    }
-
-                    echo "</ul></li>";
-                    unset($podpodkategorie);
-                }
-
-                echo "</ul></section></li>";
-                unset($podkategorie);
+                                echo "<li>
+                                    <a class='subcategory uppercase' href='category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    echo "<ul>";
+                                        foreach ( $subcategories as $subcategory ) {
+                                            echo "<li>
+                                                <a class='subsubcategory' href='category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                            echo "</li>";
+                                        }
+                                    echo "</ul>";
+                                echo "</li>";
+                                unset( $subcategories );
+                            }
+                        echo "</ul>";
+                    echo "</section>";
+                echo "</li>";
+                unset( $categories );
             }
             ?>
 
-            <li class="category"><a href="marki.php" class="uppercase">MARKI</a>
+            <li class="category">
+                <a href="marki.php" class="uppercase">MARKI</a>
             </li>
         </ul>
     </nav>
@@ -167,7 +135,7 @@ while ($row = $result->fetch_assoc()) {
     </section>
 
     <footer>
-        <div class="stopka">
+        <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
                 <a href="#">Polityka prywatności</a>
@@ -200,12 +168,12 @@ while ($row = $result->fetch_assoc()) {
 
     <button class="to-top" onclick="location.href='#'"></button>
 
-    <script src="script.js"></script>
-    <script src="menuHandler.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/menuHandler.js"></script>
 </body>
 
 </html>
 
 <?php
-$connect->close();
+    $connection->close();
 ?>

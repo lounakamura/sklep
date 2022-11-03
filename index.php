@@ -41,6 +41,20 @@
     if (isset($_GET['maincategory'])) {
         $setCategory = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
     }
+
+    This is for product display based on brand
+    if (isset($_GET['brand'])) {
+        $setCategory = ' WHERE produkt.marka_id=' . $_GET['brand'];
+    }
+
+    This is for brands.php
+    $query = "SELECT DISTINCT UPPER(SUBSTRING(marka, 1, 1)) AS litera FROM marka ORDER BY marka";
+    $result = $connect->query($query);
+    $i = 0;
+    while ($row = $result->fetch_assoc()) {
+        $litery[$i] = $row;
+        $i++;
+    }
     
     */   
 ?>
