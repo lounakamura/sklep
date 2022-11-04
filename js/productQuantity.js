@@ -1,7 +1,9 @@
-function subtract() {
-    document.querySelector(".quantity").stepDown();
-}
-
-function add() {
-    document.querySelector(".quantity").stepUp();
-}
+let quantityInputs = document.querySelectorAll(".product-quantity");
+quantityInputs.forEach(quantityInput => {
+    quantityInput.querySelector(".subtract").onclick = function () {
+        quantityInput.querySelector("input").stepDown();
+    };
+    quantityInput.querySelector(".add").onclick = function () {
+        quantityInput.querySelector("input").stepUp();
+    };
+});

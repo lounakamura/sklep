@@ -44,10 +44,9 @@
 
 .product-container button {
     width: 100%;
-    height: 45px;
-    font-size: 15px;
     background-image: url('../ui/shopping-basket-pink.svg');
     background-repeat: no-repeat;
     background-position: 75%;
     margin-top: 5px;
+
 }

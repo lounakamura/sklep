@@ -153,7 +153,7 @@
                                 <h3>" . $product['nazwa'] . "</h3>";
                             echo "</a>";
                             echo "<span>" . number_format($product['cena'], 2, ',') . " zł</span><br>";
-                            echo "<button>Do koszyka</button>";
+                            echo "<button class='pink-button'>Do koszyka</button>";
                         echo "</div>";
                     }
                 echo "</div>";

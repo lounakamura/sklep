@@ -161,19 +161,19 @@
             </div>
             
             <div class='info'>
-                <a href='marka.php?brand=" . $product['marka_id'] . "'>
+                <a href='brand.php?brand=" . $product['marka_id'] . "'>
                     <h4>" . $product['marka'] . "</h4>
                 </a>
                 <h3>" . $product['nazwa'] . "</h3>
                 <span>" . number_format($product['cena'], 2, ',') . " zł</span><br>
                 <div class='product-quantity'>
                     <div class='quantity-input'>
-                        <button onclick='subtract()' class='quantity-square'>-</button>
+                        <button onclick='subtract()' class='quantity-square subtract'>-</button>
                         <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
-                        <button onclick='add()' class='quantity-square'>+</button>
+                        <button onclick='add()' class='quantity-square add'>+</button>
                     </div>
                     <div class='add-to-cart'>
-                        <button>Dodaj do koszyka</button>
+                        <button class='pink-button'>Dodaj do koszyka</button>
                     </div>
                 </div>
                 <p>" . nl2br($product['opis']) . "</p>
