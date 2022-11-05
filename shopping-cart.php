@@ -30,7 +30,7 @@
     <title>Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/shopping-basket.css">
+    <link rel="stylesheet" href="css/shopping-cart.css">
     <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
@@ -49,7 +49,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 
@@ -67,7 +67,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 
@@ -124,85 +124,91 @@
 
     <main>
         <h1>Koszyk</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th class='first'></th>
-                    <th class='table-header uppercase'>Cena</th>
-                    <th class='table-header uppercase'>Ilość</th>
-                    <th class='table-header uppercase' >Wartość</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class='product-container'>
-                    <td class='product-image product-name'>
-                        <a href='product.php?id=1'><img src='images/product-images/1_1_min.jpg'></a>
-                        <a href='product.php?id=1'><h3>Za wszystkie krzywdy sam przeproszę Boga One kuszą mnie jak zło-o, biały towar (woo)</h3></a>
-                    </td>
-                    <td class='product-price'>
-                        <span>20,00 zł</span>
-                    </td>
-                    <td class='product-quantity'>
-                        <div class='quantity-input'>
-                            <button onclick='subtract()' class='quantity-square subtract'>-</button>
-                            <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
-                            <button onclick='add()' class='quantity-square add'>+</button>
-                        </div>
-                    </td>
-                    <td class='product-total-price'>
-                        <span>20,00 zł</span>
-                    </td>
-                    <td class='product-remove'>
-                        <button class='remove-from-basket'></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class='shopping-basket-footer'>
-            <div class='footer-left'>
-                <div class='add-discount-code'>
-                    <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
-                    <div style='display:inline-flex'>
-                        <input class='discount-code' type='text' name='discount-code'>
-                        <button class='button-activate pink-button'>Aktywuj</button>
-                    </div>
-                </div>
-                <button onclick="location.href='index.php'" class='button-back white-button'>Kontynuuj zakupy</button>
-            </div>
-            <div class='footer-right'>
-                <div class='order-cost'>
-                    <div class='order-cost-row'>
-                        <span>Wartość zamówienia</span>
-                        <span>
-                            <?php
-                                echo number_format('20', 2, ',')
-                            ?>
-                            zł
-                        </span>
-                    </div>
-                    <div class='order-cost-row'>
-                        <span>Dostawa od</span>
-                        <span>
-                            <?php
-                                echo number_format('9.90', 2, ',')
-                            ?>
-                            zł
-                        </span>
-                    </div>
-                    <div class='order-cost-row'>
-                        <span>Razem</span>
-                        <span>
-                            <?php
-                                echo number_format('29.90', 2, ',')
-                            ?>
-                            zł
-                        </span>
-                    </div>
-                </div>
-                <button class='button-next pink-button'>Realizuj zamówienie</button>
-            </div>
+        <div class='shopping-cart-empty'>
+            <span>Twój koszyk jest pusty. Dodaj do niego produkty, aby móc rozpocząć składanie zamówienia.</span>
+            <button onclick="location.href='index.php'" class='white-button'>Powrót</button>
         </div>
+         <div class='shopping-cart-with-products'>
+            <table>
+                <thead>
+                    <tr>
+                        <th class='first'></th>
+                        <th class='table-header uppercase'>Cena</th>
+                        <th class='table-header uppercase'>Ilość</th>
+                        <th class='table-header uppercase' >Wartość</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class='product-container'>
+                        <td class='product-image product-name'>
+                            <a href='product.php?id=1'><img src='images/product-images/1_1_min.jpg'></a>
+                            <a href='product.php?id=1'><h3>Za wszystkie krzywdy sam przeproszę Boga One kuszą mnie jak zło-o, biały towar (woo)</h3></a>
+                        </td>
+                        <td class='product-price'>
+                            <span>20,00 zł</span>
+                        </td>
+                        <td class='product-quantity'>
+                            <div class='quantity-input'>
+                                <button class='quantity-square subtract'>-</button>
+                                <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
+                                <button class='quantity-square add'>+</button>
+                            </div>
+                        </td>
+                        <td class='product-total-price'>
+                            <span>20,00 zł</span>
+                        </td>
+                        <td class='product-remove'>
+                            <button class='remove-from-cart'></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class='shopping-cart-footer'>
+                <div class='footer-left'>
+                    <div class='add-discount-code'>
+                        <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
+                        <div style='display:inline-flex'>
+                            <input class='discount-code' type='text' name='discount-code'>
+                            <button class='button-activate pink-button'>Aktywuj</button>
+                        </div>
+                    </div>
+                    <button onclick="location.href='index.php'" class='button-back white-button'>Kontynuuj zakupy</button>
+                </div>
+                <div class='footer-right'>
+                    <div class='order-cost'>
+                        <div class='order-cost-row'>
+                            <span>Wartość zamówienia</span>
+                            <span>
+                                <?php
+                                    echo number_format('20', 2, ',')
+                                ?>
+                                zł
+                            </span>
+                        </div>
+                        <div class='order-cost-row'>
+                            <span>Dostawa od</span>
+                            <span>
+                                <?php
+                                    echo number_format('9.90', 2, ',')
+                                ?>
+                                zł
+                            </span>
+                        </div>
+                        <div class='order-cost-row'>
+                            <span>Razem</span>
+                            <span>
+                                <?php
+                                    echo number_format('29.90', 2, ',')
+                                ?>
+                                zł
+                            </span>
+                        </div>
+                    </div>
+                    <button class='button-next pink-button'>Realizuj zamówienie</button>
+                </div>
+            </div>
+        </div> -->
     </main>
 
 

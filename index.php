@@ -56,7 +56,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 
@@ -74,7 +74,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 

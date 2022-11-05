@@ -24,7 +24,7 @@
     
     $id = $_GET['id'];
 
-    $query = "SELECT nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=$id";
+    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=$id";
     $result = $connection->query($query);
     $product = $result->fetch_assoc();
     $result->free();
@@ -58,7 +58,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 
@@ -76,7 +76,7 @@
 
         <div class="header-buttons">
             <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-basket.php'" type="button" id="header-basket"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
         </div>
     </header>
 
@@ -166,15 +166,23 @@
                 </a>
                 <h3>" . $product['nazwa'] . "</h3>
                 <span>" . number_format($product['cena'], 2, ',') . " zł</span><br>
-                <div class='product-quantity'>
-                    <div class='quantity-input'>
-                        <button onclick='subtract()' class='quantity-square subtract'>-</button>
-                        <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
-                        <button onclick='add()' class='quantity-square add'>+</button>
+                <div class='add-to-cart-container'>
+                    <div class='quantity-input-container'>
+                        <table>
+                            <tr>
+                                <td>
+                                    <button class='subtract white-button'>-</button>
+                                </td>
+                                <td>
+                                    <input class='quantity' type='number' data-value='1' value='1' min='1' max='99' step='1'>
+                                </td>
+                                <td>
+                                    <button class='add white-button'>+</button>
+                                </td>
+                            </tr>
+                        </table>  
                     </div>
-                    <div class='add-to-cart'>
-                        <button class='pink-button'>Dodaj do koszyka</button>
-                    </div>
+                    <button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
                 </div>
                 <p>" . nl2br($product['opis']) . "</p>
             </div>
@@ -247,6 +255,7 @@
     <script src="js/productQuantity.js"></script>
     <script src="js/productImageGallery.js"></script>
     <script src="js/xzoom.js"></script>
+    <script src="js/addToCart.js"></script>
 </body>
 </html>
 
