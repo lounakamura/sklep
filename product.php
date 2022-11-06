@@ -167,14 +167,14 @@
                 <h3>" . $product['nazwa'] . "</h3>
                 <span>" . number_format($product['cena'], 2, ',') . " zł</span><br>
                 <div class='add-to-cart-container'>
-                    <div class='quantity-input-container'>
+                    <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
                         <table>
                             <tr>
                                 <td>
                                     <button class='subtract white-button'>-</button>
                                 </td>
                                 <td>
-                                    <input class='quantity' type='number' data-value='1' value='1' min='1' max='99' step='1'>
+                                    <span class='quantity-display'>1</span>
                                 </td>
                                 <td>
                                     <button class='add white-button'>+</button>

@@ -10,7 +10,7 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-input[type="number"] {
+/* input[type="number"] {
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
     appearance: textfield;
@@ -21,7 +21,7 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
-}
+} */
 
 .product-information {
     display: grid;
@@ -83,17 +83,18 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .quantity-input-container button,
-.quantity-input-container input {
+.quantity-input-container span {
     font-size: 22px;
-    height: 100%;
     border: none;
 }
 
 .quantity-input-container button {
+    height: 100%;
     width: 100%;
 }
 
-.quantity-input-container input {
+.quantity-input-container span {
+    display: inline-block;
     width: 45px;
     padding: 0;
     text-align: center;

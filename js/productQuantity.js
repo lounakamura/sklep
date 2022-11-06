@@ -1,34 +1,47 @@
 const quantityControllers = document.querySelectorAll('.quantity-input-container');
 
 quantityControllers.forEach(quantityController => {
-  const subtractBtn = quantityController.querySelector('.subtract')
-  const input = quantityController.querySelector('input')
-  const addBtn = quantityController.querySelector('.add')
+    const subtractBtn = quantityController.querySelector('.subtract');
+    const addBtn = quantityController.querySelector('.add');
+    const display = quantityController.querySelector('.quantity-display');
 
-  const min = parseInt(input.min);
-  const max = parseInt(input.max);
-  const step = parseInt(input.step);
+    const min = parseInt(quantityController.getAttribute('data-min'));
+    const max = parseInt(quantityController.getAttribute('data-max'));
+    const step = parseInt(quantityController.getAttribute('data-step'));
 
-  subtractBtn.onclick = function () {
-    if ( parseInt(input.getAttribute('data-value')) - step >= min ) {
-        input.setAttribute('data-value', parseInt(input.getAttribute('data-value')) - step);
-        input.value = parseInt(input.getAttribute('data-value')) - step;
+    subtractBtn.onclick = function () {
+        if ( parseInt(display.innerText) - step >= min ) {
+            display.innerText = parseInt(display.innerText) - step;
+        }
     }
-  }
-  addBtn.onclick = function () {
-    if ( parseInt(input.getAttribute('data-value')) + step <= max ) {
-        input.setAttribute('data-value', parseInt(input.getAttribute('data-value')) + step);
-        input.value = parseInt(input.getAttribute('data-value')) + step;
+    subtractBtn.onmousedown = function () {
+      setTimeout(() => {
+        subractInterval = setInterval(() => {
+          if ( parseInt(display.innerText) - step >= min ) {
+            display.innerText = parseInt(display.innerText) - step;
+        }
+        }, 100);
+      }, 150);
     }
-  }
-  input.onchange = function () {
-    if ( parseInt(input.getAttribute('data-value')) < min ) {
-        input.setAttribute('data-value', min);
-        input.value = min;
+    subtractBtn.onmouseup = function () {
+      clearInterval(subractInterval);
     }
-    if ( parseInt(input.getAttribute('data-value')) > max ) {
-        input.setAttribute('data-value', max);
-        input.value = max;
+
+    addBtn.onclick = function () {
+        if ( parseInt(display.innerText) + step <= max ) {
+            display.innerText = parseInt(display.innerText) + step;
+        }
     }
-  }
-})
+    addBtn.onmousedown = function () {
+      setTimeout(() => {
+        addInterval = setInterval(() => {
+          if ( parseInt(display.innerText) + step <= max ) {
+            display.innerText = parseInt(display.innerText) + step;
+        }
+        }, 100);
+      }, 150);
+    }
+    addBtn.onmouseup = function () {
+      clearInterval(addInterval);
+    }
+});
