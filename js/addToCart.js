@@ -1,17 +1,17 @@
 let addButtons = document.querySelectorAll(".add-to-cart-button");
-let quantityInput = document.querySelector("input.quantity");
+let quantityDisplay = document.querySelector(".quantity-display");
 let quantity;
-
-if(quantityInput!=null) {
-    quantity = quantityInput.value;
-}
 
 addButtons.forEach(addButton => {
     addButton.onclick = function() {
-        console.log('pizda '+quantity);
+        if(quantityDisplay){
+            quantity = parseInt(quantityDisplay.innerText);
+        } else {
+            quantity = 1;
+        }
         const REQUEST = new XMLHttpRequest();
-        REQUEST.open("POST", "cart.php");
+        REQUEST.open("POST", "add-to-cart.php");
         REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        REQUEST.send("product_id="+addButton.getAttribute("data-product_id"));
+        REQUEST.send("product_id="+addButton.getAttribute("data-product_id")+"&quantity="+quantity);
     }
 });

@@ -7,6 +7,7 @@
 
     $maincategories = [];
     $products = [];
+    $cartProducts = [];
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
@@ -14,11 +15,22 @@
     fetchAllToArray( $maincategories, $result );
     $result->free();
 
-    // Storing products
-    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)";
-    $result = $connection->query($query);
-    fetchAllToArray( $products, $result );
-    $result->free();
+    if (isset($_SESSION['session'])) {
+        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
+        $result = $connection->query($query);
+        fetchAllToArray( $cartProducts, $result );
+        $result->free();
+    }
+
+    /*Luźne obliczonka które nie wiem gdzie dać :<*/
+    $productSum = 0;
+    foreach ( $cartProducts as $cartProduct ) {
+        $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
+    }
+
+    $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
+
+    $totalSum = $productSum + $shipping;
 ?>
 
 <!DOCTYPE html>
@@ -124,91 +136,111 @@
 
     <main>
         <h1>Koszyk</h1>
-        <div class='shopping-cart-empty'>
-            <span>Twój koszyk jest pusty. Dodaj do niego produkty, aby móc rozpocząć składanie zamówienia.</span>
-            <button onclick="location.href='index.php'" class='white-button'>Powrót</button>
-        </div>
-         <div class='shopping-cart-with-products'>
-            <table>
-                <thead>
-                    <tr>
-                        <th class='first'></th>
-                        <th class='table-header uppercase'>Cena</th>
-                        <th class='table-header uppercase'>Ilość</th>
-                        <th class='table-header uppercase' >Wartość</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class='product-container'>
-                        <td class='product-image product-name'>
-                            <a href='product.php?id=1'><img src='images/product-images/1_1_min.jpg'></a>
-                            <a href='product.php?id=1'><h3>Za wszystkie krzywdy sam przeproszę Boga One kuszą mnie jak zło-o, biały towar (woo)</h3></a>
-                        </td>
-                        <td class='product-price'>
-                            <span>20,00 zł</span>
-                        </td>
-                        <td class='product-quantity'>
-                            <div class='quantity-input'>
-                                <button class='quantity-square subtract'>-</button>
-                                <input class='quantity quantity-square' type='number' name='quantity' min='0' max='99' value='1' step='1'/>
-                                <button class='quantity-square add'>+</button>
-                            </div>
-                        </td>
-                        <td class='product-total-price'>
-                            <span>20,00 zł</span>
-                        </td>
-                        <td class='product-remove'>
-                            <button class='remove-from-cart'></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        
+        <?php
+            if(count($cartProducts)==0) {
+                echo "
+                <div class='shopping-cart-empty'>
+                    <span>Twój koszyk jest pusty. Dodaj do niego produkty, aby móc rozpocząć składanie zamówienia.</span>
+                    <button onclick='location.href=\"index.php\"' class='white-button'>Powrót</button>
+                </div>";
+            } else {
+                echo "
+                <div class='shopping-cart-with-products'>
+                    <table class='cart'>
+                        <thead>
+                            <tr>
+                                <th class='first'></th>
+                                <th class='table-header uppercase'>Cena</th>
+                                <th class='table-header uppercase'>Ilość</th>
+                                <th class='table-header uppercase' >Wartość</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+                        foreach ( $cartProducts as $cartProduct ) {
+                            echo "
+                            <tr class='product-container'>
+                                <td class='product-image product-name'>
+                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='images/product-images/1_1_min.jpg'></a>
+                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
+                                </td>
+                                <td class='product-price'>
+                                    <span>".number_format($cartProduct['cena'], 2, ',')." zł</span>
+                                </td>
+                                <td class='product-quantity'>
+                                    <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <button class='subtract white-button'>-</button>
+                                                </td>
+                                                <td>
+                                                    <span class='quantity-display'>".$cartProduct['ilosc']."</span>
+                                                </td>
+                                                <td>
+                                                    <button class='add white-button'>+</button>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                    </div>
+                                </td>
+                                <td class='product-total-price'>
+                                    <span>".number_format($cartProduct['cena']*$cartProduct['ilosc'], 2, ',', ' ')." zł</span>
+                                </td>
+                                <td class='product-remove'>
+                                    <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
+                                </td>
+                            </tr>";
+                        }
+                        
+                        echo "
+                        </tbody>
+                    </table>
 
-            <div class='shopping-cart-footer'>
-                <div class='footer-left'>
-                    <div class='add-discount-code'>
-                        <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
-                        <div style='display:inline-flex'>
-                            <input class='discount-code' type='text' name='discount-code'>
-                            <button class='button-activate pink-button'>Aktywuj</button>
+                    <div class='shopping-cart-footer'>
+                        <div class='footer-left'>
+                            <div class='add-discount-code'>
+                                <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
+                                <div style='display:inline-flex'>
+                                    <input class='discount-code' type='text' name='discount-code'>
+                                    <button class='button-activate pink-button'>Aktywuj</button>
+                                </div>
+                            </div>
+                            <button onclick='location.href=\"index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
+                        </div>
+                        <div class='footer-right'>
+                            <div class='order-cost'>
+                                <div class='order-cost-row'>
+                                    <span>Wartość zamówienia</span>
+                                    <span>";
+                                        echo number_format($productSum, 2, ',', ' ');
+                                        echo " zł";
+                                    echo "
+                                    </span>
+                                </div>
+                                <div class='order-cost-row'>
+                                    <span>Dostawa od</span>
+                                    <span>";
+                                        echo number_format($shipping, 2, ',', ' ');
+                                        echo " zł";
+                                    echo "
+                                    </span>
+                                </div>
+                                <div class='order-cost-row'>
+                                    <span>Razem</span>
+                                    <span>";
+                                        echo number_format($totalSum, 2, ',', ' ');
+                                        echo " zł";
+                                    echo "
+                                    </span>
+                                </div>
+                            </div>
+                            <button class='button-next pink-button'>Realizuj zamówienie</button>
                         </div>
                     </div>
-                    <button onclick="location.href='index.php'" class='button-back white-button'>Kontynuuj zakupy</button>
-                </div>
-                <div class='footer-right'>
-                    <div class='order-cost'>
-                        <div class='order-cost-row'>
-                            <span>Wartość zamówienia</span>
-                            <span>
-                                <?php
-                                    echo number_format('20', 2, ',')
-                                ?>
-                                zł
-                            </span>
-                        </div>
-                        <div class='order-cost-row'>
-                            <span>Dostawa od</span>
-                            <span>
-                                <?php
-                                    echo number_format('9.90', 2, ',')
-                                ?>
-                                zł
-                            </span>
-                        </div>
-                        <div class='order-cost-row'>
-                            <span>Razem</span>
-                            <span>
-                                <?php
-                                    echo number_format('29.90', 2, ',')
-                                ?>
-                                zł
-                            </span>
-                        </div>
-                    </div>
-                    <button class='button-next pink-button'>Realizuj zamówienie</button>
-                </div>
-            </div>
-        </div> -->
+                </div>";
+            }
+        ?>
     </main>
 
 
@@ -276,6 +308,7 @@
     <script src="js/script.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
+    <script src="js/removeFromCart.js"></script>
 </body>
 
 </html>

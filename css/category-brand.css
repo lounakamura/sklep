@@ -44,8 +44,5 @@
 
 .product-container button {
   width: 100%;
-  background-image: url("../ui/shopping-cart-pink.svg");
-  background-repeat: no-repeat;
-  background-position: 75%;
   margin-top: 5px;
 }

@@ -1,8 +1,8 @@
 const CATEGORY_BUTTONS = document.querySelectorAll(".category");
 
 CATEGORY_BUTTONS.forEach((category_button)=>{
-    var timer;
-    var delay = 300;
+    let timer;
+    let delay = 300;
     category_button.onmouseenter = function(){
         timer = setTimeout (function() {
             closeAll();

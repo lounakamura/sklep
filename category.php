@@ -153,7 +153,7 @@
                                 <h3>" . $product['nazwa'] . "</h3>";
                             echo "</a>";
                             echo "<span>" . number_format($product['cena'], 2, ',') . " zł</span><br>";
-                            echo "<button class='pink-button'>Do koszyka</button>";
+                            echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
                         echo "</div>";
                     }
                 echo "</div>";
@@ -225,6 +225,7 @@
 
     <script src="js/script.js"></script>
     <script src="js/menuHandler.js"></script>
+    <script src="js/addToCart.js"></script>
 </body>
 
 </html>
