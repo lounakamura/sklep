@@ -165,7 +165,7 @@
                                     <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
                                 </td>
                                 <td class='product-price'>
-                                    <span>".number_format($cartProduct['cena'], 2, ',')." zł</span>
+                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span> zł</span>
                                 </td>
                                 <td class='product-quantity'>
                                     <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
@@ -175,7 +175,7 @@
                                                     <button class='subtract white-button'>-</button>
                                                 </td>
                                                 <td>
-                                                    <span class='quantity-display'>".$cartProduct['ilosc']."</span>
+                                                    <span class='quantity-display' data-cart_id='".$cartProduct['koszyk_id']."'>".$cartProduct['ilosc']."</span>
                                                 </td>
                                                 <td>
                                                     <button class='add white-button'>+</button>
@@ -185,7 +185,9 @@
                                     </div>
                                 </td>
                                 <td class='product-total-price'>
-                                    <span>".number_format($cartProduct['cena']*$cartProduct['ilosc'], 2, ',', ' ')." zł</span>
+                                    <span>
+                                        <span class='product-total'>".number_format($cartProduct['cena']*$cartProduct['ilosc'], 2, ',', ' ')."</span> zł
+                                    </span>
                                 </td>
                                 <td class='product-remove'>
                                     <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
@@ -212,26 +214,20 @@
                             <div class='order-cost'>
                                 <div class='order-cost-row'>
                                     <span>Wartość zamówienia</span>
-                                    <span>";
-                                        echo number_format($productSum, 2, ',', ' ');
-                                        echo " zł";
-                                    echo "
+                                    <span>
+                                        <span class='product-sum'>".number_format($productSum, 2, ',', ' ')."</span> zł
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Dostawa od</span>
-                                    <span>";
-                                        echo number_format($shipping, 2, ',', ' ');
-                                        echo " zł";
-                                    echo "
+                                    <span>
+                                        ".number_format($shipping, 2, ',', ' ')." zł
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Razem</span>
-                                    <span>";
-                                        echo number_format($totalSum, 2, ',', ' ');
-                                        echo " zł";
-                                    echo "
+                                    <span>
+                                        <span class='total-sum'>".number_format($totalSum, 2, ',', ' ')."</span> zł
                                     </span>
                                 </div>
                             </div>
