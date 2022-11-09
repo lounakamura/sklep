@@ -377,3 +377,28 @@ footer h4 {
     transform: translateX(-2px);
   }
 }
+
+@keyframes shake-horizontal-delay-between {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  5%,
+  15%,
+  25%,
+  35% {
+    transform: translateX(-3px);
+  }
+  10%,
+  20%,
+  30% {
+    transform: translateX(3px);
+  }
+  40% {
+    transform: translateX(2px);
+  }
+  45% {
+    transform: translateX(-2px);
+  }
+}

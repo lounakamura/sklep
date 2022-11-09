@@ -137,9 +137,9 @@
         echo // to implement: breadcrumbs
         "<div class='category-tree'>
             <a href='index.php' class='uppercase'>Strona Główna</a> >
-            <a href='kategoria.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
-            <a href='kategoria.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
-            <a href='kategoria.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
+            <a href='category.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
+            <a href='category.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
+            <a href='category.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
         </div>
 
         <div class='product-information'>
