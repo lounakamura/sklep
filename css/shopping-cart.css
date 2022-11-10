@@ -44,6 +44,19 @@ table {
   width: 65%;
 }
 
+.product-price {
+  width: 9%;
+}
+
+.product-quantity {
+  width: 10%;
+}
+
+.product-total-price {
+  font-weight: 600;
+  width: 12%;
+}
+
 tr.product-container > td {
   border-top: 1px solid #c4c7c8;
 }
@@ -89,10 +102,6 @@ td {
 .product-quantity,
 .product-remove {
   text-align: center;
-}
-
-.product-total-price {
-  font-weight: 600;
 }
 
 .remove-from-cart {

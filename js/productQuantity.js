@@ -1,3 +1,17 @@
+window.onload = function () { 
+  quantityControllers.forEach(quantityController => {
+    const calculateProductTotal = function() {
+      productTotal.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)));
+    }
+    
+    const display = quantityController.querySelector('.quantity-display');
+    const productPrice = quantityController.parentElement.parentElement.querySelector('.price');
+    const productTotal = quantityController.parentElement.parentElement.querySelector('.product-total');
+    calculateProductTotal(); 
+  });
+  calculateOrder();
+}
+
 const path = window.location.pathname;
 const quantityControllers = document.querySelectorAll('.quantity-input-container');
 
@@ -137,19 +151,26 @@ quantityControllers.forEach(quantityController => {
     REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     REQUEST.send("cart_id="+display.getAttribute("data-cart_id")+"&quantity="+parseInt(display.innerText));
 
-    productTotal.innerText = String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)).replace('.', ',');
+    calculateProductTotal();
+    calculateOrder();
+  }
 
-    let sum = 0;
-    productTotals.forEach(productTotal => {
-      sum += parseFloat(productTotal.innerHTML.replace(',', '.'));
-    });
-    sum = sum.toFixed(2);
-    let total = (parseFloat(sum) + cheapestShipping).toFixed(2);
-    productSum.innerText = String(sum).replace('.', ',');
-    totalSum.innerText = String(total).replace('.', ',');
+  const calculateProductTotal = function() {
+    productTotal.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)));
   }
 });
 
 function exponential (x) {
   return Math.pow(2, (0.2*x-4))+1;
+}
+
+function calculateOrder () {
+  let sum = 0;
+  productTotals.forEach(productTotal => {
+    sum += parseFloat(productTotal.innerHTML.replace(',', '.'));
+  });
+  sum = sum.toFixed(2);
+  let total = (parseFloat(sum) + cheapestShipping).toFixed(2);
+  productSum.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String(sum));
+  totalSum.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String(total));
 }

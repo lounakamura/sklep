@@ -22,15 +22,11 @@
         $result->free();
     }
 
-    /*Luźne obliczonka które nie wiem gdzie dać :<*/
-    $productSum = 0;
-    foreach ( $cartProducts as $cartProduct ) {
-        $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
-    }
-
     $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
 
-    $totalSum = $productSum + $shipping;
+    //TO BE IMPLEMENTED
+    //kody rabatowe
+    //skladanie zamowienia
 ?>
 
 <!DOCTYPE html>
@@ -186,7 +182,7 @@
                                 </td>
                                 <td class='product-total-price'>
                                     <span>
-                                        <span class='product-total'>".number_format($cartProduct['cena']*$cartProduct['ilosc'], 2, ',', ' ')."</span> zł
+                                        <span class='product-total'></span> zł
                                     </span>
                                 </td>
                                 <td class='product-remove'>
@@ -214,20 +210,20 @@
                             <div class='order-cost'>
                                 <div class='order-cost-row'>
                                     <span>Wartość zamówienia</span>
-                                    <span>
-                                        <span class='product-sum'>".number_format($productSum, 2, ',', ' ')."</span> zł
+                                    <span class='order-product-sum'>
+                                        <span class='product-sum'></span> zł
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Dostawa od</span>
-                                    <span>
-                                        ".number_format($shipping, 2, ',', ' ')." zł
+                                    <span class='order-shipping-price'>
+                                        <span class='shipping-price'>".number_format($shipping, 2, ',', ' ')."</span> zł
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Razem</span>
-                                    <span>
-                                        <span class='total-sum'>".number_format($totalSum, 2, ',', ' ')."</span> zł
+                                    <span class='order-total-sum'>
+                                        <span class='total-sum'></span> zł
                                     </span>
                                 </div>
                             </div>

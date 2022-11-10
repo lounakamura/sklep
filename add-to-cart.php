@@ -16,11 +16,12 @@
     }
 
     $query = "SELECT koszyk_id FROM koszyk WHERE produkt_id=".$_POST['product_id']." AND sesja_id=".$_SESSION['session'];
-    if ($result = $connection->query($query)) { //Dodac komunikat na stronie w przypadku proby dodania wiekszej ilosci niz 99
+    $result = $connection->query($query);
+    if (mysqli_num_rows($result)>0) { //Dodac komunikat na stronie w przypadku proby dodania wiekszej ilosci niz 99
         $koszyk_id = $result->fetch_assoc();
         $query = "UPDATE koszyk SET ilosc = ilosc+".$_POST['quantity']." WHERE koszyk_id=".$koszyk_id['koszyk_id'];
         $result = $connection->query($query);
-    } else { // This never has the chance to run for some reason?
+    } else {
         $query = "INSERT INTO koszyk (produkt_id, ilosc, sesja_id) VALUES (".$_POST['product_id'].", ".$_POST['quantity'].", ".$_SESSION['session'].")";
         $result = $connection->query($query);
     }
