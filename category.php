@@ -1,12 +1,13 @@
 <?php
     session_start();
 
-    require_once "config.php";
+    require_once "php/config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
     $maincategories = [];
     $products = [];
+    $cartProducts = [];
 
     // Product display based on category
     $baseSelectionOn = '';
@@ -31,6 +32,15 @@
     $result = $connection->query( $query );
     fetchAllToArray( $products, $result );
     $result->free();
+
+    if (isset($_SESSION['session'])) {
+        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
+        $result = $connection->query($query);
+        fetchAllToArray( $cartProducts, $result );
+        $result->free();
+    }
+
+    $shipping = 10.90;
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +57,62 @@
 </head>
 
 <body>
+<section>
+        <?php
+            if(count($cartProducts)>0) {
+                echo "
+                <div class='preview-cart-container off'>
+                    <div class='preview-cart-shape'>
+                        <div class='preview-cart-products'>";
+                        foreach ( $cartProducts as $cartProduct ) {
+                            echo "
+                            <div class='preview-cart-product'>
+                                <div class='preview-cart-info'>
+                                    <div>
+                                        <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='images/product-images/1_1_min.jpg'></a>
+                                        <a href='product.php?id=".$cartProduct['produkt_id']."'><span>".$cartProduct['nazwa']."</span></a>
+                                    </div>
+                                    <div>
+                                        <h4>".$cartProduct['ilosc']."</h4>
+                                        <h4>x</h4>
+                                        <h4>".number_format($cartProduct['cena'], 2, ',')." zł</h4>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
+                                </div>
+                            </div>";
+                        }
+                        echo "</div>";
+                        // MAKE A NEW JS FILE FOR CALCULATING TOTAL - SPECIFICALLY FOR THE PREVIEW CART
+                        echo "
+                        <div class='preview-cart-cost'>
+                                <div class='preview-cost-row'>
+                                    <span>Wartość zamówienia</span>
+                                    <span class='preview-product-sum'>
+                                        <span class='product-sum'></span> zł
+                                    </span>
+                                </div>
+                                <div class='preview-cost-row'>
+                                    <span>Dostawa od</span>
+                                    <span class='preview-shipping-price'>
+                                        <span class='shipping-price'>".number_format($shipping, 2, ',', ' ')."</span> zł
+                                    </span>
+                                </div>
+                                <div class='preview-cost-row'>
+                                    <span>Razem</span>
+                                    <span class='preview-total-sum'>
+                                        <span class='total-sum'></span> zł
+                                    </span>
+                                </div>
+                        </div>
+                        <button onclick='location.href=\"shopping-cart.php\"' class='goto-cart pink-button'>Przejdź do koszyka</button>";
+                    echo "</div>";
+                echo "<div>";    
+            }
+        ?>
+    </section>
+
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -60,8 +126,18 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
+            <button type="button" class="header-account"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+                <?php
+                    if(count($cartProducts)>0){
+                        echo "<div class='container-cart-items-amount'>
+                            <div class='circle-cart-items-amount'>
+                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
+                            </div>
+                        </div>";
+                    }
+                ?>
+            </button>
         </div>
     </header>
 
@@ -78,8 +154,18 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
+            <button type="button" class="header-account"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+                <?php
+                    if(count($cartProducts)>0){
+                        echo "<div class='container-cart-items-amount'>
+                            <div class='circle-cart-items-amount'>
+                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
+                            </div>
+                        </div>";
+                    }
+                ?>
+            </button>
         </div>
     </header>
 
@@ -226,6 +312,7 @@
     <script src="js/script.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/addToCart.js"></script>
+    <script src="js/previewCart.js"></script>
 </body>
 
 </html>

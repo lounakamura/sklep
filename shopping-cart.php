@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "config.php";
+    require_once "php/config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
@@ -27,6 +27,7 @@
     //TO BE IMPLEMENTED
     //kody rabatowe
     //skladanie zamowienia
+    //IMPORTANT GIVE OPTION TO EMPTY CART
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +57,18 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
+            <button type="button" class="header-account"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+                <?php
+                    if(count($cartProducts)>0){
+                        echo "<div class='container-cart-items-amount'>
+                            <div class='circle-cart-items-amount'>
+                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
+                            </div>
+                        </div>";
+                    }
+                ?>
+            </button>
         </div>
     </header>
 
@@ -74,8 +85,18 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" id="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" id="header-cart"></button>
+            <button type="button" class="header-account"></button>
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+                <?php
+                    if(count($cartProducts)>0){
+                        echo "<div class='container-cart-items-amount'>
+                            <div class='circle-cart-items-amount'>
+                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
+                            </div>
+                        </div>";
+                    }
+                ?>
+            </button>
         </div>
     </header>
 
@@ -301,6 +322,7 @@
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
     <script src="js/removeFromCart.js"></script>
+    <script src="js/previewCart.js"></script>
 </body>
 
 </html>

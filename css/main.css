@@ -77,6 +77,10 @@ button.pink-button:hover {
   transition: 0.3s ease-out;
 }
 
+button.pink-button:active {
+  animation: scale-down 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  transition: 0.3s ease-out;
+}
 
 
 /* Header */
@@ -89,6 +93,7 @@ header {
   align-content: center;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .logo_big-container {
@@ -149,7 +154,7 @@ header {
 
 .header-buttons {
   height: 100%;
-  width: 60px;
+  width: 80px;
   display: flex;
   align-content: center;
   align-items: center;
@@ -157,20 +162,44 @@ header {
 }
 
 .header-buttons button {
-  height: 23px;
-  width: 23px;
+  height: 38px;
+  width: 33px;
   border: none;
   background-color: white;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-#header-account {
+.header-buttons button.header-account {
   background-image: url("../images/ui/user.svg");
 }
 
-#header-cart {
+.header-buttons button.header-cart {
   background-image: url("../images/ui/shopping-cart.svg");
+}
+
+.container-cart-items-amount {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.circle-cart-items-amount {
+  position: absolute;
+  bottom: 0;
+  right: 1px;
+  height: 15px;
+  width: 15px;
+  background-color: #e83f6f;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.cart-items-amount {
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
 }
 
 /* Small version of header */
@@ -198,7 +227,7 @@ header {
 .navigation-categories {
   background-color: white;
   height: 10vh;
-  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   transition: ease-out 0.2s;
 }
 
@@ -265,6 +294,23 @@ header {
 .categories-main {
   display: flex;
   justify-content: space-evenly;
+}
+
+/* Promotional banner */
+.promo-banner-container {
+  height: 470px;
+  width: 1130px;
+  background-image: url(../images/main/promo_banner.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 1px;
+}
+
+a.promo-banner {
+  height: 100%;
+  width: 100%;
+  border-radius: 1px;
 }
 
 /* Newsletter - currently not used */
@@ -355,6 +401,125 @@ footer h4 {
   display: block;
 }
 
+/* Shopping cart preview */
+.preview-cart-container {
+  position: fixed;
+  padding: 10px;
+  right: 0;
+  top: 11vh;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  z-index: 200;
+  margin-right: 19vw;
+}
+
+.preview-cart-shape {
+  --padding: 20px;
+  width: calc(var(--size) - var(--padding));
+  height: calc(var(--size)*1.3);
+  background: #fff;
+  padding: var(--padding);
+  border-radius: 1px;
+  border: 1px solid #e3e3e3;
+}
+
+.preview-cart-products {
+  max-height: 300px;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.preview-cart-products::-webkit-scrollbar {
+  width: 5px;
+}
+
+.preview-cart-products::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.preview-cart-products::-webkit-scrollbar-thumb {
+  background: #c2c2c2;
+  border-radius: 1px;
+}
+
+.preview-cart-products::-webkit-scrollbar-thumb:hover {
+  background: #959595;
+}
+
+.preview-cart-product {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 5px;
+  height: 115px;
+}
+
+.preview-cart-product:last-child {
+  border: none;
+}
+
+.preview-cart-product > div.preview-cart-info {
+  width: 260px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preview-cart-product > div div {
+  display: flex;
+}
+
+.preview-cart-product h4 {
+  margin-right: 5px;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.preview-cart-product img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.preview-cart-product span {
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.preview-cart-product button {
+  position: relative;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  border: none;
+  background-image: url(../images/ui/cross-small.svg);
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 5px;
+}
+
+.preview-cart-cost {
+  border-top: 1px solid #e3e3e3;
+  padding-top: 15px;
+  margin-bottom: 15px;
+}
+
+.preview-cart-cost div {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2px;
+}
+
+.preview-cart-cost div:last-child {
+  font-weight: 600;
+}
+
+.preview-cart-shape button.goto-cart {
+  width: 100%;
+}
+
 
 /* Animations */
 
@@ -411,10 +576,6 @@ footer h4 {
   0%, 100% {
             transform: scale(1);
   }
-  25%, 75% {
-            transform: scale(0.98);
-  }
-
   50% {
             transform: scale(0.96);
   }

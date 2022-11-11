@@ -19,7 +19,7 @@ const productTotals = document.querySelectorAll('.product-total');
 
 const productSum = document.querySelector('.product-sum');
 const totalSum = document.querySelector('.total-sum');
-const cheapestShipping = 10.90; // For the sake of simplicity...
+const cheapestShipping = 10.90; // For the sake of simplicity... For now
 
 quantityControllers.forEach(quantityController => {
   const subtractBtn = quantityController.querySelector('.subtract');
@@ -147,7 +147,7 @@ quantityControllers.forEach(quantityController => {
 
   const modifyQuantity = function () {
     const REQUEST = new XMLHttpRequest();
-    REQUEST.open("POST", "modify-quantity.php");
+    REQUEST.open("POST", "php/modify-quantity.php");
     REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     REQUEST.send("cart_id="+display.getAttribute("data-cart_id")+"&quantity="+parseInt(display.innerText));
 

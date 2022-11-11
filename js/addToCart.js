@@ -10,7 +10,7 @@ addButtons.forEach(addButton => {
             quantity = 1;
         }
         const REQUEST = new XMLHttpRequest();
-        REQUEST.open("POST", "add-to-cart.php");
+        REQUEST.open("POST", "php/add-to-cart.php");
         REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         REQUEST.send("product_id="+addButton.getAttribute("data-product_id")+"&quantity="+quantity);
     }
