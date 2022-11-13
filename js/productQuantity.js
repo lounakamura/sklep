@@ -1,9 +1,12 @@
 const quantityControllers = document.querySelectorAll('.quantity-input-container'); // Container holding each products' quantity and -+ buttons
 let productTotals = document.querySelectorAll('.product-total'); // Product totals displayed on page load
+const cheapestShipping = document.querySelector('.shipping-price');
+
 const productSum = document.querySelector('.product-sum');
 const totalSum = document.querySelector('.total-sum');
-
-const cheapestShipping = parseFloat(document.querySelector('.shipping-price').innerHTML.replace(',', '.'));
+if ( path == '/sklep/shopping-cart.php' ) {
+  shipping = parseFloat(cheapestShipping.innerHTML.replace(',', '.'));
+}
 
 quantityControllers.forEach(quantityController => {
   const subtractBtn = quantityController.querySelector('.subtract');
@@ -78,7 +81,6 @@ quantityControllers.forEach(quantityController => {
   }
 
 
-  
   // Add Button actions
 
   // Takes action only if mousedown hasn't been triggered already
@@ -157,7 +159,7 @@ function calculateOrder () {
     sum += parseFloat(productTotal.innerHTML.replace(',', '.'));
   });
   sum = sum.toFixed(2);
-  let total = (parseFloat(sum) + cheapestShipping).toFixed(2);
+  let total = (parseFloat(sum) + shipping).toFixed(2);
   productSum.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String(sum));
   totalSum.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String(total));
 }

@@ -112,7 +112,7 @@
 
         <div class="header-buttons">
             <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -193,7 +193,7 @@
                             echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
                                 <h3>" . $product['nazwa'] . "</h3>";
                             echo "</a>";
-                            echo "<span>" . number_format($product['cena'], 2, ',') . " zł</span><br>";
+                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span</span><br>";
                             echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
                         echo "</div>";
                     }

@@ -50,7 +50,7 @@
                         <div>
                             <h4>".$cartProduct['ilosc']."</h4>
                             <h4>x</h4>
-                            <h4>".number_format($cartProduct['cena'], 2, ',')." zł</h4>
+                            <h4>".number_format($cartProduct['cena'], 2, ',')."<span> zł</span</h4>
                         </div>
                     </div>
                     <div>
@@ -65,23 +65,23 @@
                     <div class='preview-cost-row'>
                         <span>Wartość zamówienia</span>
                         <span class='preview-product-sum'>
-                            <span class='product-sum'>".number_format($productSum, 2, ',', ' ')."</span> zł
+                            <span class='product-sum'>".number_format($productSum, 2, ',', '')."</span><span> zł</span
                         </span>
                     </div>
                     <div class='preview-cost-row'>
                         <span>Dostawa od</span>
                         <span class='preview-shipping-price'>
-                            <span class='shipping-price'>".number_format($shipping, 2, ',', ' ')."</span> zł
+                            <span class='shipping-price'>".number_format($shipping, 2, ',', '')."</span><span> zł</span
                         </span>
                     </div>
                     <div class='preview-cost-row'>
                         <span>Razem</span>
                         <span class='preview-total-sum'>
-                            <span class='total-sum'>".number_format($cartTotal, 2, ',', ' ')."</span> zł
+                            <span class='total-sum'>".number_format($cartTotal, 2, ',', '')."</span><span> zł</span
                         </span>
                     </div>
             </div>
-            <button onclick='location.href=\"shopping-cart.php\"' class='goto-cart pink-button'>Przejdź do koszyka</button>";
+            <button onclick='parent.location.href=\"shopping-cart.php\"' class='goto-cart pink-button'>Przejdź do koszyka</button>";
         echo "</div>";
     echo "</div>";
 ?>

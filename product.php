@@ -109,7 +109,7 @@
 
         <div class="header-buttons">
             <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -206,7 +206,7 @@
                     <h4>" . $product['marka'] . "</h4>
                 </a>
                 <h3>" . $product['nazwa'] . "</h3>
-                <span>" . number_format($product['cena'], 2, ',') . " zł</span><br>
+                <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span</span><br>
                 <div class='add-to-cart-container'>
                     <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
                         <table>

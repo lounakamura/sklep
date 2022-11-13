@@ -100,7 +100,7 @@
 
         <div class="header-buttons">
             <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -194,7 +194,7 @@
                                     <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
                                 </td>
                                 <td class='product-price'>
-                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span> zł</span>
+                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
                                 </td>
                                 <td class='product-quantity'>
                                     <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
@@ -215,7 +215,7 @@
                                 </td>
                                 <td class='product-total-price'>
                                     <span>
-                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',')."</span> zł
+                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',', '')."</span><span> zł</span
                                     </span>
                                 </td>
                                 <td class='product-remove'>
@@ -244,19 +244,19 @@
                                 <div class='order-cost-row'>
                                     <span>Wartość zamówienia</span>
                                     <span class='order-product-sum'>
-                                        <span class='product-sum'>".number_format($productSum, 2, ',', ' ')."</span> zł
+                                        <span class='product-sum'>".number_format($productSum, 2, ',', '')."</span><span> zł</span
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Dostawa od</span>
                                     <span class='order-shipping-price'>
-                                        <span class='shipping-price'>".number_format($shipping, 2, ',', ' ')."</span> zł
+                                        <span class='shipping-price'>".number_format($shipping, 2, ',', '')."</span><span> zł</span
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
                                     <span>Razem</span>
                                     <span class='order-total-sum'>
-                                        <span class='total-sum'>".number_format($cartTotal, 2, ',', ' ')."</span> zł
+                                        <span class='total-sum'>".number_format($cartTotal, 2, ',', '')."</span><span> zł</span
                                     </span>
                                 </div>
                             </div>
