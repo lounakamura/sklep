@@ -1,25 +1,9 @@
-window.onload = function () { 
-  quantityControllers.forEach(quantityController => {
-    const calculateProductTotal = function() {
-      productTotal.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)));
-    }
-    
-    const display = quantityController.querySelector('.quantity-display');
-    const productPrice = quantityController.parentElement.parentElement.querySelector('.price');
-    const productTotal = quantityController.parentElement.parentElement.querySelector('.product-total');
-    calculateProductTotal(); 
-  });
-  calculateOrder();
-}
-
-const path = window.location.pathname;
-const quantityControllers = document.querySelectorAll('.quantity-input-container');
-
-const productTotals = document.querySelectorAll('.product-total');
-
+const quantityControllers = document.querySelectorAll('.quantity-input-container'); // Container holding each products' quantity and -+ buttons
+let productTotals = document.querySelectorAll('.product-total'); // Product totals displayed on page load
 const productSum = document.querySelector('.product-sum');
 const totalSum = document.querySelector('.total-sum');
-const cheapestShipping = 10.90; // For the sake of simplicity... For now
+
+const cheapestShipping = parseFloat(document.querySelector('.shipping-price').innerHTML.replace(',', '.'));
 
 quantityControllers.forEach(quantityController => {
   const subtractBtn = quantityController.querySelector('.subtract');
@@ -42,12 +26,11 @@ quantityControllers.forEach(quantityController => {
   let isDown = false;
   let isDownTimer;
 
-  
-
   // Subtract Button actions
 
+  // Takes action only if mousedown hasn't been triggered already
   subtractBtn.onclick = function () {
-    if ( isDown === false ) { // Takes action only if Mouse Down hasn't been triggered already
+    if ( isDown === false ) { 
       if ( parseInt(display.innerText) - step >= min ) {
           display.innerText = parseInt(display.innerText) - step;
       } else {
@@ -95,8 +78,10 @@ quantityControllers.forEach(quantityController => {
   }
 
 
+  
   // Add Button actions
 
+  // Takes action only if mousedown hasn't been triggered already
   addBtn.onclick = function () {
     if(isDown === false){
       if ( parseInt(display.innerText) + step <= max ) {
@@ -160,10 +145,12 @@ quantityControllers.forEach(quantityController => {
   }
 });
 
+// Function for exponential speed increase when holding a subtract or add buton
 function exponential (x) {
   return Math.pow(2, (0.2*x-4))+1;
 }
 
+// Function for calculating order value
 function calculateOrder () {
   let sum = 0;
   productTotals.forEach(productTotal => {

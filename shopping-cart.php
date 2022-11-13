@@ -24,6 +24,22 @@
 
     $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
 
+    // Storing cart amount
+    if (isset($_SESSION['session'])) {
+        $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+        $result = $connection->query($query);
+        $cartAmount = $result->fetch_assoc();
+        $result->free();
+    }
+
+    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+
+    $productSum = 0;
+    foreach( $cartProducts as $cartProduct ) {
+        $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
+    }
+    $cartTotal = $productSum + $shipping;
+
     //TO BE IMPLEMENTED
     //kody rabatowe
     //skladanie zamowienia
@@ -59,15 +75,13 @@
         <div class="header-buttons">
             <button type="button" class="header-account"></button>
             <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
-                <?php
-                    if(count($cartProducts)>0){
-                        echo "<div class='container-cart-items-amount'>
-                            <div class='circle-cart-items-amount'>
-                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
-                            </div>
-                        </div>";
-                    }
-                ?>
+                <div class='container-cart-items-amount' style='opacity:0'>
+                    <div class='circle-cart-items-amount'>
+                        <span class='cart-items-amount'>
+                            -
+                        </span>
+                    </div>
+                </div>
             </button>
         </div>
     </header>
@@ -87,15 +101,13 @@
         <div class="header-buttons">
             <button type="button" class="header-account"></button>
             <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
-                <?php
-                    if(count($cartProducts)>0){
-                        echo "<div class='container-cart-items-amount'>
-                            <div class='circle-cart-items-amount'>
-                                <span class='cart-items-amount'>".$cartAmount['ilosc']."</span>
-                            </div>
-                        </div>";
-                    }
-                ?>
+                <div class='container-cart-items-amount' style='opacity:0'>
+                    <div class='circle-cart-items-amount'>
+                        <span class='cart-items-amount'>
+                            -
+                        </span>
+                    </div>
+                </div>
             </button>
         </div>
     </header>
@@ -203,7 +215,7 @@
                                 </td>
                                 <td class='product-total-price'>
                                     <span>
-                                        <span class='product-total'></span> zł
+                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',')."</span> zł
                                     </span>
                                 </td>
                                 <td class='product-remove'>
@@ -232,7 +244,7 @@
                                 <div class='order-cost-row'>
                                     <span>Wartość zamówienia</span>
                                     <span class='order-product-sum'>
-                                        <span class='product-sum'></span> zł
+                                        <span class='product-sum'>".number_format($productSum, 2, ',', ' ')."</span> zł
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>
@@ -244,7 +256,7 @@
                                 <div class='order-cost-row'>
                                     <span>Razem</span>
                                     <span class='order-total-sum'>
-                                        <span class='total-sum'></span> zł
+                                        <span class='total-sum'>".number_format($cartTotal, 2, ',', ' ')."</span> zł
                                     </span>
                                 </div>
                             </div>
@@ -321,8 +333,9 @@
     <script src="js/script.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
-    <script src="js/removeFromCart.js"></script>
     <script src="js/previewCart.js"></script>
+    <script src="js/addToCart.js"></script>
+    <script src="js/removeFromCart.js"></script>
 </body>
 
 </html>

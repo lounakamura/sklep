@@ -1,3 +1,4 @@
+const path = window.location.pathname;
 let header = document.querySelector(".header-small");
 let sticky = 100;
 

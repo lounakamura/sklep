@@ -1,19 +1,37 @@
-const path = window.location.pathname;
-const cartAmount = document.querySelector(".cart-items-amount");
+window.onload = function () {
+    updateCartValue();
+}
+
+const cartAmountContainer = parent.document.querySelector(".container-cart-items-amount");
+const cartAmount = parent.document.querySelector(".cart-items-amount");
+
+function updateCartValue() {
+    let amountValue = document.cookie.split('; ').find((row) => row.startsWith('cart-amount='))?.split('=')[1];
+
+    if( amountValue > 0 ) {
+        $(cartAmountContainer).css('opacity', 1);
+        cartAmount.innerText = amountValue;
+    } else {
+        $(cartAmountContainer).css('opacity', 0);
+        cartAmount.innerText = amountValue;
+    }
+}
 
 if ( path != '/sklep/shopping-cart.php' ) {
-    const cartButton = document.querySelector(".header-cart");
-    const cartPreview = document.querySelector(".preview-cart-container");
+    const cartButton = parent.document.querySelector(".header-cart");
+    const cartPreview = parent.document.querySelector(".preview-cart-container");
 
     let isOverPreview = false;
     let isOverButton = false;
     let timer;
 
     cartButton.onmouseenter = function() {
-        timer = setTimeout(() => {
-            isOverButton = true;
-            $(cartPreview).removeClass("off");
-        }, 200)
+        if( parseInt(cartAmount.innerText) > 0 ) {
+            timer = setTimeout(() => {
+                isOverButton = true;
+                $(cartPreview).removeClass('hidden');
+            }, 200)
+        }
     }
 
     cartButton.onmouseleave = function() {
@@ -21,7 +39,7 @@ if ( path != '/sklep/shopping-cart.php' ) {
         isOverButton = false;
         setTimeout(() => {
             if(isOverPreview == false) {
-                $(cartPreview).addClass("off");
+                $(cartPreview).addClass('hidden');
             }
         }, 200)
     }
@@ -34,12 +52,8 @@ if ( path != '/sklep/shopping-cart.php' ) {
         isOverPreview = false;
         setTimeout(() => {
             if(isOverButton == false) {
-                $(cartPreview).addClass("off");
+                $(cartPreview).addClass('hidden');
             }
         }, 200)
     }
-}
-
-function changeAmount() {
-    
 }
