@@ -184,17 +184,21 @@
                 echo "<div class='products-container'>";
                     foreach ($products as $product) {
                         echo "<div class='product-container'>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
-                            echo "</a>"; 
-                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                <h4>" . $product['marka'] . "</h4>";
-                            echo "</a>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <h3>" . $product['nazwa'] . "</h3>";
-                            echo "</a>";
-                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span</span><br>";
-                            echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                        echo "<div>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
+                                echo "</a>"; 
+                                echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                    <h4>" . $product['marka'] . "</h4>";
+                                echo "</a>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <h3>" . $product['nazwa'] . "</h3>";
+                                echo "</a>";
+                            echo "</div>";
+                            echo "<div>";
+                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                            echo "</div>";
                         echo "</div>";
                     }
                 echo "</div>";

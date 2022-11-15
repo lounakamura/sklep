@@ -206,7 +206,7 @@
                     <h4>" . $product['marka'] . "</h4>
                 </a>
                 <h3>" . $product['nazwa'] . "</h3>
-                <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span</span><br>
+                <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>
                 <div class='add-to-cart-container'>
                     <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
                         <table>

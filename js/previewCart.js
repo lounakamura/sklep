@@ -28,7 +28,6 @@ function updateCartValue() {
             cartAmountSmall.innerText = amountValue;
         }
     }
-    
 }
 
 if ( path != '/sklep/shopping-cart.php' ) {

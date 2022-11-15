@@ -17,6 +17,22 @@ addButtons.forEach(addButton => {
         REQUEST.onload = function() {
             cartPreviewIframe.contentWindow.location.reload();
             updateCartValue();
+            
+            // This down here has some cool potential
+            // But u need to work on it
+            // Class needs to be made
+            // It should have a timeout
+            // Change back to normal button
+            // Have a state before it gets added
+            
+            addButton.innerHTML = '';
+            $(addButton).css({
+                'border-color' : 'lightgreen',
+                'background-color' : 'lightgreen',
+                'background-image': 'url("images/ui/check-green.svg")',
+                'background-repeat' : 'no-repeat',
+                'background-position' : 'center'
+            });
         }
     }
 });
