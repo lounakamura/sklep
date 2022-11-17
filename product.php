@@ -6,10 +6,19 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    }
+
+    $cartAmount = [];
     $maincategories = [];
-    $products = [];
     $product = [];
-    $cartProducts = [];
+
+    // Storing cart amount
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $result = $connection->query($query);
+    $cartAmount = $result->fetch_assoc();
+    $result->free();
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
@@ -17,35 +26,13 @@
     fetchAllToArray( $maincategories, $result );
     $result->free();
 
-    // Storing products
-    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)";
-    $result = $connection->query($query);
-    fetchAllToArray( $products, $result );
-    $result->free();
-    
-    $id = $_GET['id'];
-
-    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=$id";
+    // Storing displayed product information
+    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=".$_GET['id'];
     $result = $connection->query($query);
     $product = $result->fetch_assoc();
     $result->free();
 
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
-    }
-
     $shipping = 10.90;
-
-    // Storing cart amount
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        $cartAmount = $result->fetch_assoc();
-        $result->free();
-    }
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
@@ -56,7 +43,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>%TITLE% Drogeria internetowa Kosmetykowo.pl</title>
+    <title>%TITLE% | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/product.css">
@@ -173,7 +160,7 @@
 
     <main>
         <?php
-         // $query = "SELECT nazwa_pliku FROM zdjecie WHERE produkt_id=$id"; zdjecia nadal do implementacji
+         // $query = "SELECT nazwa_pliku FROM zdjecie WHERE produkt_id="; zdjecia nadal do implementacji
 
         echo // to implement: breadcrumbs
         "<div class='category-tree'>
@@ -292,6 +279,7 @@
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
+    <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
     <script src="js/productImageGallery.js"></script>

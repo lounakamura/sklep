@@ -5,35 +5,38 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    }
+
+    $cartAmount = [];
     $maincategories = [];
-    $products = [];
     $cartProducts = [];
+
+    // Storing cart amount
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $result = $connection->query($query);
+    $cartAmount = $result->fetch_assoc();
+    $result->free();
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
     $result = $connection->query($query);
-    fetchAllToArray( $maincategories, $result );
+    fetchAllToArray($maincategories, $result);
     $result->free();
 
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
-    }
+    // Storing products in cart
+    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
+    $result = $connection->query($query);
+    fetchAllToArray($cartProducts, $result);
+    $result->free();
 
     $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
 
-    // Storing cart amount
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        $cartAmount = $result->fetch_assoc();
-        $result->free();
-    }
-
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 
+    // to mnie wkurwia ze jest tutaj, dac to gdzie indziej
+    //it so sad *pisses*
     $productSum = 0;
     foreach( $cartProducts as $cartProduct ) {
         $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
@@ -52,7 +55,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Koszyk | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/shopping-cart.css">
@@ -331,6 +334,7 @@
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
+    <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
     <script src="js/previewCart.js"></script>

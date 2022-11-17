@@ -1,20 +1,18 @@
 <?php
     session_start();
+    ob_start();
 
     require_once "php/config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    }
+
     $maincategories = [];
-    $brands = [];
     $products = [];
     $cartProducts = [];
-
-    // Product display based on brand
-    $baseSelectionOn = '';
-    if (isset($_GET['brand'])) {
-        $baseSelectionOn = ' WHERE produkt.marka_id=' . $_GET['brand'];
-    }
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
@@ -22,34 +20,27 @@
     fetchAllToArray( $maincategories, $result );
     $result->free();
 
-    // Storing brands
-    $query = "SELECT * FROM marka";
-    $result = $connection->query($query);
-    fetchAllToArray($brands, $result);
-    $result->free();
+    // Display based on brand if one is set
+    $baseSelectionOn;
+    if (isset($_GET['brand'])) {
+        $query = "SELECT * FROM marka WHERE marka_id=".$_GET['brand'];
+        $result = $connection->query($query);
+        $brand = $result->fetch_assoc();
+        $result->free();
+        $baseSelectionOn = 'WHERE produkt.marka_id='.$_GET['brand'];
+    }
 
     // Storing products
-    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)$baseSelectionOn";
-    $result = $connection->query( $query );
-    fetchAllToArray( $products, $result );
+    $query = "SELECT produkt_id, nazwa, cena, marka.marka_id AS marka_id,marka.marka AS marka FROM produkt JOIN marka ON (produkt.marka_id = marka.marka_id) $baseSelectionOn";
+    $result = $connection->query($query);
+    fetchAllToArray($products, $result);
     $result->free();
 
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
-    }
-
-    $shipping = 10.90;
-
     // Storing cart amount
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        $cartAmount = $result->fetch_assoc();
-        $result->free();
-    }
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $result = $connection->query($query);
+    $cartAmount = $result->fetch_assoc();
+    $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
@@ -60,7 +51,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>%TITLE% | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/category-brand.css">
@@ -176,7 +167,7 @@
     </nav>
 
     <main>
-        <?php
+    <?php
             echo "<div style='display:flex'>";
                 echo "<div class='categories-container'>";
 
@@ -185,17 +176,21 @@
                 echo "<div class='products-container'>";
                     foreach ($products as $product) {
                         echo "<div class='product-container'>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
-                            echo "</a>"; 
-                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                <h4>" . $product['marka'] . "</h4>";
-                            echo "</a>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <h3>" . $product['nazwa'] . "</h3>";
-                            echo "</a>";
-                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span</span><br>";
-                            echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                        echo "<div>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
+                                echo "</a>"; 
+                                echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                    <h4>" . $product['marka'] . "</h4>";
+                                echo "</a>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <h3>" . $product['nazwa'] . "</h3>";
+                                echo "</a>";
+                            echo "</div>";
+                            echo "<div>";
+                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                            echo "</div>";
                         echo "</div>";
                     }
                 echo "</div>";
@@ -266,6 +261,7 @@
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
+    <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
@@ -275,5 +271,8 @@
 </html>
 
 <?php
+    $buffer = ob_get_contents();
+    ob_end_clean();
+    echo str_replace("%TITLE%", "Marka ".$brand['marka'], $buffer);
     $connection->close();
 ?>

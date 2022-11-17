@@ -5,6 +5,10 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    }
+    
     $maincategories = [];
     $products = [];
     $letters = [];
@@ -48,7 +52,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Marki | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/brands.css">
@@ -257,6 +261,7 @@
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
+    <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>

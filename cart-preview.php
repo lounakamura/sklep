@@ -59,7 +59,6 @@
                 </div>";
             }
             echo "</div>";
-            // MAKE A NEW JS FILE FOR CALCULATING TOTAL - SPECIFICALLY FOR THE PREVIEW CART
             echo "
             <div class='preview-cart-cost'>
                     <div class='preview-cost-row'>

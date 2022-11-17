@@ -5,17 +5,6 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
-    // New session number made by incrementing previous max session number
-    if (!isset($_SESSION['session'])) {
-        $query = "SELECT MAX(sesja_id) AS sesja_id FROM sesja";
-        $result = $connection->query($query);
-        
-        $maxSession = $result->fetch_assoc();
-        $_SESSION['session'] = $maxSession['sesja_id']+1;
-        $query = "INSERT INTO sesja (sesja_id) VALUES (".$_SESSION['session'].")";
-        $result = $connection->query($query);
-    }
-
     // Checking if product is already in the cart
     $query = "SELECT koszyk_id FROM koszyk WHERE produkt_id=".$_POST['product_id']." AND sesja_id=".$_SESSION['session'];
     $result = $connection->query($query);

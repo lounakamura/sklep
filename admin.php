@@ -25,6 +25,26 @@
     $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+
+    if(isset($_POST['img-upload'])){
+        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+        $name = $_POST['product_id']."_".time().".".$extension;
+        $target_dir = "images/product-images/".$_POST['product_id']."/";
+        $target_file = $target_dir.$name;
+      
+        $validExtensions = array("jpg", "jpeg", "png", "gif");
+      
+        if(in_array($extension, $validExtensions)){
+            // Check if directory exists, if not, create it
+            if(!is_dir($target_dir)) {
+                mkdir($target_dir);
+            }
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
+              $query = "INSERT INTO zdjecie (sciezka, nazwa, produkt_id) VALUES ('$target_dir', '$name', ".$_POST['product_id'].")";
+              $result = $connection->query($query);
+           }
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -148,12 +168,12 @@
     </nav>
 
     <main>
-        <a class='promo-banner' href='#'>
-            <div class='promo-banner-container'></div>
-        </a>
+        <form method="POST" enctype='multipart/form-data'>
+            <input type='number' name='product_id'>
+            <input type='file' name='file'>
+            <input type='submit' name='img-upload'>
+        </form>
     </main>
-
-
 
     <!--- to be done someday...
 

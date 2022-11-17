@@ -5,9 +5,20 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    }
+
+    $cartAmount = [];
     $maincategories = [];
     $products = [];
-    $cartProducts = [];
+    $images = [];
+
+    // Storing cart amount
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $result = $connection->query($query);
+    $cartAmount = $result->fetch_assoc();
+    $result->free();
 
     // Product display based on category
     $baseSelectionOn = '';
@@ -23,32 +34,24 @@
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
-    $result = $connection->query( $query );
-    fetchAllToArray( $maincategories, $result );
+    $result = $connection->query($query);
+    fetchAllToArray($maincategories, $result);
     $result->free();
 
     // Storing products
     $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id)$baseSelectionOn";
-    $result = $connection->query( $query );
-    fetchAllToArray( $products, $result );
+    $result = $connection->query($query);
+    fetchAllToArray($products, $result);
     $result->free();
 
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
-    }
+    // i need to finish dis, idk how i should take every product's image and how to store it so its good
+    // Storing each product's image
+    /* $query = "SELECT DISTINCT zdjecie_id, sciezka, zdjecie.nazwa as zdjecie_nazwa, produkt.produkt_id, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_1.kategoria_id AS kategoria_1_id, kategoria.kategoria_id AS kategoria_id FROM zdjecie JOIN produkt ON (produkt.produkt_id = zdjecie.produkt_id) JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id)".$baseSelectionOn." GROUP BY produkt_id";
+    $result = $connection->query($query);
+    fetchAllToArray($images, $result);
+    $result->free(); */
 
     $shipping = 10.90;
-
-    // Storing cart amount
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        $cartAmount = $result->fetch_assoc();
-        $result->free();
-    }
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
@@ -175,7 +178,7 @@
     </nav>
 
     <main>
-    <?php
+        <?php
             echo "<div style='display:flex'>";
                 echo "<div class='categories-container'>";
 
@@ -184,7 +187,7 @@
                 echo "<div class='products-container'>";
                     foreach ($products as $product) {
                         echo "<div class='product-container'>";
-                        echo "<div>";
+                            echo "<div>";
                                 echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
                                     <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
                                 echo "</a>"; 
@@ -202,7 +205,7 @@
                         echo "</div>";
                     }
                 echo "</div>";
-            echo "</div>";
+            echo "</div>";      
         ?>
     </main>
 
@@ -269,6 +272,7 @@
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
+    <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
