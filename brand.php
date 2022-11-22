@@ -168,7 +168,7 @@
 
     <main>
     <?php
-            echo "<div style='display:flex'>";
+            echo "<div class='product-display'>";
                 echo "<div class='categories-container'>";
 
                 echo "</div>";

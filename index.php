@@ -37,6 +37,11 @@
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-3.6.1.min.js"></script>
+    <style>
+        main {
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -146,10 +151,10 @@
             </li>
         </ul>
     </nav>
-
+    
     <main>
-        <a class='promo-banner' href='#'>
-            <div class='promo-banner-container'></div>
+        <a class='promo-banner-container' href='#'>
+            <div class='promo-banner'></div>
         </a>
     </main>
 
