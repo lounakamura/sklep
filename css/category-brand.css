@@ -17,11 +17,12 @@ main {
   display: -ms-grid;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
+  row-gap: 10px;
 }
 
 .product-container {
   padding: 15px;
-  margin-bottom: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -35,12 +36,13 @@ main {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  width: 270px;
-  height: 520px;
+  width: 260px;
+  height: 500px;
+  outline: 1px solid #dfdfdf;
 }
 
 .product-container:hover {
-  outline: 1px solid black;
+  outline: 1px solid #a3a3a3;
 }
 
 .product-container a:first-child {
@@ -51,8 +53,8 @@ main {
 .product-container img {
   height: 240px;
   width: 240px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 20px 15px 20px 15px;
+  border-radius: 2px;
 }
 
 .product-container h4 {

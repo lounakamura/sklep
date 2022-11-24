@@ -9,11 +9,9 @@
         newSession($connection);
     }
 
-    $cartAmount = [];
     $maincategories = [];
     $products = [];
     $images = [];
-
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
@@ -23,16 +21,18 @@
 
     // Product display based on category
     $baseSelectionOn = '';
+    //add checking if category exists
     if (isset($_GET['maincategory'])) {
-        $baseSelectionOn = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
+        $baseSelectionOn = 'WHERE kategoria.kategoria_id='.$_GET['maincategory'];
         $displyedCategory = $_GET['maincategory'];
+        //Add showing category names
     }
     if (isset($_GET['category'])) {
-        $baseSelectionOn = ' WHERE kategoria_1.kategoria_id=' . $_GET['category'];
+        $baseSelectionOn = 'WHERE kategoria_1.kategoria_id='.$_GET['category'];
         $displyedCategory = $_GET['category'];
     }
     if (isset($_GET['subcategory'])) {
-        $baseSelectionOn = ' WHERE kategoria_2.kategoria_id=' . $_GET['subcategory'];
+        $baseSelectionOn = 'WHERE kategoria_2.kategoria_id='.$_GET['subcategory'];
         $displyedCategory = $_GET['subcategory'];
     }
 
@@ -43,17 +43,10 @@
     $result->free();
 
     // Storing products
-    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, opis, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id)".$baseSelectionOn." GROUP BY produkt.produkt_id";
+    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) ".$baseSelectionOn." GROUP BY produkt.produkt_id";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
     $result->free();
-
-    //missing products: 20 and 16, gotta b added
-    // 9 DISAPPEARED TOO?????
-    //GENERALLY: MISSING PRODUCTS 9, 16, 20
-    // 11-16 MISSING IMAGES
-
-    $shipping = 10.90;
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
@@ -181,36 +174,36 @@
 
     <main>
         <?php
-        echo "<div>";
-            echo "<h2>".$displyedCategory."</h2>";
-        echo "</div>";
-        echo "<div class='product-display'>";
-            echo "<div class='categories-container'>";
-
+            echo "<div>";
+                echo "<h2>".$displyedCategory."</h2>";
             echo "</div>";
+            echo "<div class='product-display'>";
+                echo "<div class='categories-container'>";
 
-            echo "<div class='products-container'>";
-                foreach ($products as $product) {
-                    echo "<div class='product-container'>";
-                        echo "<div>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <img src='".$product['zdjecie']."'>"; 
-                            echo "</a>"; 
-                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                <h4>" . $product['marka'] . "</h4>";
-                            echo "</a>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <h3>" . $product['nazwa'] . "</h3>";
-                            echo "</a>";
+                echo "</div>";
+
+                echo "<div class='products-container'>";
+                    foreach ($products as $product) {
+                        echo "<div class='product-container'>";
+                            echo "<div>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <img src='".$product['zdjecie']."'>"; 
+                                echo "</a>"; 
+                                echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                    <h4>" . $product['marka'] . "</h4>";
+                                echo "</a>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
+                                echo "</a>";
+                            echo "</div>";
+                            echo "<div>";
+                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                            echo "</div>";
                         echo "</div>";
-                        echo "<div>";
-                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                            echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
-                        echo "</div>";
-                    echo "</div>";
-                }
+                    }
+                echo "</div>";
             echo "</div>";
-        echo "</div>";
         ?>
     </main>
 

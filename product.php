@@ -13,6 +13,7 @@
     $cartAmount = [];
     $maincategories = [];
     $product = [];
+    $images = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
@@ -30,6 +31,12 @@
     $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=".$_GET['id'];
     $result = $connection->query($query);
     $product = $result->fetch_assoc();
+    $result->free();
+
+    // Storing product images
+    $query = "SELECT CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE produkt.produkt_id=".$_GET['id'];
+    $result = $connection->query($query);
+    fetchAllToArray($images, $result);
     $result->free();
 
     $shipping = 10.90;
@@ -160,8 +167,6 @@
 
     <main>
         <?php
-         // $query = "SELECT nazwa_pliku FROM zdjecie WHERE produkt_id="; zdjecia nadal do implementacji
-
         echo // to implement: breadcrumbs
         "<div class='category-tree'>
             <a href='index.php' class='uppercase'>Strona Główna</a> >
@@ -171,20 +176,16 @@
         </div>
 
         <div class='product-information'>
-            <div class='img-gallery'>" . //statycznie ustawione, do poprawki || zrobione za pomoca pluginu jq xzoom
-            "<div class='xzoom-container'>
-                    <img class='xzoom' src='images/product-images/1_1_min.jpg' xoriginal='images/product-images/1_1.jpg'>
-                    <div class='xzoom-thumbs'>
-                        <a href='images/product-images/1_1.jpg'>
-                            <img class='xzoom-gallery' src='images/product-images/1_1_min.jpg' xpreview='images/product-images/1_1_min.jpg'>
-                        </a>
-                        <a href='images/product-images/1_2.jpg'>
-                            <img class='xzoom-gallery' src='images/product-images/1_2_min.jpg'>
-                        </a>
-                        <a href='images/product-images/1_3.jpg'>
-                            <img class='xzoom-gallery' src='images/product-images/1_3_min.jpg'>
-                        </a>
-                    </div>
+            <div class='img-gallery'>
+                <div class='xzoom-container'>
+                    <img class='xzoom' src='".$images[0]['zdjecie']."' xoriginal='".$images[0]['zdjecie']."'>
+                    <div class='xzoom-thumbs'>";
+                        foreach ($images as $image) {
+                            echo "<a href='".$image['zdjecie']."'>
+                                <img class='xzoom-gallery' src='".$image['zdjecie']."' xpreview='".$image['zdjecie']."'>
+                            </a>";
+                        }
+                    echo "</div>
                 </div>
             </div>
             

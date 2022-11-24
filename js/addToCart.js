@@ -26,13 +26,12 @@ addButtons.forEach(addButton => {
             // Have a state before it gets added
             
             addButton.innerHTML = '';
-            $(addButton).css({
-                'border-color' : 'lightgreen',
-                'background-color' : 'lightgreen',
-                'background-image': 'url("images/ui/check-green.svg")',
-                'background-repeat' : 'no-repeat',
-                'background-position' : 'center'
-            });
+            $(addButton).addClass('add-to-cart-success');
+            setTimeout(() => {
+                $(addButton).removeClass('add-to-cart-success');
+                addButton.innerHTML = 'Dodaj do koszyka';
+                }, 2000
+            )
         }
     }
 });

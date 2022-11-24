@@ -20,7 +20,7 @@
 
     // Storing cart products
     if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
+        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE sesja_id=".$_SESSION['session']." GROUP BY produkt.produkt_id";
         $result = $connection->query($query);
         fetchAllToArray( $cartProducts, $result );
         $result->free();
@@ -44,8 +44,8 @@
                 <div class='preview-cart-product'>
                     <div class='preview-cart-info'>
                         <div>
-                            <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='images/product-images/1_1_min.jpg'></a>
-                            <a href='product.php?id=".$cartProduct['produkt_id']."'><span>".$cartProduct['nazwa']."</span></a>
+                            <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
+                            <a href='product.php?id=".$cartProduct['produkt_id']."'><span class='line-limit'>".$cartProduct['nazwa']."</span></a>
                         </div>
                         <div>
                             <h4>".$cartProduct['ilosc']."</h4>

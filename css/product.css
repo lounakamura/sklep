@@ -33,7 +33,7 @@
 
 .xzoom-preview {
     -webkit-box-shadow: 0px 0px 25px 4px rgba(215, 215, 215, 1);
-            box-shadow: 0px 0px 25px 4px rgba(215, 215, 215, 1);
+    box-shadow: 0px 0px 25px 4px rgba(215, 215, 215, 1);
     border-radius: 1px;
 }
 

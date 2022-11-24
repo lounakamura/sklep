@@ -78,7 +78,7 @@ button.pink-button {
   transition: 0.3s ease-out;
 }
 
-button.white-button, /* There is a scale-down animation to be used on click of add to cart, to implement in js */
+button.white-button,
 button.pink-button:hover {
   color: #e83f6f;
   background-color: white;
@@ -93,6 +93,22 @@ button.pink-button:active {
   -webkit-transition: 0.3s ease-out;
   -o-transition: 0.3s ease-out;
   transition: 0.3s ease-out;
+}
+
+h3.line-limit,
+span.line-limit {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+button.add-to-cart-success {
+  border-color: lightgreen;
+  background-color: white;
+  background-image: url("../images/ui/check-green.svg");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 

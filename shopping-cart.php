@@ -26,7 +26,7 @@
     $result->free();
 
     // Storing products in cart
-    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
+    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE sesja_id=".$_SESSION['session']." GROUP BY produkt.produkt_id";
     $result = $connection->query($query);
     fetchAllToArray($cartProducts, $result);
     $result->free();
@@ -193,7 +193,7 @@
                             echo "
                             <tr class='product-container'>
                                 <td class='product-image product-name'>
-                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='images/product-images/1_1_min.jpg'></a>
+                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
                                     <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
                                 </td>
                                 <td class='product-price'>

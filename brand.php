@@ -14,32 +14,32 @@
     $products = [];
     $cartProducts = [];
 
-    // Storing the main categories
-    $query = "SELECT * FROM kategoria";
-    $result = $connection->query( $query );
-    fetchAllToArray( $maincategories, $result );
-    $result->free();
-
-    // Display based on brand if one is set
-    $baseSelectionOn;
-    if (isset($_GET['brand'])) {
-        $query = "SELECT * FROM marka WHERE marka_id=".$_GET['brand'];
-        $result = $connection->query($query);
-        $brand = $result->fetch_assoc();
-        $result->free();
-        $baseSelectionOn = 'WHERE produkt.marka_id='.$_GET['brand'];
-    }
-
-    // Storing products
-    $query = "SELECT produkt_id, nazwa, cena, marka.marka_id AS marka_id,marka.marka AS marka FROM produkt JOIN marka ON (produkt.marka_id = marka.marka_id) $baseSelectionOn";
-    $result = $connection->query($query);
-    fetchAllToArray($products, $result);
-    $result->free();
-
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
     $result = $connection->query($query);
     $cartAmount = $result->fetch_assoc();
+    $result->free();
+
+    // Display based on brand
+    $baseSelectionOn;
+    if (isset($_GET['brand'])) {
+        $query = "SELECT * FROM marka WHERE marka_id=".$_GET['brand'];
+        $result = $connection->query($query);
+        $displayedBrand = $result->fetch_assoc();
+        $result->free();
+        $baseSelectionOn = 'WHERE produkt.marka_id='.$_GET['brand'];
+    }
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query( $query );
+    fetchAllToArray($maincategories, $result);
+    $result->free();
+
+    // Storing products
+    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) ".$baseSelectionOn." GROUP BY produkt.produkt_id";
+    $result = $connection->query($query);
+    fetchAllToArray($products, $result);
     $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
@@ -167,35 +167,38 @@
     </nav>
 
     <main>
-    <?php
+        <?php
+            echo "<div>";
+                echo "<h2>".$displayedBrand['marka']."</h2>";
+            echo "</div>";
             echo "<div class='product-display'>";
                 echo "<div class='categories-container'>";
 
                 echo "</div>";
 
                 echo "<div class='products-container'>";
-                    foreach ($products as $product) {
-                        echo "<div class='product-container'>";
+                foreach ($products as $product) {
+                    echo "<div class='product-container'>";
                         echo "<div>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                    <img src='https://hotel-tumski.com.pl/wp-content/uploads/2020/02/placeholder.png'>"; //PLACEHOLDER
-                                echo "</a>"; 
-                                echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                    <h4>" . $product['marka'] . "</h4>";
-                                echo "</a>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                    <h3>" . $product['nazwa'] . "</h3>";
-                                echo "</a>";
-                            echo "</div>";
-                            echo "<div>";
-                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
-                            echo "</div>";
+                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                <img src='".$product['zdjecie']."'>"; 
+                            echo "</a>"; 
+                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                <h4>" . $product['marka'] . "</h4>";
+                            echo "</a>";
+                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
+                            echo "</a>";
                         echo "</div>";
-                    }
+                        echo "<div>";
+                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                            echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                        echo "</div>";
+                    echo "</div>";
+                }
                 echo "</div>";
             echo "</div>";
-        ?>
+            ?>
     </main>
 
 
@@ -273,6 +276,6 @@
 <?php
     $buffer = ob_get_contents();
     ob_end_clean();
-    echo str_replace("%TITLE%", "Marka ".$brand['marka'], $buffer);
+    echo str_replace("%TITLE%", "Marka ".$displayedBrand['marka'], $buffer);
     $connection->close();
 ?>
