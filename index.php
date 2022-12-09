@@ -178,9 +178,9 @@
         <div class="social-media">
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com"><img src="images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com"><img src="images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com"><img src="images/ui/instagram-logo.svg"></a>
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>

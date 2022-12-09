@@ -8,10 +8,10 @@
     if (!isset($_SESSION['session'])) {
         newSession($connection);
     }
+    //DODAC USUWANIE PO JAKIMS CZASIE SESJI
 
     $maincategories = [];
     $products = [];
-    $images = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
@@ -21,19 +21,33 @@
 
     // Product display based on category
     $baseSelectionOn = '';
-    //add checking if category exists
+    $displayedCategoryName = 'Produkty';
     if (isset($_GET['maincategory'])) {
-        $baseSelectionOn = 'WHERE kategoria.kategoria_id='.$_GET['maincategory'];
-        $displyedCategory = $_GET['maincategory'];
-        //Add showing category names
+        $baseSelectionOn = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
+        $displayedCategory = $_GET['maincategory'];
+        $categoryTable = 'kategoria';
+    } else if (isset($_GET['category'])) {
+        $baseSelectionOn = ' WHERE kategoria_1.kategoria_id=' . $_GET['category'];
+        $displayedCategory = $_GET['category'];
+        $categoryTable = 'kategoria_1';
+    } else if (isset($_GET['subcategory'])) {
+        $baseSelectionOn = ' WHERE kategoria_2.kategoria_id=' . $_GET['subcategory'];
+        $displayedCategory = $_GET['subcategory'];
+        $categoryTable = 'kategoria_2';
     }
-    if (isset($_GET['category'])) {
-        $baseSelectionOn = 'WHERE kategoria_1.kategoria_id='.$_GET['category'];
-        $displyedCategory = $_GET['category'];
+
+    if (isset($categoryTable)) {
+        $query = "SELECT kategoria FROM $categoryTable WHERE kategoria_id=$displayedCategory";
+        $result = $connection->query($query);
+        $displayedCategoryName = $result->fetch_assoc()['kategoria'];
+        $result->free();
     }
-    if (isset($_GET['subcategory'])) {
-        $baseSelectionOn = 'WHERE kategoria_2.kategoria_id='.$_GET['subcategory'];
-        $displyedCategory = $_GET['subcategory'];
+
+    // Sorting products
+    if (isset($_POST['sort'])) {
+        $sort = 'ORDER BY '.$_POST['sort'];
+    } else {
+        $sort = 'ORDER BY produkt.nazwa ASC';
     }
 
     // Storing the main categories
@@ -43,9 +57,10 @@
     $result->free();
 
     // Storing products
-    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) ".$baseSelectionOn." GROUP BY produkt.produkt_id";
+    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) $baseSelectionOn GROUP BY produkt.produkt_id $sort";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
+    $productsFound = mysqli_num_rows($result);
     $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
@@ -175,8 +190,18 @@
     <main>
         <?php
             echo "<div>";
-                echo "<h2>".$displyedCategory."</h2>";
+                echo "<h2>".$displayedCategoryName."</h2>";
+                echo "<h3>".$productsFound." wyników</h3>";
+                echo "<form method='POST'>";
+                    echo "<select name='sort' onchange='this.form.submit()'>
+                        <option value='produkt.nazwa ASC' selected>Sortuj po nazwie rosnąco</option>
+                        <option value='produkt.nazwa DESC'>Sortuj po nazwie malejąco</option>
+                        <option value='cena ASC'>Sortuj po cenie rosnąco</option>
+                        <option value='cena DESC'>Sortuj po cenie malejąco</option>";
+                    echo "</select>";
+                echo "</form>";
             echo "</div>";
+
             echo "<div class='product-display'>";
                 echo "<div class='categories-container'>";
 
@@ -198,7 +223,7 @@
                             echo "</div>";
                             echo "<div>";
                                 echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Do koszyka</button>";
+                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
                             echo "</div>";
                         echo "</div>";
                     }
@@ -228,9 +253,9 @@
 
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com"><img src="images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com"><img src="images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com"><img src="images/ui/instagram-logo.svg"></a>
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>

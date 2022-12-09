@@ -14,24 +14,35 @@ addButtons.forEach(addButton => {
         REQUEST.open("POST", "php/add-to-cart.php");
         REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         REQUEST.send("product_id="+addButton.getAttribute("data-product_id")+"&quantity="+quantity);
-        REQUEST.onload = function() {
-            cartPreviewIframe.contentWindow.location.reload();
-            updateCartValue();
-            
-            // This down here has some cool potential
-            // But u need to work on it
-            // Class needs to be made
-            // It should have a timeout
-            // Change back to normal button
-            // Have a state before it gets added
-            
-            addButton.innerHTML = '';
-            $(addButton).addClass('add-to-cart-success');
-            setTimeout(() => {
-                $(addButton).removeClass('add-to-cart-success');
-                addButton.innerHTML = 'Dodaj do koszyka';
-                }, 2000
-            )
+        REQUEST.onreadystatechange = function() {
+            if (REQUEST.readyState == XMLHttpRequest.DONE) {
+                if(REQUEST.responseText == 'error'){
+                    addButton.style.animation = 'shake-horizontal 0.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
+                    $(addButton).addClass('add-to-cart-failure');
+                    addButton.innerHTML = 'Błąd dodawania!';
+                    setTimeout(() => {
+                        addButton.style.animation = '';
+                        }, 600
+                    )
+
+                    setTimeout(() => {
+                        $(addButton).removeClass('add-to-cart-failure');
+                        addButton.innerHTML = 'Dodaj do koszyka';
+                        }, 2000
+                    )    
+                } else {
+                    cartPreviewIframe.contentWindow.location.reload();
+                    updateCartValue();
+
+                    addButton.innerHTML = 'Dodano!';
+                    $(addButton).addClass('add-to-cart-success');
+                    setTimeout(() => {
+                        $(addButton).removeClass('add-to-cart-success');
+                        addButton.innerHTML = 'Dodaj do koszyka';
+                        }, 2000
+                    )
+                }
+            }
         }
     }
 });

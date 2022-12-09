@@ -44,8 +44,8 @@
                 <div class='preview-cart-product'>
                     <div class='preview-cart-info'>
                         <div>
-                            <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
-                            <a href='product.php?id=".$cartProduct['produkt_id']."'><span class='line-limit'>".$cartProduct['nazwa']."</span></a>
+                            <a href='product.php?id=".$cartProduct['produkt_id']."' target='_parent'><img src='".$cartProduct['zdjecie']."'></a>
+                            <a href='product.php?id=".$cartProduct['produkt_id']."' target='_parent'><span class='line-limit'>".$cartProduct['nazwa']."</span></a>
                         </div>
                         <div>
                             <h4>".$cartProduct['ilosc']."</h4>

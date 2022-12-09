@@ -26,6 +26,11 @@
     $result = $connection->query($query);
     fetchAllToArray( $maincategories, $result );
     $result->free();
+    
+    // Checking if there is product chosen
+    /* if(isset($_GET['id'])){
+        
+    } */
 
     // Storing displayed product information
     $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=".$_GET['id'];
@@ -42,6 +47,8 @@
     $shipping = 10.90;
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+
+    // IF THERE IS NO PRODUCT ID SET DISPLAY ERROR!! error_reporting (0); and shit
 ?>
 
 <!DOCTYPE html>
@@ -238,9 +245,9 @@
 
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com"><img src="images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com"><img src="images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com"><img src="images/ui/instagram-logo.svg"></a>
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>

@@ -46,7 +46,7 @@
     //TO BE IMPLEMENTED
     //kody rabatowe
     //skladanie zamowienia
-    //IMPORTANT GIVE OPTION TO EMPTY CART
+    //IMPORTANT GIVE OPTION TO EMPTY CART yeah im working on that theres a button gotta make some js and php
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +185,7 @@
                                 <th class='first'></th>
                                 <th class='table-header uppercase'>Cena</th>
                                 <th class='table-header uppercase'>Ilość</th>
-                                <th class='table-header uppercase' >Wartość</th>
+                                <th class='table-header uppercase'>Wartość</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -230,6 +230,13 @@
                         echo "
                         </tbody>
                     </table>
+
+                    <div>
+                        <a class='clear-cart-button'>
+                            <img src='images/ui/delete.svg'>
+                            <span>Wyczyść koszyk</span>
+                        </a>
+                    </div>
 
                     <div class='shopping-cart-footer'>
                         <div class='footer-left'>
@@ -292,9 +299,9 @@
 
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com"><img src="images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com"><img src="images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com"><img src="images/ui/instagram-logo.svg"></a>
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>

@@ -79,17 +79,9 @@ button.pink-button {
 }
 
 button.white-button,
-button.pink-button:hover {
+button.pink-button:hover {/* i need to just do all of this with js...*/
   color: #e83f6f;
   background-color: white;
-  -webkit-transition: 0.3s ease-out;
-  -o-transition: 0.3s ease-out;
-  transition: 0.3s ease-out;
-}
-
-button.pink-button:active {
-  -webkit-animation: scale-down 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-          animation: scale-down 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   -webkit-transition: 0.3s ease-out;
   -o-transition: 0.3s ease-out;
   transition: 0.3s ease-out;
@@ -104,11 +96,13 @@ span.line-limit {
 }
 
 button.add-to-cart-success {
-  border-color: lightgreen;
-  background-color: white;
-  background-image: url("../images/ui/check-green.svg");
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #3fe864;
+  border: none;
+}
+
+button.add-to-cart-failure {
+  background-color: #e83f45; /* only works when not hovered */ 
+  border: none;
 }
 
 
@@ -787,27 +781,5 @@ footer h4 {
   45% {
     -webkit-transform: translateX(-2px);
             transform: translateX(-2px);
-  }
-}
-
-@-webkit-keyframes scale-down {
-  0%, 100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(0.96);
-            transform: scale(0.96);
-  }
-}
-
-@keyframes scale-down {
-  0%, 100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(0.96);
-            transform: scale(0.96);
   }
 }
