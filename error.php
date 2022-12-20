@@ -11,7 +11,8 @@
 
     $cartAmount = [];
     $maincategories = [];
-    $cartProducts = [];
+    $product = [];
+    $images = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
@@ -22,32 +23,10 @@
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
     $result = $connection->query($query);
-    fetchAllToArray($maincategories, $result);
+    fetchAllToArray( $maincategories, $result );
     $result->free();
-
-    // Storing products in cart
-    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE sesja_id=".$_SESSION['session']." GROUP BY produkt.produkt_id";
-    $result = $connection->query($query);
-    fetchAllToArray($cartProducts, $result);
-    $result->free();
-
-    $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
-
-    // to mnie wkurwia ze jest tutaj, dac to gdzie indziej
-    //it so sad *pisses*
-    $productSum = 0;
-    foreach( $cartProducts as $cartProduct ) {
-        $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
-    }
-    $cartTotal = $productSum + $shipping;
-
-    //TO BE IMPLEMENTED
-    //kody rabatowe
-    //skladanie zamowienia
-    
-    //emptying cart - improve it a lil
 ?>
 
 <!DOCTYPE html>
@@ -56,14 +35,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koszyk | Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Błąd | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/shopping-cart.css">
+    <link rel="stylesheet" href="css/product.css">
     <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
+    <section>
+        <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        </iframe>
+    </section>
+
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -166,117 +150,9 @@
         </ul>
     </nav>
 
-
     <main>
-        <h1>Koszyk</h1>
-        
-        <?php
-            if(count($cartProducts)==0) {
-                echo "
-                <div class='shopping-cart-empty'>
-                    <span>Twój koszyk jest pusty. Dodaj do niego produkty, aby móc rozpocząć składanie zamówienia.</span>
-                    <button onclick='location.href=\"index.php\"' class='white-button'>Powrót</button>
-                </div>";
-            } else {
-                echo "
-                <div class='shopping-cart-with-products'>
-                    <table class='cart'>
-                        <thead>
-                            <tr>
-                                <th class='first'></th>
-                                <th class='table-header uppercase'>Cena</th>
-                                <th class='table-header uppercase'>Ilość</th>
-                                <th class='table-header uppercase'>Wartość</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-                        foreach ( $cartProducts as $cartProduct ) {
-                            echo "
-                            <tr class='product-container'>
-                                <td class='product-image product-name'>
-                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
-                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
-                                </td>
-                                <td class='product-price'>
-                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
-                                </td>
-                                <td class='product-quantity'>
-                                    <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <button class='subtract white-button'>-</button>
-                                                </td>
-                                                <td>
-                                                    <span class='quantity-display' data-cart_id='".$cartProduct['koszyk_id']."'>".$cartProduct['ilosc']."</span>
-                                                </td>
-                                                <td>
-                                                    <button class='add white-button'>+</button>
-                                                </td>
-                                            </tr>
-                                        </table>  
-                                    </div>
-                                </td>
-                                <td class='product-total-price'>
-                                    <span>
-                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',', '')."</span><span> zł</span
-                                    </span>
-                                </td>
-                                <td class='product-remove'>
-                                    <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
-                                </td>
-                            </tr>";
-                        }
-                        
-                        echo "
-                        </tbody>
-                    </table>
-
-                    <div class='clear-cart'>
-                        <button type='button' class='clear-cart-button'>Wyczyść koszyk</button>
-                    </div>
-
-                    <div class='shopping-cart-footer'>
-                        <div class='footer-left'>
-                            <div class='add-discount-code'>
-                                <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
-                                <div style='display:inline-flex'>
-                                    <input class='discount-code' type='text' name='discount-code'>
-                                    <button class='button-activate pink-button'>Aktywuj</button>
-                                </div>
-                            </div>
-                            <button onclick='location.href=\"index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
-                        </div>
-                        <div class='footer-right'>
-                            <div class='order-cost'>
-                                <div class='order-cost-row'>
-                                    <span>Wartość zamówienia</span>
-                                    <span class='order-product-sum'>
-                                        <span class='product-sum'>".number_format($productSum, 2, ',', '')."</span><span> zł</span
-                                    </span>
-                                </div>
-                                <div class='order-cost-row'>
-                                    <span>Dostawa od</span>
-                                    <span class='order-shipping-price'>
-                                        <span class='shipping-price'>".number_format($shipping, 2, ',', '')."</span><span> zł</span
-                                    </span>
-                                </div>
-                                <div class='order-cost-row'>
-                                    <span>Razem</span>
-                                    <span class='order-total-sum'>
-                                        <span class='total-sum'>".number_format($cartTotal, 2, ',', '')."</span><span> zł</span
-                                    </span>
-                                </div>
-                            </div>
-                            <button class='button-next pink-button'>Realizuj zamówienie</button>
-                        </div>
-                    </div>
-                </div>";
-            }
-        ?>
+        <span>error uwu</span>
     </main>
-
-
 
     <!---
 
@@ -342,12 +218,12 @@
     <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
+    <script src="js/productImageGallery.js"></script>
+    <script src="js/xzoom.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
-    <script src="js/clearCart.js"></script>
 </body>
-
 </html>
 
 <?php
