@@ -125,3 +125,26 @@ button.add-to-cart-button {
     height: 43px;
     width: 250px;
 }
+
+/* gallery */
+.gallery-background {
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-displayed-img {
+    height: 800px;
+}
+
+
+/* body {
+    overflow: hidden;
+} */

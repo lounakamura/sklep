@@ -97,11 +97,13 @@ span.line-limit {
 
 button.add-to-cart-success {
   background-color: #3fe864;
+  color: white;
   border: none;
 }
 
 button.add-to-cart-failure {
-  background-color: #e83f45; /* only works when not hovered */ 
+  background-color: #e83f45;
+  color: white;
   border: none;
 }
 
