@@ -66,6 +66,11 @@
 
 <body>
     <section>
+        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
+    <section>
         <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
         </iframe>
     </section>
@@ -300,6 +305,7 @@
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
+    <script src="js/accountPreview.js"></script>
 </body>
 </html>
 

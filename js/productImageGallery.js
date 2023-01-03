@@ -11,3 +11,11 @@ $(function () {
         defaultScale: 0.5,
     });
 });
+
+let galleryBackground = document.querySelector('.gallery-background');
+
+let productImage = document.querySelector('.xzoom');
+
+productImage.onclick = function() {
+    $(galleryBackground).removeClass('hidden');
+}

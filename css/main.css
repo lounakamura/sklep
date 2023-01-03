@@ -542,7 +542,8 @@ footer h4 {
   margin-top: 10px;
 }
 
-.preview-cart-shape {
+.preview-cart-shape,
+.account-shape {
   --padding: 20px;
   width: calc(var(--size) - var(--padding));
   height: calc(var(--size)*1.3);
@@ -661,10 +662,37 @@ footer h4 {
   font-weight: 600;
 }
 
-.preview-cart-shape button.goto-cart {
+.preview-cart-shape button,
+.account-shape button {
   width: 100%;
 }
 
+/* Account container */
+.account-container.fixed {
+  position: fixed;
+  margin-top: -20px;
+}
+
+.account-container {
+  border: none;
+  height: 500px;
+  width: calc(var(--size) - var(--padding));
+  position: absolute;
+  right: 0;
+  top: 11vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack:center;
+      -ms-flex-pack:center;
+          justify-content:center;
+  z-index: 200;
+  margin-right: 19vw;
+  margin-top: 10px;
+}
 
 /* Animations */
 
