@@ -179,60 +179,65 @@
 
     <main>
         <?php // to implement: breadcrumbs 
-        echo " 
-        <div class='gallery-background hidden'> 
-            <img class='gallery-displayed-img' src='".$images[0]['zdjecie']."'>
-        </div>
-        "; // galeria wstepnie rozpoczeta, ogarnac to
-
-        echo "<div class='category-tree'>
-            <a href='index.php' class='uppercase'>Strona Główna</a> >
-            <a href='category.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
-            <a href='category.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
-            <a href='category.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
-        </div>
-
-        <div class='product-information'>
-            <div class='img-gallery'>
-                <div class='xzoom-container'>
-                    <img class='xzoom' src='".$images[0]['zdjecie']."' xoriginal='".$images[0]['zdjecie']."'>
-                    <div class='xzoom-thumbs'>";
-                        foreach ($images as $image) {
-                            echo "<a href='".$image['zdjecie']."'>
-                                <img class='xzoom-gallery' src='".$image['zdjecie']."' xpreview='".$image['zdjecie']."'>
-                            </a>";
-                        }
-                    echo "</div>
+            echo " 
+            <div class='gallery-background hidden'> 
+                <div class='gallery-controls'>
+                    <img class='gallery-close' src='images/ui/cross.svg'>
+                </div>
+                <div class='gallery-images'>
+                    <img class='gallery-displayed-img' src='".$images[0]['zdjecie']."'>
                 </div>
             </div>
-            
-            <div class='info'>
-                <a href='brand.php?brand=" . $product['marka_id'] . "'>
-                    <h4>" . $product['marka'] . "</h4>
-                </a>
-                <h3>" . $product['nazwa'] . "</h3>
-                <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>
-                <div class='add-to-cart-container'>
-                    <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
-                        <table>
-                            <tr>
-                                <td>
-                                    <button class='subtract white-button'>-</button>
-                                </td>
-                                <td>
-                                    <span class='quantity-display'>1</span>
-                                </td>
-                                <td>
-                                    <button class='add white-button'>+</button>
-                                </td>
-                            </tr>
-                        </table>  
+            "; // galeria wstepnie rozpoczeta, ogarnac to
+
+            echo "<div class='category-tree'>
+                <a href='index.php' class='uppercase'>Strona Główna</a> >
+                <a href='category.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
+                <a href='category.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
+                <a href='category.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
+            </div>
+
+            <div class='product-information'>
+                <div class='img-gallery'>
+                    <div class='xzoom-container'>
+                        <img class='xzoom' src='".$images[0]['zdjecie']."' xoriginal='".$images[0]['zdjecie']."'>
+                        <div class='xzoom-thumbs'>";
+                            foreach ($images as $image) {
+                                echo "<a href='".$image['zdjecie']."'>
+                                    <img class='xzoom-gallery' src='".$image['zdjecie']."' xpreview='".$image['zdjecie']."'>
+                                </a>";
+                            }
+                        echo "</div>
                     </div>
-                    <button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
                 </div>
-                <p>" . nl2br($product['opis']) . "</p>
-            </div>
-        </div>";
+                
+                <div class='info'>
+                    <a href='brand.php?brand=" . $product['marka_id'] . "'>
+                        <h4>" . $product['marka'] . "</h4>
+                    </a>
+                    <h3>" . $product['nazwa'] . "</h3>
+                    <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>
+                    <div class='add-to-cart-container'>
+                        <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button class='subtract white-button'>-</button>
+                                    </td>
+                                    <td>
+                                        <span class='quantity-display'>1</span>
+                                    </td>
+                                    <td>
+                                        <button class='add white-button'>+</button>
+                                    </td>
+                                </tr>
+                            </table>  
+                        </div>
+                        <button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
+                    </div>
+                    <p>" . nl2br($product['opis']) . "</p>
+                </div>
+            </div>";
         ?>
     </main>
 

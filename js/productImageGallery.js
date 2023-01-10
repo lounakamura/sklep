@@ -16,6 +16,17 @@ let galleryBackground = document.querySelector('.gallery-background');
 
 let productImage = document.querySelector('.xzoom');
 
+let closeButton = document.querySelector('.gallery-close');
+
 productImage.onclick = function() {
+    let displayedImage = $('.xzoom').attr('src');
+    $('.gallery-displayed-img').attr("src", displayedImage);
     $(galleryBackground).removeClass('hidden');
+    $('body').addClass('scroll-block');
+}
+
+closeButton.onclick = function() {
+    $(galleryBackground).addClass('hidden');
+    $('body').removeClass('scroll-block');
+    console.log('wtf');
 }

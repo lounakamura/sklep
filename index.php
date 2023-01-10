@@ -45,6 +45,24 @@
 </head>
 
 <body>
+    <section> <!--Tutaj logowanie-->
+        <div class='account-popup-bg hidden'>
+            <div class='account-popup-window'>
+                <div class='account-header'><h2>Zaloguj się</h2>
+                    <img class='account-controls-close' src='images/ui/cross-medium.svg'>
+                </div>
+                <label>E-mail</label>
+                <input type='email' class='login-field'>
+                <label>Hasło</label>
+                <input type='password' class='login-field'>
+                <span>Nie pamiętam hasła</span>
+                <input class='log-in-button pink-button' type='submit' value='Zaloguj się'>
+                <h3>Nie masz konta?</h3>
+                <input class='register-button white-button' type='submit' value='Zarejestruj się'>
+            </div>
+        </div>
+    </section>
+
     <section>
         <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
         </iframe>

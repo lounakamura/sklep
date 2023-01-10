@@ -64,6 +64,11 @@
 </head>
 
 <body>
+    <section>
+        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -346,6 +351,7 @@
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
     <script src="js/clearCart.js"></script>
+    <script src="js/accountPreview.js"></script>
 </body>
 
 </html>

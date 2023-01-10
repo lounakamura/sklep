@@ -40,7 +40,8 @@ button:hover {
   text-transform: uppercase;
 }
 
-button {
+button,
+input[type='submit'] {
   background-color: white;
   border: 2px solid #e83f6f;
   color: #e83f6f;
@@ -48,6 +49,7 @@ button {
   height: 45px;
   font-size: 17px;
   border-radius: 1px;
+  cursor: pointer;
 }
 
 header,
@@ -69,8 +71,10 @@ main,
   visibility: hidden;
 }
 
+button.pink-button,
 button.white-button:hover,
-button.pink-button {
+input.pink-button,
+input.white-button:hover {
   color: white;
   background-color: #e83f6f;
   -webkit-transition: 0.3s ease-out;
@@ -79,7 +83,9 @@ button.pink-button {
 }
 
 button.white-button,
-button.pink-button:hover {/* i need to just do all of this with js...*/
+button.pink-button:hover,
+input.white-button,
+input.pink-button:hover {
   color: #e83f6f;
   background-color: white;
   -webkit-transition: 0.3s ease-out;
@@ -105,6 +111,11 @@ button.add-to-cart-failure {
   background-color: #e83f45;
   color: white;
   border: none;
+}
+
+body.scroll-block {
+  height: 100%;
+  overflow: hidden;
 }
 
 
@@ -692,6 +703,55 @@ footer h4 {
   z-index: 200;
   margin-right: 19vw;
   margin-top: 10px;
+}
+
+/* Account popup */
+
+.account-popup-bg {
+  background-color: #00000023;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-popup-window {
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 30px;
+  -webkit-box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
+  box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
+}
+
+.account-header {
+  display: flex;
+  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.account-controls-close {
+  cursor: pointer;
+}
+
+.login-field {
+  height: 45px;
+  font-size: 17px;
+  border-radius: 1px;
+  border: 1px solid #c2c2c2;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* Animations */
