@@ -45,20 +45,49 @@
 </head>
 
 <body>
-    <section> <!--Tutaj logowanie-->
-        <div class='account-popup-bg hidden'>
+    <!-- Tutaj logowanie -->
+    <section>
+        <div class='account-popup-bg login-popup hidden'>
             <div class='account-popup-window'>
-                <div class='account-header'><h2>Zaloguj się</h2>
+                <div class='account-popup-section'>
+                    <div class='account-header'><h2>Zaloguj się</h2>
+                        <img class='account-controls-close' src='images/ui/cross-medium.svg'>
+                    </div>
+                    <label>E-mail</label>
+                    <input type='email' class='login-field'>
+                    <label>Hasło</label>
+                    <input type='password' class='login-field'>
+                    <a>Nie pamiętam hasła</a> <!-- do zrobienia ekran -->
+                    <input class='log-in-button-confirm pink-button' type='submit' value='Zaloguj się'>
+                </div>
+                <div class='account-popup-section'>
+                    <h3>Nie masz konta?</h3>
+                    <input class='register-button white-button' type='submit' value='Zarejestruj się'>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutaj rejestracja -->
+    <section>
+        <div class='account-popup-bg register-popup hidden'>
+            <div class='account-popup-window'>
+                <div class='account-header'><h2>Zarejestruj się</h2>
                     <img class='account-controls-close' src='images/ui/cross-medium.svg'>
                 </div>
                 <label>E-mail</label>
-                <input type='email' class='login-field'>
+                <input type='email' class='register-field'>
                 <label>Hasło</label>
-                <input type='password' class='login-field'>
-                <span>Nie pamiętam hasła</span>
-                <input class='log-in-button pink-button' type='submit' value='Zaloguj się'>
-                <h3>Nie masz konta?</h3>
-                <input class='register-button white-button' type='submit' value='Zarejestruj się'>
+                <input type='password' class='register-field'>
+                <label>Powtórz hasło</label>
+                <input type='repeat-password' class='login-field'>
+                <div>
+                    <input type='checkbox'><label>Akceptuję warunki <a>regulaminu</a></label>
+                </div>
+                <div>
+                    <input type='checkbox'><label>Chcę zapisać się do newslettera</label>
+                </div>
+                <input class='register-button-confirm pink-button' type='submit' value='Zarejestruj się'>
             </div>
         </div>
     </section>
@@ -112,7 +141,7 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" class="header-account"></button>
+            <button type="button" class="header-account" data-fixed='yes'></button>
             <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
@@ -242,12 +271,13 @@
 
     <button class="to-top" onclick="location.href='#'"></button>
 
-    <script src="js/script.js"></script> <!-- name and structure to be changed TM... --->
+    <script src="js/script.js"></script>
     <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
+
     <script src="js/accountPreview.js"></script>
 </body>
 </html>

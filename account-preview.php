@@ -9,27 +9,38 @@
 </head>
 
 <body>
-<?php
-    session_start();
+    <?php
+        session_start();
 
-    require_once "php/config.php";
+        require_once "php/config.php";
 
-    $connection = new mysqli ($servername, $username, $password, $database);
+        $connection = new mysqli ($servername, $username, $password, $database);
 
-    echo "
-    <div>
-        <div class='account-shape'>
-            <button>Wyloguj</button>
-            <button>Zaloguj się</button>
-            <button>Zarejestruj się</button>";
+        // Niezalogowany
+        echo "
+        <div>
+            <div class='account-shape'>
+                <button class='login-button'>Zaloguj się</button>
+                <button class='register-button'>Zarejestruj się</button>";
+            echo "</div>";
         echo "</div>";
-    echo "</div>";
-?>
 
-<script src="js/script.js"></script>
-<script src="js/previewCart.js"></script>
-<script src="js/addToCart.js"></script>
-<script src="js/removeFromCart.js"></script>
+
+        // Zalogowany
+        echo "
+        <div>
+            <div class='account-shape'>
+                <button>Wyloguj</button>";
+            echo "</div>";
+        echo "</div>";
+    ?>
+
+    <script src="js/script.js"></script>
+    <script src="js/previewCart.js"></script>
+    <script src="js/addToCart.js"></script>
+    <script src="js/removeFromCart.js"></script>
+    <script src="js/logIn.js"></script>
+    <script src="js/register.js"></script>
 </body>
 
 <?php

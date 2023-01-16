@@ -679,6 +679,7 @@ footer h4 {
 }
 
 /* Account container */
+
 .account-container.fixed {
   position: fixed;
   margin-top: -20px;
@@ -723,6 +724,7 @@ footer h4 {
 .account-popup-window {
   background-color: white;
   border: 1px solid #e3e3e3;
+  width: 300px;
   border-radius: 1px;
   display: flex;
   flex-direction: column;
@@ -731,6 +733,27 @@ footer h4 {
   -webkit-box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
   -moz-box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
   box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.26);
+}
+
+.account-popup-section:first-of-type {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #c2c2c2;
+}
+
+.account-popup-section:last-of-type {
+  padding-top: 10px;
+}
+
+.account-popup-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.account-popup-window *,
+.account-popup-section * {
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .account-header {
@@ -743,7 +766,8 @@ footer h4 {
   cursor: pointer;
 }
 
-.login-field {
+.login-field,
+.register-field {
   height: 45px;
   font-size: 17px;
   border-radius: 1px;
