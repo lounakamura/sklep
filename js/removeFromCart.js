@@ -14,6 +14,7 @@ removeButtons.forEach(removeButton => {
             if( parseInt(amountValue) == 0 ) {
                 $(cartPreview).addClass('hidden');
             }
+            displayLoadingScreen();
             document.location.reload();
             updateCartValue();
         }

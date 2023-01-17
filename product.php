@@ -65,16 +65,6 @@
 </head>
 
 <body>
-    <section>
-        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
-        </iframe>
-    </section>
-
-    <section>
-        <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
-        </iframe>
-    </section>
-
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -299,6 +289,76 @@
         </div>
     </footer>
 
+    <!-- Additional elements -->
+
+    <!-- Login popup -->
+    <section>
+        <div class='account-popup-bg login-popup not-displayed'>
+            <div class='account-popup-window'>
+                <div class='account-popup-section'>
+                    <div class='account-header'>
+                        <h2>Zaloguj się</h2>
+                        <img class='login-close' src='images/ui/cross-medium.svg'>
+                    </div>
+                    <label>E-mail</label>
+                    <input type='email' class='login-field'>
+                    <label>Hasło</label>
+                    <input type='password' class='login-field'>
+                    <a>Nie pamiętam hasła</a> <!-- do zrobienia ekran -->
+                    <input class='log-in-button-confirm pink-button' type='submit' value='Zaloguj się'>
+                </div>
+                <div class='account-popup-section'>
+                    <h3>Nie masz konta?</h3>
+                    <input class='register-button white-button' type='submit' value='Zarejestruj się'>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Register popup -->
+    <section>
+        <div class='account-popup-bg register-popup not-displayed'>
+            <div class='account-popup-window'>
+                <div class='account-header'><h2>Zarejestruj się</h2>
+                    <img class='register-close' src='images/ui/cross-medium.svg'>
+                </div>
+                <label>E-mail</label>
+                <input type='email' class='register-field'>
+                <label>Hasło</label>
+                <input type='password' class='register-field'>
+                <label>Powtórz hasło</label>
+                <input type='repeat-password' class='login-field'>
+                <div>
+                    <input type='checkbox'><label>Akceptuję warunki <a>regulaminu</a></label>
+                </div>
+                <div>
+                    <input type='checkbox'><label>Chcę zapisać się do newslettera</label>
+                </div>
+                <input class='register-button-confirm pink-button' type='submit' value='Zarejestruj się'>
+            </div>
+        </div>
+    </section>
+
+    <!-- Account preview -->
+    <section>
+        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
+    <!-- Cart preview -->
+    <section>
+        <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        </iframe>
+    </section>
+
+    <!-- Loading screen -->
+    <section>
+        <div class='loading-screen not-displayed'>
+            <div class='lds-ring'><div></div><div></div><div></div><div></div></div>
+        </div>
+    </section>
+
+    <!-- Go back to the top of the page button -->
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>

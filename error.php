@@ -217,6 +217,12 @@
         </div>
     </footer>
 
+    <section>
+        <div class='loading-screen not-displayed'>
+            <div class='lds-ring'><div></div><div></div><div></div><div></div></div>
+        </div>
+    </section>
+
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>

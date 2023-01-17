@@ -13,3 +13,9 @@ window.addEventListener ("scroll", function () { //
     $(miniCart).removeClass('fixed');
   }
 })
+
+const loadingScreen = document.querySelector(".loading-screen");
+
+function displayLoadingScreen(){
+    $(loadingScreen).removeClass("not-displayed");
+}

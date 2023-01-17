@@ -1,8 +1,6 @@
 const accountButtons = parent.document.querySelectorAll(".header-account");
 const accountContainer = document.querySelector(".account-container");
 
-const accountPanelCloseBtns = document.querySelectorAll(".account-controls-close"); //Sooo i fucked up i dk whats going on here
-
 let isOverPreview = false;
 let isOverButton = false;
 let timer;
@@ -44,13 +42,3 @@ accountContainer.onmouseleave = function() {
         }
     }, 200)
 }
-
-accountPanelCloseBtns.forEach(accountPanelCloseBtn => {
-    accountPanelCloseBtn.onclick = function(){
-        if(loginPanelOpen == true){
-            $(loginContainer).addClass('hidden'); 
-        } else if(registerPanelOpen == true){
-            $(registerContainer).addClass('hidden'); 
-        }
-    }
-});

@@ -5,5 +5,6 @@ clearButton.onclick = function() {
     REQUEST.open("POST", "php/clear-cart.php");
     REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     REQUEST.send();
+    displayLoadingScreen();
     document.location.reload();
 }
