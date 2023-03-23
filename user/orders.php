@@ -1,22 +1,24 @@
 <?php
     session_start();
 
-    require_once "php/config.php";
+    require_once "../php/config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
-    
+
     if (!isset($_SESSION['session'])) {
         newSession($connection);
     } else {
         checkIfSessionExists($connection);
     }
-    
-    if(!isset($_SESSION['isadmin'])) {
-        header('Location: index.php');
+
+    if(!isset($_SESSION['loggedin'])) {
+        header('Location: ../index.php');
     }
 
     $cartAmount = [];
     $maincategories = [];
+    $product = [];
+    $images = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
@@ -32,30 +34,10 @@
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
     $result = $connection->query($query);
-    fetchAllToArray($maincategories, $result);
+    fetchAllToArray( $maincategories, $result );
     $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
-
-    if(isset($_POST['img-upload'])){
-        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-        $name = $_POST['product_id']."_".time().".".$extension;
-        $target_dir = "images/product-images/".$_POST['product_id']."/";
-        $target_file = $target_dir.$name;
-      
-        $validExtensions = array("jpg", "jpeg", "png", "gif");
-      
-        if(in_array($extension, $validExtensions)){
-            // Check if directory exists, if not, create it
-            if(!is_dir($target_dir)) {
-                mkdir($target_dir);
-            }
-            if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
-              $query = "INSERT INTO zdjecie (sciezka, nazwa, produkt_id) VALUES ('$target_dir', '$name', ".$_POST['product_id'].")";
-              $result = $connection->query($query);
-           }
-        }
-    }
 ?>
 
 <!DOCTYPE html>
@@ -64,16 +46,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <title>Twoje zamówienia | Drogeria internetowa Kosmetykowo.pl</title>
+    <link rel="icon" type="image/ico" href="../images/ui/logo-small.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
+    <section>
+        <iframe src='../account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
+    <section>
+        <iframe src='../cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        </iframe>
+    </section>
+
     <header>
         <div class="logo_big-container">
-            <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
+            <a href="../index.php"><img class="logo_big" src="../images/ui/logo-big.svg" /></a>
         </div>
 
         <div class="search-container">
@@ -84,9 +76,9 @@
         </div>
 
         <div class="header-buttons">
-            <button onclick="location.href='user/account.php'" type="button" class="header-account"></button>
-            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav'></button>
-            <button onclick="location.href='cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='account.php'" type="button" class="header-account"></button>
+            <button onclick="location.href='favourites.php'" type="button" class='header-fav'></button>
+            <button onclick="location.href='../cart.php'" type="button" class="header-cart">
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -100,7 +92,7 @@
 
     <header class="header-small off">
         <div class="logo_big-container">
-            <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
+            <a href="../index.php"><img class="logo_big" src="../images/ui/logo-big.svg" /></a>
         </div>
 
         <div class="search-container">
@@ -111,9 +103,9 @@
         </div>
 
         <div class="header-buttons">
-            <button onclick="location.href='user/account.php'" type="button" class="header-account" data-fixed='yes'></button>
-            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
-            <button onclick="location.href='cart.php'" type="button" class="header-cart" data-fixed='yes'>
+            <button onclick="location.href='account.php'" type="button" class="header-account" data-fixed='yes'></button>
+            <button onclick="location.href='favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
+            <button onclick="location.href='../cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -140,7 +132,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    <a class='uppercase' href='../category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach ( $categories as $category ) {
@@ -151,11 +143,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    <a class='subcategory uppercase' href='../category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
                                     echo "<ul>";
                                         foreach ( $subcategories as $subcategory ) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                                <a class='subsubcategory' href='../category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";
@@ -170,20 +162,16 @@
             ?>
 
             <li class="category">
-                <a href="brands.php" class="uppercase">Marki</a>
+                <a href="../brands.php" class="uppercase">Marki</a>
             </li>
         </ul>
     </nav>
 
     <main>
-        <form method="POST" enctype='multipart/form-data'>
-            <input type='number' name='product_id'>
-            <input type='file' name='file'>
-            <input type='submit' name='img-upload'>
-        </form>
+        <span>order info</span>
     </main>
 
-    <!--- to be done someday...
+    <!---
 
         <section>
             <div class="newsletter-container">
@@ -199,11 +187,12 @@
 
     <section>
         <div class="social-media">
+
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="images/ui/instagram-logo.svg"></a>
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="../images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="../images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="../images/ui/instagram-logo.svg"></a>
             </div>
         </div>
     </section>
@@ -212,7 +201,7 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
                 <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
                 <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
                 <a href="/sklep/about/our-shop.php">Nasz sklep</a>
@@ -244,13 +233,13 @@
 
     <!-- Account preview -->
     <section>
-        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
+        <iframe src='../account-preview.php' class='account-container hidden' data-id='account'>
         </iframe>
     </section>
 
     <!-- Cart preview -->
     <section>
-        <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        <iframe src='../cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
         </iframe>
     </section>
 
@@ -264,13 +253,12 @@
     <!-- Go back to the top of the page button -->
     <button class="to-top" onclick="location.href='#'"></button>
 
-    <script src="js/script.js"></script> <!-- name and structure to be changed TM... --->
-    <script src="js/scrollToTop.js"></script>
-    <script src="js/menuHandler.js"></script>
-    <script src="js/previewCart.js"></script>
-    <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
-    <script src="js/accountPreview.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/scrollToTop.js"></script>
+    <script src="../js/menuHandler.js"></script>
+    <script src="../js/productQuantity.js"></script>
+    <script src="../js/previewCart.js"></script>
+    <script src="../js/accountPreview.js"></script>
 </body>
 </html>
 

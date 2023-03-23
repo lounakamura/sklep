@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 24 24"
+   width="35"
+   height="35"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs9" />
+  <g
+     id="g18869"
+     transform="translate(0.00483595)">
+    <path
+       d="M 0,0"
+       id="path18861" />
+    <g
+       id="_01_align_center"
+       data-name="01 align center"
+       style="fill:#de4471;fill-opacity:1">
+      <path
+         d="M 17.5,0.917 A 6.4,6.4 0 0 0 12,4.217 6.4,6.4 0 0 0 6.5,0.917 6.8,6.8 0 0 0 0,7.967 c 0,6.775 10.956,14.6 11.422,14.932 L 12,23.308 12.578,22.899 C 13.044,22.569 24,14.742 24,7.967 A 6.8,6.8 0 0 0 17.5,0.917 Z M 12,20.846 C 8.747,18.416 2,12.446 2,7.967 a 4.8,4.8 0 0 1 4.5,-5.05 4.8,4.8 0 0 1 4.5,5.05 h 2 a 4.8,4.8 0 0 1 4.5,-5.05 4.8,4.8 0 0 1 4.5,5.05 c 0,4.481 -6.747,10.449 -10,12.879 z"
+         id="path2"
+         style="fill:#de4471;fill-opacity:1" />
+    </g>
+    <ellipse
+       style="fill:#de4471;fill-opacity:1;stroke:none;stroke-width:4.26711;stroke-linejoin:bevel;paint-order:stroke markers fill;stop-color:#000000"
+       id="path18605"
+       cx="7.181313"
+       cy="9.2369299"
+       rx="5.5261402"
+       ry="7.1546164" />
+    <ellipse
+       style="fill:#de4471;fill-opacity:1;stroke:none;stroke-width:4.26711;stroke-linejoin:bevel;paint-order:stroke markers fill;stop-color:#000000"
+       id="path18605-5"
+       cx="17.032259"
+       cy="9.0233593"
+       rx="5.5261402"
+       ry="7.1546164" />
+    <ellipse
+       style="fill:#de4471;fill-opacity:1;stroke:none;stroke-width:3.75;stroke-linejoin:bevel;paint-order:stroke markers fill;stop-color:#000000"
+       id="path18755"
+       cx="11.959956"
+       cy="14.602892"
+       rx="5.9799781"
+       ry="6.5939937" />
+  </g>
+</svg>

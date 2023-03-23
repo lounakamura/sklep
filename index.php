@@ -7,13 +7,20 @@
     
     if (!isset($_SESSION['session'])) {
         newSession($connection);
+    } else {
+        checkIfSessionExists($connection);
     }
-    
+
     $cartAmount = [];
     $maincategories = [];
-
+    
     // Storing cart amount
-    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
+    if(isset($_SESSION['loggedin'])){
+        $query .= "uzytkownik_id=".$_SESSION['id'];
+    } else {
+        $query .= "sesja_id=".$_SESSION['session'];
+    }    
     $result = $connection->query($query);
     $cartAmount = $result->fetch_assoc();
     $result->free();
@@ -36,6 +43,7 @@
     <title>Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/home.css">
     <script src="js/jquery-3.6.1.min.js"></script>
     <style>
         main {
@@ -45,8 +53,6 @@
 </head>
 
 <body>
-    
-
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -60,8 +66,9 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='user/account.php'" type="button" class="header-account"></button>
+            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav'></button>
+            <button onclick="location.href='cart.php'" type="button" class="header-cart">
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -86,8 +93,9 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" class="header-account" data-fixed='yes'></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
+            <button onclick="location.href='user/account.php'" type="button" class="header-account" data-fixed='yes'></button>
+            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
+            <button onclick="location.href='cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -102,7 +110,7 @@
     <nav class="navigation-categories">
         <ul>
             <li>
-                <a class="pink-text uppercase" href="#">Promocje</a>
+                <a class="pink-text uppercase" href="/sklep/sale.php">Promocje</a>
             </li>
 
             <?php
@@ -150,7 +158,7 @@
     </nav>
     
     <main>
-        <a class='promo-banner-container' href='#'>
+        <a class='promo-banner-container' href='/sklep/sale.php'>
             <div class='promo-banner'></div>
         </a>
     </main>
@@ -186,83 +194,35 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="#">Polityka prywatności</a>
-                <a href="#">Regulamin sklepu</a>
-                <a href="#">Oferty Pracy</a>
-                <a href="#">Nasze sklepy</a>
-                <a href="#">Polityka cookies</a>
+                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
+                <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
+                <a href="/sklep/about/our-shop.php">Nasz sklep</a>
+                <a href="/sklep/about/cookie-policy.php">Polityka cookies</a>
             </div>
 
 
             <div>
                 <h4 class="uppercase">Obsługa klienta</h4>
-                <a href="#">Formy płatności</a>
-                <a href="#">Formy i koszty dostawy</a>
-                <a href="#">Zwrot i wymiana towaru</a>
-                <a href="#">Reklamacje</a>
-                <a href="#">Kontakt</a>
+                <a href="/sklep/customer-service/payment-forms.php">Formy płatności</a>
+                <a href="/sklep/customer-service/shipping.php">Formy i koszty dostawy</a>
+                <a href="/sklep/customer-service/return-or-exchange.php">Zwrot i wymiana towaru</a>
+                <a href="/sklep/customer-service/refund.php">Reklamacje</a>
+                <a href="/sklep/customer-service/contact.php">Kontakt</a>
             </div>
 
             <div>
                 <h4 class="uppercase">Zakupy</h4>
-                <a href="#">Twoje konto</a>
-                <a href="#">Rejestracja</a>
-                <a href="#">Logowanie</a>
-                <a href="#">Przypomnij hasło</a>
-                <a href="#">Zamówienia</a>
+                <a href="/sklep/user/account.php">Twoje konto</a>
+                <a href="/sklep/register.php">Rejestracja</a>
+                <a href="/sklep/login.php">Logowanie</a>
+                <a href="/sklep/user/forgotten-password.php">Przypomnij hasło</a>
+                <a href="/sklep/user/orders.php">Zamówienia</a>
             </div>
         </div>
     </footer>
 
     <!-- Additional elements -->
-
-    <!-- Login popup -->
-    <section>
-        <div class='account-popup-bg login-popup not-displayed'>
-            <div class='account-popup-window'>
-                <div class='account-popup-section'>
-                    <div class='account-header'>
-                        <h2>Zaloguj się</h2>
-                        <img class='login-close' src='images/ui/cross-medium.svg'>
-                    </div>
-                    <label>E-mail</label>
-                    <input type='email' class='login-field'>
-                    <label>Hasło</label>
-                    <input type='password' class='login-field'>
-                    <a>Nie pamiętam hasła</a> <!-- do zrobienia ekran -->
-                    <input class='log-in-button-confirm pink-button' type='submit' value='Zaloguj się'>
-                </div>
-                <div class='account-popup-section'>
-                    <h3>Nie masz konta?</h3>
-                    <input class='register-button white-button' type='submit' value='Zarejestruj się'>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Register popup -->
-    <section>
-        <div class='account-popup-bg register-popup not-displayed'>
-            <div class='account-popup-window'>
-                <div class='account-header'><h2>Zarejestruj się</h2>
-                    <img class='register-close' src='images/ui/cross-medium.svg'>
-                </div>
-                <label>E-mail</label>
-                <input type='email' class='register-field'>
-                <label>Hasło</label>
-                <input type='password' class='register-field'>
-                <label>Powtórz hasło</label>
-                <input type='repeat-password' class='login-field'>
-                <div>
-                    <input type='checkbox'><label>Akceptuję warunki <a>regulaminu</a></label>
-                </div>
-                <div>
-                    <input type='checkbox'><label>Chcę zapisać się do newslettera</label>
-                </div>
-                <input class='register-button-confirm pink-button' type='submit' value='Zarejestruj się'>
-            </div>
-        </div>
-    </section>
 
     <!-- Account preview -->
     <section>
@@ -291,7 +251,6 @@
     <script src="js/menuHandler.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
     <script src="js/accountPreview.js"></script>
 </body>
 </html>

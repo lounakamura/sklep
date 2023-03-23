@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
-</head>
-
-<body>
 <?php
     session_start();
 
@@ -16,15 +5,28 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    } else {
+        checkIfSessionExists($connection);
+    }
+    
+    if(!(isset($_SERVER['HTTP_SEC_FETCH_DEST']) && $_SERVER['HTTP_SEC_FETCH_DEST'] == 'iframe')) {
+        header('Location: index.php');
+    }
+
     $cartProducts = [];
 
-    // Storing cart products
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE sesja_id=".$_SESSION['session']." GROUP BY produkt.produkt_id";
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
+    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE ";
+    if(isset($_SESSION['loggedin'])) {
+        $query .= "uzytkownik_id=".$_SESSION['id'];
+    } else {
+        $query .= "sesja_id=".$_SESSION['session'];
     }
+    $query .= " GROUP BY produkt.produkt_id";
+    $result = $connection->query($query);
+    fetchAllToArray( $cartProducts, $result );
+    $result->free();
 
     // Cheapest shipping price, set manually rn
     $shipping = 10.90;
@@ -34,7 +36,20 @@
         $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
     }
     $cartTotal = $productSum + $shipping;
+?>
 
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/previews.css">
+    <script src="js/jquery-3.6.1.min.js"></script>
+</head>
+<body>
+<?php
     echo "
     <div>
         <div class='preview-cart-shape'>
@@ -80,7 +95,7 @@
                         </span>
                     </div>
             </div>
-            <button onclick='parent.location.href=\"shopping-cart.php\"' class='goto-cart pink-button'>Przejdź do koszyka</button>";
+            <button onclick='parent.location.href=\"cart.php\"' class='goto-cart pink-button'>Przejdź do koszyka</button>";
         echo "</div>";
     echo "</div>";
 ?>

@@ -7,6 +7,8 @@
 
     if (!isset($_SESSION['session'])) {
         newSession($connection);
+    } else {
+        checkIfSessionExists($connection);
     }
 
     $cartAmount = [];
@@ -15,7 +17,12 @@
     $images = [];
 
     // Storing cart amount
-    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
+    if(isset($_SESSION['loggedin'])){
+        $query .= "uzytkownik_id=".$_SESSION['id'];
+    } else {
+        $query .= "sesja_id=".$_SESSION['session'];
+    }
     $result = $connection->query($query);
     $cartAmount = $result->fetch_assoc();
     $result->free();
@@ -66,8 +73,9 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart">
+            <button onclick="location.href='user/account.php'" type="button" class="header-account"></button>
+            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav'></button>
+            <button onclick="location.href='cart.php'" type="button" class="header-cart">
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -92,8 +100,9 @@
         </div>
 
         <div class="header-buttons">
-            <button type="button" class="header-account"></button>
-            <button onclick="location.href='shopping-cart.php'" type="button" class="header-cart" data-fixed='yes'>
+            <button onclick="location.href='user/account.php'" type="button" class="header-account" data-fixed='yes'></button>
+            <button onclick="location.href='user/favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
+            <button onclick="location.href='cart.php'" type="button" class="header-cart" data-fixed='yes'>
                 <div class='container-cart-items-amount' style='opacity:0'>
                     <div class='circle-cart-items-amount'>
                         <span class='cart-items-amount'>
@@ -108,7 +117,7 @@
     <nav class="navigation-categories">
         <ul>
             <li>
-                <a class="pink-text" href="#">PROMOCJE</a>
+                <a class="pink-text uppercase" href="/sklep/sale.php">Promocje</a>
             </li>
 
             <?php
@@ -189,51 +198,63 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="#">Polityka prywatności</a>
-                <a href="#">Regulamin sklepu</a>
-                <a href="#">Oferty Pracy</a>
-                <a href="#">Nasze sklepy</a>
-                <a href="#">Polityka cookies</a>
+                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
+                <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
+                <a href="/sklep/about/our-shop.php">Nasz sklep</a>
+                <a href="/sklep/about/cookie-policy.php">Polityka cookies</a>
             </div>
 
 
             <div>
                 <h4 class="uppercase">Obsługa klienta</h4>
-                <a href="#">Formy płatności</a>
-                <a href="#">Formy i koszty dostawy</a>
-                <a href="#">Zwrot i wymiana towaru</a>
-                <a href="#">Reklamacje</a>
-                <a href="#">Kontakt</a>
+                <a href="/sklep/customer-service/payment-forms.php">Formy płatności</a>
+                <a href="/sklep/customer-service/shipping.php">Formy i koszty dostawy</a>
+                <a href="/sklep/customer-service/return-or-exchange.php">Zwrot i wymiana towaru</a>
+                <a href="/sklep/customer-service/refund.php">Reklamacje</a>
+                <a href="/sklep/customer-service/contact.php">Kontakt</a>
             </div>
 
             <div>
                 <h4 class="uppercase">Zakupy</h4>
-                <a href="#">Twoje konto</a>
-                <a href="#">Rejestracja</a>
-                <a href="#">Logowanie</a>
-                <a href="#">Przypomnij hasło</a>
-                <a href="#">Zamówienia</a>
+                <a href="/sklep/user/account.php">Twoje konto</a>
+                <a href="/sklep/register.php">Rejestracja</a>
+                <a href="/sklep/login.php">Logowanie</a>
+                <a href="/sklep/user/forgotten-password.php">Przypomnij hasło</a>
+                <a href="/sklep/user/orders.php">Zamówienia</a>
             </div>
         </div>
     </footer>
 
+    <!-- Additional elements -->
+
+    <!-- Account preview -->
+    <section>
+        <iframe src='account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
+    <!-- Cart preview -->
+    <section>
+        <iframe src='cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        </iframe>
+    </section>
+
+    <!-- Loading screen -->
     <section>
         <div class='loading-screen not-displayed'>
             <div class='lds-ring'><div></div><div></div><div></div><div></div></div>
         </div>
     </section>
 
+    <!-- Go back to the top of the page button -->
     <button class="to-top" onclick="location.href='#'"></button>
 
     <script src="js/script.js"></script>
     <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
-    <script src="js/productQuantity.js"></script>
-    <script src="js/productImageGallery.js"></script>
-    <script src="js/xzoom.js"></script>
     <script src="js/previewCart.js"></script>
-    <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
+    <script src="js/accountPreview.js"></script>
 </body>
 </html>
 

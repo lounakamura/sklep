@@ -4,7 +4,7 @@ const cheapestShipping = document.querySelector('.shipping-price');
 
 const productSum = document.querySelector('.product-sum');
 const totalSum = document.querySelector('.total-sum');
-if ( path == '/sklep/shopping-cart.php' ) {
+if ( path == '/sklep/cart.php' ) {
   shipping = parseFloat(cheapestShipping.innerHTML.replace(',', '.'));
 }
 
@@ -40,7 +40,7 @@ quantityControllers.forEach(quantityController => {
           quantityController.style.animation = 'shake-horizontal 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
       }
     }
-    if ( path == '/sklep/shopping-cart.php' ) {
+    if ( path == '/sklep/cart.php' ) {
       modifyQuantity();
     }
   }
@@ -65,7 +65,7 @@ quantityControllers.forEach(quantityController => {
   }
 
   subtractBtn.onmouseup = function () {
-    if ( path == '/sklep/shopping-cart.php' ) {
+    if ( path == '/sklep/cart.php' ) {
       modifyQuantity();
     }
     clearTimeout(isDownTimer);
@@ -92,7 +92,7 @@ quantityControllers.forEach(quantityController => {
         quantityController.style.animation = 'shake-horizontal 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
       }
     }
-    if ( path == '/sklep/shopping-cart.php' ) {
+    if ( path == '/sklep/cart.php' ) {
       modifyQuantity();
     }
   }
@@ -117,7 +117,7 @@ quantityControllers.forEach(quantityController => {
   }
 
   addBtn.onmouseup = function () {
-    if ( path == '/sklep/shopping-cart.php' ) {
+    if ( path == '/sklep/cart.php' ) {
       modifyQuantity();
     }
     clearTimeout(isDownTimer);

@@ -30,7 +30,7 @@ function updateCartValue() {
     }
 }
 
-if ( path != '/sklep/shopping-cart.php' ) {
+if ( path != '/sklep/cart.php' ) {
     const cartButtons = parent.document.querySelectorAll(".header-cart");
     const cartPreview = parent.document.querySelector(".preview-cart-container");
 

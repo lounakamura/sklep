@@ -1,0 +1,17 @@
+/* Promotional banner */
+
+a.promo-banner-container {
+  height: 100%;
+  width: fit-content;
+  border-radius: 1px;
+}
+
+.promo-banner {
+  height: calc(99vw * (720 / 2560));
+  width: 99vw;
+  background-image: url(../images/main/promo_banner.jpg);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 1px;
+}

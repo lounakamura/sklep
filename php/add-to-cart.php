@@ -26,8 +26,13 @@
         }
     
     // If product is not in the cart, add it
-    } else { 
-        $query = "INSERT INTO koszyk (produkt_id, ilosc, sesja_id) VALUES (".$_POST['product_id'].", ".$_POST['quantity'].", ".$_SESSION['session'].")";
+    } else {
+        if(isset($_SESSION['loggedin'])){
+            $query = "INSERT INTO koszyk (produkt_id, ilosc, sesja_id, uzytkownik_id) VALUES (".$_POST['product_id'].", ".$_POST['quantity'].", ".$_SESSION['session'].", ".$_SESSION['id'].")";
+        } else {
+            $query = "INSERT INTO koszyk (produkt_id, ilosc, sesja_id) VALUES (".$_POST['product_id'].", ".$_POST['quantity'].", ".$_SESSION['session'].")";
+        }
+        
         $result = $connection->query($query);
         
         // Count the number of items in the cart afterwards

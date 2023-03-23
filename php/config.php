@@ -22,4 +22,15 @@
         $query = "INSERT INTO sesja (sesja_id) VALUES (".$_SESSION['session'].")";
         $result = $connection->query($query);
     }
+
+    function checkIfSessionExists(mysqli $connection){
+        $query = "SELECT sesja_id FROM sesja WHERE sesja_id=".$_SESSION['session'];
+        $result = $connection->query($query);
+        if(!$result->num_rows){
+            session_unset();
+            $_SESSION = [];
+            session_destroy();
+            newSession($connection);
+        }
+    }
 ?>

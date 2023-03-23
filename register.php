@@ -4,70 +4,31 @@
     require_once "php/config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
-
+    
     if (!isset($_SESSION['session'])) {
         newSession($connection);
     } else {
         checkIfSessionExists($connection);
     }
-    //DODAC USUWANIE PO JAKIMS CZASIE SESJI
 
+    $cartAmount = [];
     $maincategories = [];
-    $products = [];
-
+    
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
     if(isset($_SESSION['loggedin'])){
         $query .= "uzytkownik_id=".$_SESSION['id'];
     } else {
         $query .= "sesja_id=".$_SESSION['session'];
-    }
+    }    
     $result = $connection->query($query);
     $cartAmount = $result->fetch_assoc();
     $result->free();
-
-    // Product display based on category
-    $baseSelectionOn = '';
-    $displayedCategoryName = 'Produkty';
-    if (isset($_GET['maincategory'])) {
-        $baseSelectionOn = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
-        $displayedCategory = $_GET['maincategory'];
-        $categoryTable = 'kategoria';
-    } else if (isset($_GET['category'])) {
-        $baseSelectionOn = ' WHERE kategoria_1.kategoria_id=' . $_GET['category'];
-        $displayedCategory = $_GET['category'];
-        $categoryTable = 'kategoria_1';
-    } else if (isset($_GET['subcategory'])) {
-        $baseSelectionOn = ' WHERE kategoria_2.kategoria_id=' . $_GET['subcategory'];
-        $displayedCategory = $_GET['subcategory'];
-        $categoryTable = 'kategoria_2';
-    }
-
-    if (isset($categoryTable)) {
-        $query = "SELECT kategoria FROM $categoryTable WHERE kategoria_id=$displayedCategory";
-        $result = $connection->query($query);
-        $displayedCategoryName = $result->fetch_assoc()['kategoria'];
-        $result->free();
-    }
-
-    // Sorting products
-    if (isset($_POST['sort'])) {
-        $sort = 'ORDER BY '.$_POST['sort'];
-    } else {
-        $sort = 'ORDER BY produkt.nazwa ASC';
-    }
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
     $result = $connection->query($query);
     fetchAllToArray($maincategories, $result);
-    $result->free();
-
-    // Storing products
-    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) $baseSelectionOn GROUP BY produkt.produkt_id $sort";
-    $result = $connection->query($query);
-    fetchAllToArray($products, $result);
-    $productsFound = mysqli_num_rows($result);
     $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
@@ -79,15 +40,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Rejestracja | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/category-brand.css">
+    <link rel="stylesheet" href="css/register.css">
     <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
-<section>
     <header>
         <div class="logo_big-container">
             <a href="index.php"><img class="logo_big" src="images/ui/logo-big.svg" /></a>
@@ -191,56 +151,29 @@
             </li>
         </ul>
     </nav>
-
+    
     <main>
-        <?php
-            echo "<div>";
-                echo "<h2>".$displayedCategoryName."</h2>";
-                echo "<h3>".$productsFound." wyników</h3>";
-                echo "<form method='POST'>";
-                    echo "<select name='sort' onchange='this.form.submit()'>
-                        <option value='produkt.nazwa ASC' selected>Sortuj po nazwie rosnąco</option>
-                        <option value='produkt.nazwa DESC'>Sortuj po nazwie malejąco</option>
-                        <option value='cena ASC'>Sortuj po cenie rosnąco</option>
-                        <option value='cena DESC'>Sortuj po cenie malejąco</option>";
-                    echo "</select>";
-                echo "</form>";
-            echo "</div>";
-
-            echo "<div class='product-display'>";
-                echo "<div class='categories-container'>";
-
-                echo "</div>";
-
-                echo "<div class='products-container'>";
-                    foreach ($products as $product) {
-                        echo "<div class='product-container'>";
-                            echo "<div>";
-                                echo "<button class='add-to-fav'></button>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                    <img src='".$product['zdjecie']."'>"; 
-                                echo "</a>"; 
-                                echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                    <h4>" . $product['marka'] . "</h4>";
-                                echo "</a>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                    <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
-                                echo "</a>";
-                            echo "</div>";
-                            echo "<div>";
-                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
-                            echo "</div>";
-                        echo "</div>";
-                    }
-                echo "</div>";
-            echo "</div>";
-        ?>
+        <div class='register-container'>
+            <h1>Zarejestruj się</h1>
+            <form method='POST' action='php/register.php'>
+                <label for='email'>E-mail</label><input type='email' name='email' class='register-field' id='email' required>
+                <label for='username_register'>Nazwa użytkownika</label><input type='text' class='register-field' name='username' id='username_register' required>
+                <label for='password_register'>Hasło</label><input type='password' name='password' class='register-field' id='password_register' required>
+                <label for='repeat-password'>Powtórz hasło</label><input type='password' name='repeat-password' class='register-field' id='repeat-password' required>
+                <div>
+                    <input type='checkbox' id='accept-rules' required><label for='accept-rules'>Akceptuję warunki <a>regulaminu</a></label>
+                </div>
+                <div>
+                    <input type='checkbox' name='newsletter' id='newsletter-add'><label for='newsletter-add'>Chcę zapisać się do newslettera</label>
+                </div>
+                <input class='register-button-confirm pink-button' type='submit' value='Zarejestruj się'>
+            </form>
+        </div>
     </main>
 
 
 
-    <!---
+    <!--- to be done someday...
 
         <section>
             <div class="newsletter-container">
@@ -256,7 +189,6 @@
 
     <section>
         <div class="social-media">
-
             <h2>Znajdziesz nas na:</h2>
             <div class="social-media-icons">
                 <a id="social-fb" href="https://facebook.com" target='_blank'><img src="images/ui/fb-logo.svg"></a>
@@ -330,7 +262,6 @@
     <script src="js/removeFromCart.js"></script>
     <script src="js/accountPreview.js"></script>
 </body>
-
 </html>
 
 <?php
