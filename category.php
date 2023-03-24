@@ -10,7 +10,6 @@
     } else {
         checkIfSessionExists($connection);
     }
-    //DODAC USUWANIE PO JAKIMS CZASIE SESJI
 
     $maincategories = [];
     $products = [];

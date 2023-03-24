@@ -44,7 +44,11 @@
     fetchAllToArray($cartProducts, $result);
     $result->free();
 
-    $shipping = 10.90; // bedzie z bazy wyciagane jak dodam tabele
+    // Get cheapest shipping cost
+    $query = "SELECT MIN(cena) as koszt FROM dostawa";
+    $result = $connection->query($query);
+    $shipping = $result->fetch_assoc();
+    $result->free();
 
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 
@@ -54,13 +58,11 @@
     foreach( $cartProducts as $cartProduct ) {
         $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
     }
-    $cartTotal = $productSum + $shipping;
+    $cartTotal = $productSum + $shipping['koszt'];
 
     //TO BE IMPLEMENTED
     //kody rabatowe
     //skladanie zamowienia
-    
-    //emptying cart - improve it a lil
 ?>
 
 <!DOCTYPE html>
@@ -273,7 +275,7 @@
                                 <div class='order-cost-row'>
                                     <span>Dostawa od</span>
                                     <span class='order-shipping-price'>
-                                        <span class='shipping-price'>".number_format($shipping, 2, ',', '')."</span><span> zł</span
+                                        <span class='shipping-price'>".number_format($shipping['koszt'], 2, ',', '')."</span><span> zł</span
                                     </span>
                                 </div>
                                 <div class='order-cost-row'>

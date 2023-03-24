@@ -51,8 +51,6 @@
     fetchAllToArray($images, $result);
     $result->free();
 
-    $shipping = 10.90;
-
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 
     // IF THERE IS NO PRODUCT ID SET DISPLAY ERROR!! error_reporting (0); and shit
@@ -189,11 +187,13 @@
             </div>
             "; // galeria wstepnie rozpoczeta, ogarnac to
 
-            echo "<div class='category-tree'>
-                <a href='index.php' class='uppercase'>Strona Główna</a> >
-                <a href='category.php?maincategory=" . $product['kategoria_id'] . "' class='uppercase'>" . $product['kategoria'] . "</a> >
-                <a href='category.php?category=" . $product['kategoria1_id'] . "' class='uppercase'>" . $product['kategoria1'] . "</a> >
-                <a href='category.php?subcategory=" . $product['kategoria2_id'] . "' class='uppercase'>" . $product['kategoria2'] . "</a>
+            echo "<div class='breadcrumbs'>
+                <ul>
+                    <li><a href='index.php' class='uppercase'>Strona Główna</a></li>
+                    <li><a href='category.php?maincategory=".$product['kategoria_id']."' class='uppercase'>".$product['kategoria']."</a></li>
+                    <li><a href='category.php?category=".$product['kategoria1_id'] . "' class='uppercase'>".$product['kategoria1']."</a></li>
+                    <li><a href='category.php?subcategory=" . $product['kategoria2_id']."' class='uppercase'>".$product['kategoria2']."</a></li>
+                </ul>
             </div>
 
             <div class='product-information'>
@@ -235,7 +235,21 @@
                         </div>
                         <button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
                     </div>
-                    <p>" . nl2br($product['opis']) . "</p>
+
+                    <div>
+                        <label for='state'>
+                            <div class='accordion'>Opis</div>
+                        </label>
+                        <input type='checkbox' id='state' hidden checked>
+                        <div class='accordion-content'>
+                            <div class='accordion-inner'>
+                                <p>
+                                    ".nl2br($product['opis'])."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>";
         ?>

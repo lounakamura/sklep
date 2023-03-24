@@ -28,14 +28,17 @@
     fetchAllToArray( $cartProducts, $result );
     $result->free();
 
-    // Cheapest shipping price, set manually rn
-    $shipping = 10.90;
+    // Get cheapest shipping cost
+    $query = "SELECT MIN(cena) as koszt FROM dostawa";
+    $result = $connection->query($query);
+    $shipping = $result->fetch_assoc();
+    $result->free();
 
     $productSum = 0;
     foreach( $cartProducts as $cartProduct ) {
         $productSum += $cartProduct['cena']*$cartProduct['ilosc'];
     }
-    $cartTotal = $productSum + $shipping;
+    $cartTotal = $productSum + $shipping['koszt'];
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +88,7 @@
                     <div class='preview-cost-row'>
                         <span>Dostawa od</span>
                         <span class='preview-shipping-price'>
-                            <span class='shipping-price'>".number_format($shipping, 2, ',', '')."</span><span> zł</span
+                            <span class='shipping-price'>".number_format($shipping['koszt'], 2, ',', '')."</span><span> zł</span
                         </span>
                     </div>
                     <div class='preview-cost-row'>

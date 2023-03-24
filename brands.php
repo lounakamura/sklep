@@ -35,8 +35,6 @@
         $result->free();
     }
 
-    $shipping = 10.90;
-
     // Storing cart amount
     if (isset($_SESSION['session'])) {
         $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE sesja_id=".$_SESSION['session'];
