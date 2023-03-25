@@ -14,7 +14,6 @@
     $maincategories = [];
     $products = [];
     $letters = [];
-    $cartProducts = [];
 
     // Storing the main categories
     $query = "SELECT * FROM kategoria";
@@ -27,13 +26,6 @@
     $result = $connection->query($query);
     fetchAllToArray( $letters, $result );
     $result->free();
-
-    if (isset($_SESSION['session'])) {
-        $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) WHERE sesja_id=".$_SESSION['session'];
-        $result = $connection->query($query);
-        fetchAllToArray( $cartProducts, $result );
-        $result->free();
-    }
 
     // Storing cart amount
     if (isset($_SESSION['session'])) {

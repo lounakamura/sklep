@@ -40,20 +40,31 @@
     }
 
     // Storing displayed product information
-    $query = "SELECT produkt_id, nazwa, cena, opis, kategoria_2.kategoria AS kategoria2, kategoria_2.kategoria_id AS kategoria2_id,kategoria_1.kategoria AS kategoria1,kategoria_1.kategoria_id AS kategoria1_id,kategoria.kategoria AS kategoria,kategoria.kategoria_id AS kategoria_id,marka,marka.marka_id AS marka_id FROM produkt JOIN kategoria_2 on (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 on (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria on (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka on (produkt.marka_id = marka.marka_id) WHERE produkt_id=".$_GET['id'];
+    $query = "SELECT produkt_id, nazwa, cena, opis, ilosc, k2.kategoria AS kategoria2, k2.kategoria_id AS kategoria2_id, k1.kategoria AS kategoria1, k1.kategoria_id AS kategoria1_id, k.kategoria AS kategoria, k.kategoria_id AS kategoria_id, marka, m.marka_id AS marka_id FROM produkt AS p JOIN kategoria_2 AS k2 on (p.kategoria_id = k2.kategoria_id) JOIN kategoria_1 AS k1 on (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m ON (p.marka_id = m.marka_id) WHERE produkt_id=".$_GET['id'];
     $result = $connection->query($query);
     $product = $result->fetch_assoc();
     $result->free();
 
     // Storing product images
-    $query = "SELECT CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE produkt.produkt_id=".$_GET['id'];
+    $query = "SELECT CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN zdjecie AS z USING (produkt_id) WHERE p.produkt_id=".$_GET['id'];
     $result = $connection->query($query);
     fetchAllToArray($images, $result);
     $result->free();
 
-    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+    // Storing product availability
+    $availability = "available";
+    if($product['ilosc']>50){
+        $product['dostepnosc'] = "bardzo duża";
+    } else if($product['ilosc']>15) {
+        $product['dostepnosc'] = "duża";
+    } else if($product['ilosc']>0) {
+        $product['dostepnosc'] = "ostatnie sztuki";
+    } else {
+        $product['dostepnosc'] = "niedostępny";
+        $availability = "unavailable";
+    }
 
-    // IF THERE IS NO PRODUCT ID SET DISPLAY ERROR!! error_reporting (0); and shit
+    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
 
 <!DOCTYPE html>
@@ -175,18 +186,7 @@
     </nav>
 
     <main>
-        <?php // to implement: breadcrumbs 
-            echo " 
-            <div class='gallery-background hidden'> 
-                <div class='gallery-controls'>
-                    <img class='gallery-close' src='images/ui/cross.svg'>
-                </div>
-                <div class='gallery-images'>
-                    <img class='gallery-displayed-img' src='".$images[0]['zdjecie']."'>
-                </div>
-            </div>
-            "; // galeria wstepnie rozpoczeta, ogarnac to
-
+        <?php
             echo "<div class='breadcrumbs'>
                 <ul>
                     <li><a href='index.php' class='uppercase'>Strona Główna</a></li>
@@ -198,14 +198,27 @@
 
             <div class='product-information'>
                 <div class='img-gallery'>
-                    <div class='xzoom-container'>
+                    <div class='gallery-container'>
                         <button class='add-to-fav'></button>
-                        <img class='xzoom' src='".$images[0]['zdjecie']."' xoriginal='".$images[0]['zdjecie']."'>
-                        <div class='xzoom-thumbs'>";
+                        <img class='gallery-main-img' src='".$images[0]['zdjecie']."'>
+                        <div class='gallery-thumbs'>";
                             foreach ($images as $image) {
-                                echo "<a href='".$image['zdjecie']."'>
-                                    <img class='xzoom-gallery' src='".$image['zdjecie']."' xpreview='".$image['zdjecie']."'>
-                                </a>";
+                                echo "<img class='thumbnail' src='".$image['zdjecie']."'>";
+                            }
+                        echo "</div>
+                    </div>
+                    <div class='gallery-closeup hidden'> 
+                        <div class='gallery-controls'>
+                            <img class='gallery-close' src='/sklep/images/ui/cross.svg'>
+                            <img class='gallery-previous' src='/sklep/images/ui/arrow-left.svg'>
+                            <img class='gallery-next' src='/sklep/images/ui/arrow-right.svg'>
+                        </div>
+                        <div class='gallery-closeup-img'>
+                            <img class='gallery-displayed-img' src='".$images[0]['zdjecie']."'>
+                        </div>
+                        <div class='gallery-closeup-thumbs'>";
+                            foreach ($images as $image) {
+                                echo "<img class='closeup-thumbnail' src='".$image['zdjecie']."'>";
                             }
                         echo "</div>
                     </div>
@@ -216,24 +229,27 @@
                         <h4>" . $product['marka'] . "</h4>
                     </a>
                     <h3>" . $product['nazwa'] . "</h3>
-                    <span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>
+                    <span class='$availability'>" . number_format($product['cena'], 2, ',') . "<span class='$availability'> zł</span></span><br>
                     <div class='add-to-cart-container'>
-                        <div class='quantity-input-container' data-min='1' data-max='99' data-step='1'>
+                        <div class='quantity-input-container $availability' data-min='1' data-max='99' data-step='1'>
                             <table>
                                 <tr>
                                     <td>
-                                        <button class='subtract white-button'>-</button>
+                                        <button class='subtract white-button $availability'>-</button>
                                     </td>
                                     <td>
-                                        <span class='quantity-display'>1</span>
+                                        <span class='quantity-display $availability'>1</span>
                                     </td>
                                     <td>
-                                        <button class='add white-button'>+</button>
+                                        <button class='add white-button $availability'>+</button>
                                     </td>
                                 </tr>
                             </table>  
                         </div>
-                        <button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
+                        <button class='pink-button add-to-cart-button $availability' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>
+                    </div>
+                    <div class='availability-info'>
+                        <span>Dostępność: <span class='$availability'>".$product['dostepnosc']."</span></span>
                     </div>
 
                     <div>

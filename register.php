@@ -156,10 +156,10 @@
         <div class='register-container'>
             <h1>Zarejestruj się</h1>
             <form method='POST' action='php/register.php'>
-                <label for='email'>E-mail</label><input type='email' name='email' class='register-field' id='email' required>
-                <label for='username_register'>Nazwa użytkownika</label><input type='text' class='register-field' name='username' id='username_register' required>
-                <label for='password_register'>Hasło</label><input type='password' name='password' class='register-field' id='password_register' required>
-                <label for='repeat-password'>Powtórz hasło</label><input type='password' name='repeat-password' class='register-field' id='repeat-password' required>
+                <label for='email'>E-mail</label><input type='email' name='email' class='register-field' id='email' required minlength='6' maxlength='254'>
+                <label for='username_register'>Nazwa użytkownika</label><input type='text' class='register-field' name='username' id='username_register' required minlength='1' maxlength='50'>
+                <label for='password_register'>Hasło</label><input type='password' name='password' class='register-field' id='password_register' required minlength='5' maxlength='64'>
+                <label for='repeat-password'>Powtórz hasło</label><input type='password' name='repeat-password' class='register-field' id='repeat-password' required minlength='5' maxlength='64'>
                 <div>
                     <input type='checkbox' id='accept-rules' required><label for='accept-rules'>Akceptuję warunki <a>regulaminu</a></label>
                 </div>

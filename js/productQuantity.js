@@ -9,143 +9,146 @@ if ( path == '/sklep/cart.php' ) {
 }
 
 quantityControllers.forEach(quantityController => {
-  const subtractBtn = quantityController.querySelector('.subtract');
-  const addBtn = quantityController.querySelector('.add');
-  const display = quantityController.querySelector('.quantity-display');
+  if($(quantityController).hasClass('available')){
+    const subtractBtn = quantityController.querySelector('.subtract');
+    const addBtn = quantityController.querySelector('.add');
+    const display = quantityController.querySelector('.quantity-display');
 
-  const min = parseInt(quantityController.getAttribute('data-min'));
-  const max = parseInt(quantityController.getAttribute('data-max'));
-  const step = parseInt(quantityController.getAttribute('data-step'));
+    const min = parseInt(quantityController.getAttribute('data-min'));
+    const max = parseInt(quantityController.getAttribute('data-max'));
+    const step = parseInt(quantityController.getAttribute('data-step'));
 
-  const productPrice = quantityController.parentElement.parentElement.querySelector('.price');
-  const productTotal = quantityController.parentElement.parentElement.querySelector('.product-total');
+    const productPrice = quantityController.parentElement.parentElement.querySelector('.price');
+    const productTotal = quantityController.parentElement.parentElement.querySelector('.product-total');
 
-  let addInterval;
-  let subtractInterval;
+    let addInterval;
+    let subtractInterval;
 
-  let timer;
-  let delay = 300;
+    let timer;
+    let delay = 300;
 
-  let isDown = false;
-  let isDownTimer;
+    let isDown = false;
+    let isDownTimer;
 
-  // Subtract Button actions
+    // Subtract Button actions
 
-  // Takes action only if mousedown hasn't been triggered already
-  subtractBtn.onclick = function () {
-    if ( isDown === false ) { 
-      if ( parseInt(display.innerText) - step >= min ) {
-          display.innerText = parseInt(display.innerText) - step;
-      } else {
-          quantityController.style.animation = 'shake-horizontal 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
-      }
-    }
-    if ( path == '/sklep/cart.php' ) {
-      modifyQuantity();
-    }
-  }
-
-  subtractBtn.onmousedown = function () {
-    isDown = false;
-    isDownTimer = setTimeout(function(){
-          isDown = true;
-    }, 300);
-    timer = setTimeout (function() {
-      let i = -8;
-      subtractInterval = setInterval(() => {
-        if ( parseInt(display.innerText) - parseInt(step*exponential(i)) >= min ) {
-          display.innerText = parseInt(display.innerText) - parseInt(step*exponential(i));
-          i++;
-        } else if ( parseInt(display.innerText) - parseInt(step*exponential(i)) < min ) {
-          display.innerText = min;
-          quantityController.style.animation = 'shake-horizontal-delay-between 1.1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both';
+    // Takes action only if mousedown hasn't been triggered already
+    subtractBtn.onclick = function () {
+      if ( isDown === false ) { 
+        if ( parseInt(display.innerText) - step >= min ) {
+            display.innerText = parseInt(display.innerText) - step;
+        } else {
+            quantityController.style.animation = 'shake-horizontal 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
         }
-      }, 100);
-    }, delay);
-  }
-
-  subtractBtn.onmouseup = function () {
-    if ( path == '/sklep/cart.php' ) {
-      modifyQuantity();
-    }
-    clearTimeout(isDownTimer);
-    clearInterval(subtractInterval);
-    clearTimeout(timer);
-    quantityController.style.animation = '';
-  }
-
-  subtractBtn.onmouseleave = function () {
-    clearInterval(subtractInterval);
-    clearTimeout(timer);
-    quantityController.style.animation = '';
-  }
-
-
-  // Add Button actions
-
-  // Takes action only if mousedown hasn't been triggered already
-  addBtn.onclick = function () {
-    if(isDown === false){
-      if ( parseInt(display.innerText) + step <= max ) {
-          display.innerText = parseInt(display.innerText) + step;
-      } else {
-        quantityController.style.animation = 'shake-horizontal 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
+      }
+      if ( path == '/sklep/cart.php' ) {
+        modifyQuantity();
       }
     }
-    if ( path == '/sklep/cart.php' ) {
-      modifyQuantity();
-    }
-  }
 
-  addBtn.onmousedown = function () {
-    isDown = false;
+    subtractBtn.onmousedown = function () {
+      isDown = false;
       isDownTimer = setTimeout(function(){
-          isDown = true;
-    }, 300);
-    timer = setTimeout (function() {
-      let i = -8;
-      addInterval = setInterval(() => {
-        if ( parseInt(display.innerText) + parseInt(step*exponential(i)) <= max ) {
-          display.innerText = parseInt(display.innerText) + parseInt(step*exponential(i));
-          i++;
-        } else if ( parseInt(display.innerText) + parseInt(step*exponential(i)) > max ) {
-          display.innerText = max;
-          quantityController.style.animation = 'shake-horizontal-delay-between 1.1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both';
-        }
-      }, 100);
-    }, delay);
-  }
-
-  addBtn.onmouseup = function () {
-    if ( path == '/sklep/cart.php' ) {
-      modifyQuantity();
+            isDown = true;
+      }, 300);
+      timer = setTimeout (function() {
+        let i = -8;
+        subtractInterval = setInterval(() => {
+          if ( parseInt(display.innerText) - parseInt(step*exponential(i)) >= min ) {
+            display.innerText = parseInt(display.innerText) - parseInt(step*exponential(i));
+            i++;
+          } else if ( parseInt(display.innerText) - parseInt(step*exponential(i)) < min ) {
+            display.innerText = min;
+            quantityController.style.animation = 'shake-horizontal-delay-between 1.1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both';
+          }
+        }, 100);
+      }, delay);
     }
-    clearTimeout(isDownTimer);
-    clearInterval(addInterval);
-    clearTimeout(timer);
-    quantityController.style.animation = '';
-  }
 
-  addBtn.onmouseleave = function () {
-    clearInterval(addInterval);
-    clearTimeout(timer);
-    quantityController.style.animation = '';
-  }
+    subtractBtn.onmouseup = function () {
+      if ( path == '/sklep/cart.php' ) {
+        modifyQuantity();
+      }
+      clearTimeout(isDownTimer);
+      clearInterval(subtractInterval);
+      clearTimeout(timer);
+      quantityController.style.animation = '';
+    }
 
-  const modifyQuantity = function () {
-    const REQUEST = new XMLHttpRequest();
-    REQUEST.open("POST", "php/modify-quantity.php");
-    REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    REQUEST.send("cart_id="+display.getAttribute("data-cart_id")+"&quantity="+parseInt(display.innerText));
+    subtractBtn.onmouseleave = function () {
+      clearInterval(subtractInterval);
+      clearTimeout(timer);
+      quantityController.style.animation = '';
+    }
 
-    calculateProductTotal();
-    calculateOrder();
-  }
 
-  const calculateProductTotal = function() {
-    productTotal.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)));
+    // Add Button actions
+
+    // Takes action only if mousedown hasn't been triggered already
+    addBtn.onclick = function () {
+      if(isDown === false){
+        if ( parseInt(display.innerText) + step <= max ) {
+            display.innerText = parseInt(display.innerText) + step;
+        } else {
+          quantityController.style.animation = 'shake-horizontal 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both';
+        }
+      }
+      if ( path == '/sklep/cart.php' ) {
+        modifyQuantity();
+      }
+    }
+
+    addBtn.onmousedown = function () {
+      isDown = false;
+        isDownTimer = setTimeout(function(){
+            isDown = true;
+      }, 300);
+      timer = setTimeout (function() {
+        let i = -8;
+        addInterval = setInterval(() => {
+          if ( parseInt(display.innerText) + parseInt(step*exponential(i)) <= max ) {
+            display.innerText = parseInt(display.innerText) + parseInt(step*exponential(i));
+            i++;
+          } else if ( parseInt(display.innerText) + parseInt(step*exponential(i)) > max ) {
+            display.innerText = max;
+            quantityController.style.animation = 'shake-horizontal-delay-between 1.1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both';
+          }
+        }, 100);
+      }, delay);
+    }
+
+    addBtn.onmouseup = function () {
+      if ( path == '/sklep/cart.php' ) {
+        modifyQuantity();
+      }
+      clearTimeout(isDownTimer);
+      clearInterval(addInterval);
+      clearTimeout(timer);
+      quantityController.style.animation = '';
+    }
+
+    addBtn.onmouseleave = function () {
+      clearInterval(addInterval);
+      clearTimeout(timer);
+      quantityController.style.animation = '';
+    }
+
+    const modifyQuantity = function () {
+      const REQUEST = new XMLHttpRequest();
+      REQUEST.open("POST", "php/modify-quantity.php");
+      REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      REQUEST.send("cart_id="+display.getAttribute("data-cart_id")+"&quantity="+parseInt(display.innerText));
+
+      calculateProductTotal();
+      calculateOrder();
+    }
+
+    const calculateProductTotal = function() {
+      productTotal.innerText = Intl.NumberFormat('pl-PL', { style: 'decimal', minimumFractionDigits: '2' }).format(String((productPrice.innerHTML.replace(',', '.')*parseInt(display.innerText)).toFixed(2)));
+    }
   }
 });
+
 
 // Function for exponential speed increase when holding a subtract or add buton
 function exponential (x) {

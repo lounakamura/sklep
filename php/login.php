@@ -34,9 +34,10 @@
                 }
 
                 // Check if user is an admin
-                $query = "SELECT uzytkownik_id FROM admin WHERE uzytkownik_id=".$_SESSION['id'];
+                $query = "SELECT admin FROM uzytkownik WHERE uzytkownik_id=".$_SESSION['id'];
                 $result = $connection->query($query);
-                if($result->num_rows>0) {
+                $result = mysqli_fetch_assoc($result);
+                if($result['admin']) {
                     $_SESSION['isadmin'] = TRUE;
                 }
                 header("Location: ../index.php");

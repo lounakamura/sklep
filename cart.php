@@ -33,19 +33,19 @@
     $result->free();
 
     // Storing products in cart
-    $query = "SELECT koszyk_id, produkt.produkt_id, produkt.nazwa, produkt.cena, ilosc, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM koszyk JOIN produkt ON (produkt.produkt_id = koszyk.produkt_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) WHERE ";
+    $query = "SELECT koszyk_id, p.produkt_id, p.nazwa, p.cena, k.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM koszyk AS k JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id) WHERE ";
     if(isset($_SESSION['loggedin'])) {
         $query .= "uzytkownik_id=".$_SESSION['id'];
     } else {
         $query .= "sesja_id=".$_SESSION['session'];
     }
-    $query .= " GROUP BY produkt.produkt_id";
+    $query .= " GROUP BY p.produkt_id";
     $result = $connection->query($query);
     fetchAllToArray($cartProducts, $result);
     $result->free();
 
     // Get cheapest shipping cost
-    $query = "SELECT MIN(cena) as koszt FROM dostawa";
+    $query = "SELECT MIN(cena) as koszt FROM metoda_dostawy";
     $result = $connection->query($query);
     $shipping = $result->fetch_assoc();
     $result->free();

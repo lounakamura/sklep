@@ -13,7 +13,7 @@
 
     $cartAmount = [];
     $maincategories = [];
-    
+
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
     if(isset($_SESSION['loggedin'])){
@@ -41,7 +41,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
+    <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/home.css">
     <script src="js/jquery-3.6.1.min.js"></script>

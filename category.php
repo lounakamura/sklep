@@ -29,15 +29,15 @@
     $baseSelectionOn = '';
     $displayedCategoryName = 'Produkty';
     if (isset($_GET['maincategory'])) {
-        $baseSelectionOn = ' WHERE kategoria.kategoria_id=' . $_GET['maincategory'];
+        $baseSelectionOn = ' WHERE k.kategoria_id=' . $_GET['maincategory'];
         $displayedCategory = $_GET['maincategory'];
         $categoryTable = 'kategoria';
     } else if (isset($_GET['category'])) {
-        $baseSelectionOn = ' WHERE kategoria_1.kategoria_id=' . $_GET['category'];
+        $baseSelectionOn = ' WHERE k1.kategoria_id=' . $_GET['category'];
         $displayedCategory = $_GET['category'];
         $categoryTable = 'kategoria_1';
     } else if (isset($_GET['subcategory'])) {
-        $baseSelectionOn = ' WHERE kategoria_2.kategoria_id=' . $_GET['subcategory'];
+        $baseSelectionOn = ' WHERE k2.kategoria_id=' . $_GET['subcategory'];
         $displayedCategory = $_GET['subcategory'];
         $categoryTable = 'kategoria_2';
     }
@@ -53,7 +53,7 @@
     if (isset($_POST['sort'])) {
         $sort = 'ORDER BY '.$_POST['sort'];
     } else {
-        $sort = 'ORDER BY produkt.nazwa ASC';
+        $sort = 'ORDER BY p.nazwa ASC';
     }
 
     // Storing the main categories
@@ -63,12 +63,21 @@
     $result->free();
 
     // Storing products
-    $query = "SELECT produkt.produkt_id, produkt.nazwa, cena, kategoria_2.kategoria_id AS kategoria_2_id, kategoria_2.kategoria AS kategoria_2, kategoria_1.kategoria_id AS kategoria_1_id, kategoria_1.kategoria AS kategoria_1, kategoria.kategoria_id AS kategoria_id, kategoria.kategoria AS kategoria, marka.marka_id AS marka_id, marka.marka AS marka, CONCAT(zdjecie.sciezka, zdjecie.nazwa) AS zdjecie FROM produkt JOIN kategoria_2 ON (produkt.kategoria_id = kategoria_2.kategoria_id) JOIN kategoria_1 ON (kategoria_2.parent_id = kategoria_1.kategoria_id) JOIN kategoria ON (kategoria_1.parent_id = kategoria.kategoria_id) JOIN marka ON (produkt.marka_id = marka.marka_id) JOIN zdjecie ON (zdjecie.produkt_id = produkt.produkt_id) $baseSelectionOn GROUP BY produkt.produkt_id $sort";
+    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) $baseSelectionOn GROUP BY p.produkt_id $sort";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
     $productsFound = mysqli_num_rows($result);
     $result->free();
 
+    // Storing product availability
+    for($i=0; $i<count($products); $i++){
+        if($products[$i]['ilosc']>0) {
+            $products[$i]['dostepnosc'] = "available";
+        } else {
+            $products[$i]['dostepnosc'] = "unavailable";
+        }
+    }
+    
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
 
@@ -213,7 +222,7 @@
 
                 echo "<div class='products-container'>";
                     foreach ($products as $product) {
-                        echo "<div class='product-container'>";
+                        echo "<div class='product-container ".$product['dostepnosc']."'>";
                             echo "<div>";
                                 echo "<button class='add-to-fav'></button>";
                                 echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
@@ -228,7 +237,7 @@
                             echo "</div>";
                             echo "<div>";
                                 echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                echo "<button class='pink-button add-to-cart-button' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
+                                echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
                             echo "</div>";
                         echo "</div>";
                     }

@@ -55,44 +55,110 @@
   background-color: transparent;
 }
 
-.xzoom-container {
+/*      Gallery     */
+
+.gallery-container {
   display: flex;
   flex-direction: column;
   width: 500px;
   position: relative;
 }
 
-.xzoom {
-  width: 500px;
+.gallery-main-img {
+  width: 100%;
   outline: 1px solid #dfdfdf;
+  cursor: pointer;
 }
 
-.xzoom-thumbs img {
-  display: inline-block;
-  height: 125px;
-}
-
-.xzoom-thumbs {
-  border-width: 0px 1px 1px 1px;
-  border-style: solid;
-  border-color: #dfdfdf;
+.gallery-thumbs {
+  outline: 1px solid #dfdfdf;
   display: flex;
+  overflow-x: hidden;
+  width: 500px;
 }
 
-.xzoom-thumbs a {
-  display: block;
-  height: 125px;
+.gallery-thumbs img {
+  width: calc(500px / 4);
 }
 
-.xzoom-gallery {
+.thumbnail:not(.thumbnail:nth-of-type(5)) {
   outline: 1px solid #dfdfdf;
 }
 
-.xzoom-preview {
-  -webkit-box-shadow: 0px 0px 25px 4px rgba(215, 215, 215, 1);
-  box-shadow: 0px 0px 25px 4px rgba(215, 215, 215, 1);
-  border-radius: 1px;
+.thumbnail {
+  cursor: pointer;
 }
+
+/*      Closeup gallery     */
+
+.gallery-closeup {
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 500;
+}
+
+.gallery-controls {
+  z-index: 600;
+  position: fixed;
+}
+
+.gallery-controls * {
+  position: fixed;
+  cursor: pointer;
+}
+
+.gallery-close {
+  right: 30px;
+  top: 30px;
+}
+
+.gallery-previous {
+  left: 30px;
+  top: 50%;
+}
+
+.gallery-next {
+  right: 30px;
+  top: 50%;
+}
+
+.gallery-closeup-img {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+
+.gallery-displayed-img {
+  height: 600px;
+}
+
+.gallery-closeup-thumbs {
+  display: flex;
+  position: absolute;
+  z-index: 501;
+  bottom: 0;
+  width: 100%;
+  justify-content: center;
+  background-color: white;
+}
+
+.gallery-closeup-thumbs img {
+  width: calc(500px / 4);
+}
+
+.closeup-thumbnail {
+  cursor: pointer;
+  outline: 1px solid #dfdfdf;
+}
+
+/*      Product info      */
 
 .product-information h4 {
   font-weight: 400;
@@ -114,6 +180,12 @@
   cursor: default;
 }
 
+.product-information span.unavailable {
+  color: #777777;
+}
+
+/*      Add to cart section     */
+
 .add-to-cart-container {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -122,14 +194,12 @@
   -ms-flex-pack: justify;
   justify-content: space-between;
   margin-top: 10px;
-  margin-bottom: 20px;
   width: 75%;
 }
 
 .quantity-input-container td {
   height: 40px;
   width: 40px;
-  outline: 2px solid #e83f6f;
   padding: 0;
 }
 
@@ -149,7 +219,6 @@
   width: 45px;
   padding: 0;
   text-align: center;
-  background-color: white;
 }
 
 button.add-to-cart-button {
@@ -157,42 +226,45 @@ button.add-to-cart-button {
   width: 250px;
 }
 
-/* gallery */
-.gallery-background {
-  height: 100vh;
-  width: 100vw;
+.quantity-input-container.available td {
+  outline: 2px solid #e83f6f;
+}
+
+.quantity-input-container.available span {
   background-color: white;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 500;
 }
 
-.gallery-images {
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  left: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.quantity-input-container.unavailable {
+  background-color: #cecece;
 }
 
-.gallery-controls {
-  position: fixed;
-  z-index: 600;
+.quantity-input-container.unavailable td {
+  outline: 2px solid #c2c2c2;
 }
 
-.gallery-close {
-  position: fixed;
-  right: 30px;
-  top: 30px;
-  cursor: pointer;
+.quantity-input-container.unavailable span,
+.quantity-input-container.unavailable button {
+  color: #777777;
+  background-color: #cecece;
+  cursor: default;
 }
 
-.gallery-displayed-img {
-  height: 800px;
+button.add-to-cart-button.unavailable {
+  color: #777777;
+  background-color: #cecece;
+  border: none;
+  cursor: default;
+}
+
+/*      Availability info     */
+.availability-info span {
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.availability-info span.unavailable {
+  color: #777777;
 }
 
 /*      Accordion description     */
