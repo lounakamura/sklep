@@ -13,6 +13,7 @@
 
     $maincategories = [];
     $products = [];
+    $favourited = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
@@ -75,6 +76,23 @@
             $products[$i]['dostepnosc'] = "available";
         } else {
             $products[$i]['dostepnosc'] = "unavailable";
+        }
+    }
+
+    // Storing favourited products
+    if($_SESSION['loggedin']){
+        $query = "SELECT produkt_id FROM ulubiony WHERE uzytkownik_id=".$_SESSION['id'];
+        $result = $connection->query($query);
+        fetchAllToArray($favourited, $result);
+        $result->free();
+    }
+
+    for($i=0; $i<count($products); $i++){
+        $products[$i]['ulubiony'] = "not-fav";
+        for($j=0; $j<count($favourited); $j++){
+            if(in_array($products[$i]['produkt_id'], $favourited[$j])) {
+                $products[$i]['ulubiony'] = "fav";
+            }
         }
     }
     
@@ -224,7 +242,7 @@
                     foreach ($products as $product) {
                         echo "<div class='product-container ".$product['dostepnosc']."'>";
                             echo "<div>";
-                                echo "<button class='add-to-fav'></button>";
+                                echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
                                 echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
                                     <img src='".$product['zdjecie']."'>"; 
                                 echo "</a>"; 
@@ -337,6 +355,7 @@
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
     <script src="js/accountPreview.js"></script>
+    <script src="js/addOrRemoveFavourite.js"></script>
 </body>
 
 </html>

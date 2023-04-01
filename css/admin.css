@@ -1,0 +1,112 @@
+main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  text-align: center;
+}
+
+main h2 {
+  font-weight: 500;
+}
+
+.container {
+  width: 700px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.container form * {
+  margin-bottom: 5px;
+}
+
+.container input,
+.container select,
+.container textarea {
+  font-size: 17px;
+  border-radius: 1px;
+  border: 1px solid #c2c2c2;
+  padding: 10px;
+  margin-bottom: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container input,
+.container select {
+  height: 45px;
+}
+
+.container textarea {
+  height: 150px;
+}
+
+.container button[type="submit"] {
+  margin-top: 5px;
+}
+
+/*      Accordion container     */
+
+.accordion {
+  background-color: white;
+  border: 2px solid #e83f6f;
+  color: #e83f6f;
+  height: 50px;
+  padding: 15px;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion::after {
+  content: "+";
+  font-size: 30px;
+}
+
+.accordion:hover {
+  opacity: 0.7;
+}
+
+.accordion-content {
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  max-height: 0;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  font-size: 15px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-width: 0 2px 0px 2px;
+  border-style: solid;
+  border-color: #e83f6f;
+}
+
+.accordion-inner {
+  width: 600px;
+  padding: 20px;
+}
+
+.state:checked ~ .accordion-content {
+  max-height: 5000px;
+  border-width: 0 2px 2px 2px;
+}

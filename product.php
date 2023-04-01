@@ -64,6 +64,16 @@
         $availability = "unavailable";
     }
 
+    // Storing if product is favourited
+    $product['ulubiony'] = "not-fav";
+    if($_SESSION['loggedin']){
+        $query = "SELECT produkt_id FROM ulubiony WHERE uzytkownik_id=".$_SESSION['id']." AND produkt_id=".$product['produkt_id'];
+        $result = $connection->query($query);
+        if(mysqli_num_rows($result)>0){
+            $product['ulubiony'] = "fav";
+        }
+    }
+
     setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
 ?>
 
@@ -199,7 +209,7 @@
             <div class='product-information'>
                 <div class='img-gallery'>
                     <div class='gallery-container'>
-                        <button class='add-to-fav'></button>
+                        <button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>
                         <img class='gallery-main-img' src='".$images[0]['zdjecie']."'>
                         <div class='gallery-thumbs'>";
                             foreach ($images as $image) {
@@ -358,11 +368,11 @@
     <script src="js/menuHandler.js"></script>
     <script src="js/productQuantity.js"></script>
     <script src="js/productImageGallery.js"></script>
-    <script src="js/xzoom.js"></script>
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
     <script src="js/removeFromCart.js"></script>
     <script src="js/accountPreview.js"></script>
+    <script src="js/addOrRemoveFavourite.js"></script>
 </body>
 </html>
 

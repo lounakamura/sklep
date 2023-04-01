@@ -47,8 +47,11 @@
             echo '
             <div>
                 <div class="account-shape">
-                    <span class="display-username">'.$_SESSION['username'].'</span>
-                    <a href="user/account.php" target="_parent">Twoje konto</a>
+                    <span class="display-username">'.$_SESSION['username'].'</span>';
+                    if(isset($_SESSION['isadmin'])) {
+                        echo '<a href="/sklep/admin.php" target="_parent">Panel administratora</a>';
+                    }
+                    echo '<a href="user/account.php" target="_parent">Twoje konto</a>
                     <a href="user/orders.php" target="_parent">Zamówienia</a>
                     <button onclick="parent.location.href=\'php/logout.php\'" class="white-button">Wyloguj</button>';
                 echo "</div>";

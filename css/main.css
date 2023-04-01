@@ -131,9 +131,17 @@ body.scroll-block {
   height: 35px;
   width: 35px;
   border: none;
-  background-image: url(../images/ui/heart-pink.svg);
   background-repeat: no-repeat;
   background-position: center center;
+  background-image: url(../images/ui/heart-pink.svg);
+}
+
+.add-to-fav.fav {
+  background-image: url(../images/ui/heart-pink-filled.svg);
+}
+
+textarea {
+  resize: none;
 }
 
 /*      HEADER      */

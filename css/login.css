@@ -11,9 +11,7 @@ h1 {
 }
 
 .login-container {
-  background-color: white;
   width: 500px;
-  border-radius: 1px;
   display: flex;
   flex-direction: column;
   align-items: stretch;

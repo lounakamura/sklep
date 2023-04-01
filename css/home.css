@@ -1,17 +1,37 @@
+/*      Slideshow gallery     */
+
+.slideshow-container {
+  height: calc(100vw * (720 / 2560));
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 /* Promotional banner */
 
 a.promo-banner-container {
   height: 100%;
   width: fit-content;
-  border-radius: 1px;
+  position: absolute;
+  transition: 1s;
 }
 
 .promo-banner {
-  height: calc(99vw * (720 / 2560));
-  width: 99vw;
-  background-image: url(../images/main/promo_banner.jpg);
+  height: 100%;
+  width: 100vw;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  object-fit: cover;
   border-radius: 1px;
+}
+
+.promo-banner-container:nth-of-type(1) .promo-banner {
+  background-image: url(/sklep/images/main/promo_banner.jpg);
+}
+
+.promo-banner-container:nth-of-type(2) .promo-banner {
+}
+
+.promo-banner-container:nth-of-type(3) .promo-banner {
 }

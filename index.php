@@ -158,9 +158,17 @@
     </nav>
     
     <main>
-        <a class='promo-banner-container' href='/sklep/sale.php'>
-            <div class='promo-banner'></div>
-        </a>
+        <div class='slideshow-container'>
+            <a class='promo-banner-container' href='/sklep/sale.php'>
+                <div class='promo-banner'></div>
+            </a>
+            <a class='promo-banner-container' href=''>
+                <div class='promo-banner'></div>
+            </a>
+            <a class='promo-banner-container' href=''>
+                <div class='promo-banner'></div>
+            </a>
+        </div>
     </main>
 
 
@@ -249,6 +257,8 @@
     <script src="js/script.js"></script>
     <script src="js/scrollToTop.js"></script>
     <script src="js/menuHandler.js"></script>
+    <script src="js/slideshowGallery.js"></script>
+
     <script src="js/previewCart.js"></script>
     <script src="js/addToCart.js"></script>
     <script src="js/accountPreview.js"></script>
