@@ -31,7 +31,9 @@ a.promo-banner-container {
 }
 
 .promo-banner-container:nth-of-type(2) .promo-banner {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png");
 }
 
 .promo-banner-container:nth-of-type(3) .promo-banner {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png");
 }
