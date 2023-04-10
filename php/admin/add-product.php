@@ -5,11 +5,15 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
-    $productId = [];
+    if(!isset($_SESSION['isadmin'])) {
+        header('Location: /sklep/index.php');
+    }
 
     if (!isset($_POST['category'], $_POST['category1'], $_POST['category2'], $_POST['name'], $_POST['price'], $_POST['description'], $_POST['brand'], $_POST['amount'])) {
         header('Location: /sklep/admin.php');
     }
+
+    $productId = [];
 
     $query = "INSERT INTO produkt (kategoria_id, nazwa, cena, opis, marka_id, ilosc) VALUES (".$_POST['category2'].", '".$_POST['name']."', ".$_POST['price'].", '".$_POST['description']."', ".$_POST['brand'].", ".$_POST['amount'].")";
     $result = $connection->query($query);
@@ -31,7 +35,7 @@
         $absolute_path = $parent_dir.$target_dir;
         $target_file = $absolute_path.$name;
         
-        $validExtensions = array("jpg", "jpeg", "png");
+        $validExtensions = array("jpg", "jpeg", "png", "webp");
         
         if(in_array($extension, $validExtensions)){
             // Check if directory exists, if not, create it

@@ -35,9 +35,9 @@
             echo '
             <div>
                 <div class="account-shape">
-                    <button onclick="parent.location.href=\'login.php\'" class="login-button pink-button">Zaloguj się</button>
+                    <button onclick="parent.location.href=\'/sklep/login.php\'" class="login-button pink-button">Zaloguj się</button>
                     <span>lub</span>
-                    <button onclick="parent.location.href=\'register.php\'" class="register-button pink-button">Zarejestruj się</button>';
+                    <button onclick="parent.location.href=\'/sklep/register.php\'" class="register-button pink-button">Zarejestruj się</button>';
                 echo "</div>";
             echo "</div>";
         }
@@ -53,7 +53,7 @@
                     }
                     echo '<a href="user/account.php" target="_parent">Twoje konto</a>
                     <a href="user/orders.php" target="_parent">Zamówienia</a>
-                    <button onclick="parent.location.href=\'php/logout.php\'" class="white-button">Wyloguj</button>';
+                    <button onclick="parent.location.href=\'/sklep/php/logout.php\'" class="white-button">Wyloguj</button>';
                 echo "</div>";
             echo "</div>";
         }

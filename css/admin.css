@@ -52,7 +52,7 @@ main h2 {
 }
 
 .container textarea {
-  height: 150px;
+  height: 300px;
 }
 
 .container button[type="submit"] {
@@ -75,6 +75,7 @@ main h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  user-select: none;
 }
 
 .accordion::after {

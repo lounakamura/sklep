@@ -5,6 +5,14 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
     
+    if(!isset($_SESSION['isadmin'])) {
+        header('Location: /sklep/index.php');
+    }
+
+    if(empty($_FILES['files']['name'][0])){
+        header('Location: /sklep/admin.php');
+    }
+
     $fileAmount = count($_FILES['upload']['name']);
 
     // Loop through each file
@@ -17,7 +25,7 @@
         $absolute_path = $parent_dir.$target_dir;
         $target_file = $absolute_path.$name;
         
-        $validExtensions = array("jpg", "jpeg", "png");
+        $validExtensions = array("jpg", "jpeg", "png", "webp");
         
         if(in_array($extension, $validExtensions)){
             // Check if directory exists, if not, create it

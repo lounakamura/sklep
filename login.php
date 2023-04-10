@@ -11,6 +11,10 @@
         checkIfSessionExists($connection);
     }
 
+    if(isset($_SESSION['loggedin'])) {
+        header('Location: /sklep/index.php');
+    }
+
     $cartAmount = [];
     $maincategories = [];
     

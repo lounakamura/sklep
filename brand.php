@@ -14,6 +14,7 @@
 
     $maincategories = [];
     $products = [];
+    $favourited = [];
 
     // Storing cart amount
     $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
@@ -38,8 +39,10 @@
 
     // Sorting products
     $sort = ' ';
-    if (isset($_POST['sort'])) {
-        $sort = 'ORDER BY '.$_POST['sort'];
+    if (isset($_GET['sort']) && $_GET['sort']!='') {
+        $sort = 'ORDER BY '.$_GET['sort'];
+    } else {
+        $sort = 'ORDER BY p.nazwa ASC';
     }
 
     // Storing the main categories
@@ -94,6 +97,7 @@
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/category-brand.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
@@ -204,33 +208,41 @@
     </nav>
 
     <main>
-        <?php
-            echo "<div>";
-                echo "<h2>".$displayedBrand['marka']."</h2>";
+        <?php echo "<h1>".$displayedBrand['marka']."</h1>"; ?>
+
+        <div class='products-misc'>
+            <?php
                 echo "<h3>".$productsFound." wyników</h3>";
-                echo "<form method='POST'>";
-                    echo "<select name='sort' onchange='this.form.submit()'>
-                        <option value='produkt.nazwa ASC'>Sortuj po nazwie rosnąco</option>
-                        <option value='produkt.nazwa DESC'>Sortuj po nazwie malejąco</option>
-                        <option value='cena ASC'>Sortuj po cenie rosnąco</option>
-                        <option value='cena DESC'>Sortuj po cenie malejąco</option>
-                        <option value='produkt.produkt_id ASC'>Sortuj po dacie dodania rosnąco</option>
-                        <option value='produkt.produkt_id dateDESC'>Sortuj po dacie dodania malejąco</option>
-                        ";
-                    echo "</select>";
-                echo "</form>";
-            echo "</div>";
+            ?>
+            <form method='GET'>
+                <?php
+                    if (isset($_GET['brand'])) {
+                        echo "<input type='hidden' name='brand' value='".htmlspecialchars($_GET['brand'])."'>";
+                    }
+                ?>
+                <label>Sortuj wg</label>
+                <select name='sort' id='sort'>
+                    <option value='' selected>domyślnie</option>
+                    <option value='p.produkt_id DESC'>najnowsze</option>
+                    <option value='p.nazwa ASC'>nazwa a-z</option>
+                    <option value='p.nazwa DESC'>nazwa z-a</option>
+                    <option value='cena ASC'>cena od najniższej</option>
+                    <option value='cena DESC'>cena od najwyższej</option>
+                </select>
+            </form>
+        </div>
 
-            echo "<div class='product-display'>";
-                echo "<div class='categories-container'>";
+        <div class='product-display'>
+            <div class='categories-container'>
 
-                echo "</div>";
+            </div>
 
-                echo "<div class='products-container'>";
+            <div class='products-container'>
+                <?php
                 foreach ($products as $product) {
                     echo "<div class='product-container ".$product['dostepnosc']."'>";
                         echo "<div>";
-                            echo "<button class='add-to-fav ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'></button>";
+                            echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
                             echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
                                 <img src='".$product['zdjecie']."'>"; 
                             echo "</a>"; 
@@ -247,9 +259,9 @@
                         echo "</div>";
                     echo "</div>";
                 }
-                echo "</div>";
-            echo "</div>";
-            ?>
+                ?>
+            </div>
+        </div>
     </main>
 
 
@@ -344,6 +356,7 @@
     <script src="js/removeFromCart.js"></script>
     <script src="js/accountPreview.js"></script>
     <script src="js/addOrRemoveFavourite.js"></script>
+    <script src="js/productSort.js"></script>
 </body>
 
 </html>

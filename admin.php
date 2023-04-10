@@ -12,7 +12,7 @@
     }
     
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: index.php');
+        header('Location: /sklep/index.php');
     }
 
     $cartAmount = [];
@@ -276,7 +276,7 @@
                         </select>
 
                         <label for="amount">Ilość</label>
-                        <input type="number" name="amount" id="amount" required min="0" max="999" step="1">
+                        <input type="number" name="amount" id="amount" required min="0" max="999" step="1" value="999">
 
                         <label for="images">Zdjęcia</label>
                         <input name="upload[]" type="file" multiple="multiple" id="images">
@@ -312,7 +312,7 @@
 
         <div class="container">
             <label for='state3'>
-                <div class='accordion'>Zmodyfikuj produkt</div>
+                <div class='accordion'>Usuń produkt</div>
             </label>
             <input type='checkbox' id='state3' class='state' hidden>
             <div class='accordion-content'>
@@ -334,7 +334,7 @@
 
         <div class="container">
             <label for='state4'>
-                <div class='accordion'>Usuń produkt</div>
+                <div class='accordion'>Zmodyfikuj produkt</div>
             </label>
             <input type='checkbox' id='state4' class='state' hidden>
             <div class='accordion-content'>
@@ -513,6 +513,46 @@
                                         unset($subcategories);
                                     }
                                     unset($categories);
+                                }
+                            ?>
+                        </select>
+                        <button type="submit" class="pink-button">Usuń</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <h2>Marka</h2>
+
+        <div class="container">
+            <label for='state11'>
+                <div class='accordion'>Dodaj nową markę</div>
+            </label>
+            <input type='checkbox' id='state11' class='state' hidden>
+            <div class='accordion-content'>
+                <div class='accordion-inner'>
+                    <form method="POST" action="/sklep/php/admin/add-brand.php">
+                        <label for='brand-name'>Nazwa</label>
+                        <input type='text' name='brand' id='brand-name' required maxlength='32'>
+                        <button type="submit" class="pink-button">Dodaj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <label for='state12'>
+                <div class='accordion'>Usuń markę</div>
+            </label>
+            <input type='checkbox' id='state12' class='state' hidden>
+            <div class='accordion-content'>
+                <div class='accordion-inner'>
+                    <form method="POST" action="/sklep/php/admin/remove-brand.php">
+                        <label>Wybierz markę</label>
+                        <select name="brand">
+                            <?php
+                                foreach($brands as $brand){
+                                    echo "<option value='".$brand['marka_id']."'>".$brand['marka']."</option>";
                                 }
                             ?>
                         </select>

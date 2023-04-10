@@ -651,6 +651,45 @@ footer h4 {
   animation-delay: -0.15s;
 }
 
+/*      Breadcrumbs     */
+
+.breadcrumbs {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.breadcrumbs ul {
+  list-style: none;
+}
+
+.breadcrumbs ul li {
+  display: inline;
+}
+
+.breadcrumbs ul li + li:before {
+  padding: 8px;
+  color: #c5c5c5;
+  content: ">";
+}
+
+.breadcrumbs li a {
+  color: #c5c5c5;
+  font-family: "Montserrat", sans-serif;
+  transition: 0.2s ease-out;
+}
+
+.breadcrumbs li:last-child a {
+  color: black;
+}
+
+.breadcrumbs li a:hover {
+  color: black;
+  transition: 0.2s ease-out;
+}
+
 /*      ANIMATIONS      */
 
 @-webkit-keyframes shake-horizontal {

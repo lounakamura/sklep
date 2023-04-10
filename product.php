@@ -199,10 +199,11 @@
         <?php
             echo "<div class='breadcrumbs'>
                 <ul>
-                    <li><a href='index.php' class='uppercase'>Strona Główna</a></li>
-                    <li><a href='category.php?maincategory=".$product['kategoria_id']."' class='uppercase'>".$product['kategoria']."</a></li>
-                    <li><a href='category.php?category=".$product['kategoria1_id'] . "' class='uppercase'>".$product['kategoria1']."</a></li>
-                    <li><a href='category.php?subcategory=" . $product['kategoria2_id']."' class='uppercase'>".$product['kategoria2']."</a></li>
+                    <li><a href='index.php'>Strona Główna</a></li>
+                    <li><a href='category.php'>Produkty</a></li>
+                    <li><a href='category.php?maincategory=".$product['kategoria_id']."'>".$product['kategoria']."</a></li>
+                    <li><a href='category.php?category=".$product['kategoria1_id'] . "'>".$product['kategoria1']."</a></li>
+                    <li><a href='category.php?subcategory=" . $product['kategoria2_id']."' style='color:#c5c5c5'>".$product['kategoria2']."</a></li>
                 </ul>
             </div>
 

@@ -5,6 +5,10 @@
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
+    if(!isset($_SESSION['isadmin'])) {
+        header('Location: /sklep/index.php');
+    }
+
     if (!isset($_POST['category'])) {
         header('Location: /sklep/admin.php');
     }
