@@ -160,7 +160,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    <a class='uppercase' href='products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach ( $categories as $category ) {
@@ -171,11 +171,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    <a class='subcategory uppercase' href='products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
                                     echo "<ul>";
                                         foreach ( $subcategories as $subcategory ) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                                <a class='subsubcategory' href='products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";
@@ -200,10 +200,10 @@
             echo "<div class='breadcrumbs'>
                 <ul>
                     <li><a href='index.php'>Strona Główna</a></li>
-                    <li><a href='category.php'>Produkty</a></li>
-                    <li><a href='category.php?maincategory=".$product['kategoria_id']."'>".$product['kategoria']."</a></li>
-                    <li><a href='category.php?category=".$product['kategoria1_id'] . "'>".$product['kategoria1']."</a></li>
-                    <li><a href='category.php?subcategory=" . $product['kategoria2_id']."' style='color:#c5c5c5'>".$product['kategoria2']."</a></li>
+                    <li><a href='products.php'>Produkty</a></li>
+                    <li><a href='products.php?maincategory=".$product['kategoria_id']."'>".$product['kategoria']."</a></li>
+                    <li><a href='products.php?category=".$product['kategoria1_id'] . "'>".$product['kategoria1']."</a></li>
+                    <li><a href='products.php?subcategory=" . $product['kategoria2_id']."' style='color:#c5c5c5'>".$product['kategoria2']."</a></li>
                 </ul>
             </div>
 
@@ -236,7 +236,7 @@
                 </div>
                 
                 <div class='info'>
-                    <a href='brand.php?brand=" . $product['marka_id'] . "'>
+                    <a href='products.php?brand=" . $product['marka_id'] . "'>
                         <h4>" . $product['marka'] . "</h4>
                     </a>
                     <h3>" . $product['nazwa'] . "</h3>
@@ -312,7 +312,7 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
                 <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
                 <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
                 <a href="/sklep/about/our-shop.php">Nasz sklep</a>

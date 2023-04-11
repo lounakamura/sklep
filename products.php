@@ -1,5 +1,6 @@
 <?php
     session_start();
+    ob_start();
 
     require_once "php/config.php";
 
@@ -37,31 +38,38 @@
     $baseSelectionOn = '';
     $displayedCategoryName = 'Produkty';
     if(isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])){
-    if (isset($_GET['maincategory'])) {
-        $baseSelectionOn = ' WHERE k.kategoria_id=' . $_GET['maincategory'];
-        $displayedCategory = $_GET['maincategory'];
-        $categoryTable = 'kategoria';
-    } else if (isset($_GET['category'])) {
-        $baseSelectionOn = ' WHERE k1.kategoria_id=' . $_GET['category'];
-        $displayedCategory = $_GET['category'];
-        $categoryTable = 'kategoria_1';
-        $query = "SELECT k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_1 AS k1 JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k1.kategoria_id=$displayedCategory";
-        $result = $connection->query($query);
-        $displayedCategoryParents =  $result->fetch_assoc();
-        $result->free();
-    } else if (isset($_GET['subcategory'])) {
-        $baseSelectionOn = ' WHERE k2.kategoria_id=' . $_GET['subcategory'];
-        $displayedCategory = $_GET['subcategory'];
-        $categoryTable = 'kategoria_2';
-        $query = "SELECT k1.kategoria AS k1_nazwa, k1.kategoria_id AS k1_id, k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_2 AS k2 JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k2.kategoria_id=$displayedCategory";
-        $result = $connection->query($query);
-        $displayedCategoryParents =  $result->fetch_assoc();
-        $result->free();
-    }
+        if (isset($_GET['maincategory'])) {
+            $baseSelectionOn = ' WHERE k.kategoria_id=' . $_GET['maincategory'];
+            $displayedCategory = $_GET['maincategory'];
+            $categoryTable = 'kategoria';
+        } else if (isset($_GET['category'])) {
+            $baseSelectionOn = ' WHERE k1.kategoria_id=' . $_GET['category'];
+            $displayedCategory = $_GET['category'];
+            $categoryTable = 'kategoria_1';
+            $query = "SELECT k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_1 AS k1 JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k1.kategoria_id=$displayedCategory";
+            $result = $connection->query($query);
+            $displayedCategoryParents =  $result->fetch_assoc();
+            $result->free();
+        } else if (isset($_GET['subcategory'])) {
+            $baseSelectionOn = ' WHERE k2.kategoria_id=' . $_GET['subcategory'];
+            $displayedCategory = $_GET['subcategory'];
+            $categoryTable = 'kategoria_2';
+            $query = "SELECT k1.kategoria AS k1_nazwa, k1.kategoria_id AS k1_id, k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_2 AS k2 JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k2.kategoria_id=$displayedCategory";
+            $result = $connection->query($query);
+            $displayedCategoryParents =  $result->fetch_assoc();
+            $result->free();
+        }
         $query = "SELECT kategoria FROM $categoryTable WHERE kategoria_id=$displayedCategory";
         $result = $connection->query($query);
         $displayedCategoryName = $result->fetch_assoc()['kategoria'];
         $result->free();
+    } else if (isset($_GET['brand'])) {
+        $query = "SELECT * FROM marka WHERE marka_id=".$_GET['brand'];
+        $result = $connection->query($query);
+        $displayedBrand = $result->fetch_assoc()['marka'];
+        $result->free();
+        $baseSelectionOn = 'WHERE p.marka_id='.$_GET['brand'];
+        $displayedCategoryName = $displayedBrand;
     }
 
     // Sorting products
@@ -113,7 +121,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>%TITLE% | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="images/ui/logo-small.svg">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/category-brand.css">
@@ -192,7 +200,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    <a class='uppercase' href='products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach ( $categories as $category ) {
@@ -203,11 +211,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    <a class='subcategory uppercase' href='products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
                                     echo "<ul>";
                                         foreach ( $subcategories as $subcategory ) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                                <a class='subsubcategory' href='products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";
@@ -231,10 +239,15 @@
         <?php    
             echo "<div class='breadcrumbs'>
                     <ul>
-                        <li><a href='index.php'>Strona Główna</a></li>
-                        <li><a href='category.php'>Produkty</a></li>";
+                        <li><a href='index.php'>Strona Główna</a></li>";
+                        if(isset($_GET['brand'])){
+                            echo "<li><a href='brands.php'>Marki</a></li>
+                            <li><a href='products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
+                        } else {
+                            echo "<li><a href='products.php'>Produkty</a></li>";
+                        }
                         if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
-                            echo "<li><a href='category.php?maincategory=";
+                            echo "<li><a href='products.php?maincategory=";
                             if(isset($_GET['maincategory'])){
                                 echo $_GET['maincategory']."'>".$displayedCategoryName;
                             } else {
@@ -242,7 +255,7 @@
                             }
                             echo "</a></li>";
                             if (isset($_GET['category']) || isset($_GET['subcategory'])) {
-                                echo "<li><a href='category.php?category=";
+                                echo "<li><a href='products.php?category=";
                                 if(isset($_GET['category'])){
                                     echo $_GET['category']."'>".$displayedCategoryName;
                                 } else {
@@ -250,7 +263,7 @@
                                 }
                                 echo "</a></li>";
                                 if (isset($_GET['subcategory'])) {
-                                    echo "<li><a href='category.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
+                                    echo "<li><a href='products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
                                 }
                             }
                         }
@@ -288,7 +301,7 @@
                             echo "
                             <li $active>
                                 <div class='dropdown-header'>
-                                    <a href='category.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
+                                    <a href='products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
                                     <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
                                 </div>";
                             echo "<ul class='submenu' $display>";
@@ -318,12 +331,12 @@
                                     echo "
                                     <li $active>
                                         <div class='dropdown-header'>
-                                            <a href='category.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
+                                            <a href='products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
                                             <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
                                         </div>
                                         <ul class='nested-menu' $display>";
                                             foreach ( $subcategories as $subcategory ) {
-                                                echo "<a href='category.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
+                                                echo "<a href='products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
                                             }
                                             echo "
                                         </ul>
@@ -366,26 +379,26 @@
                 </div>
 
                 <?php
-                foreach ($products as $product) {
-                    echo "<div class='product-container ".$product['dostepnosc']."'>";
-                        echo "<div>";
-                            echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <img src='".$product['zdjecie']."'>"; 
-                            echo "</a>"; 
-                            echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
-                                <h4>" . $product['marka'] . "</h4>";
-                            echo "</a>";
-                            echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
-                                <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
-                            echo "</a>";
+                    foreach ($products as $product) {
+                        echo "<div class='product-container ".$product['dostepnosc']."'>";
+                            echo "<div>";
+                                echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <img src='".$product['zdjecie']."'>"; 
+                                echo "</a>"; 
+                                echo "<a href='products.php?brand=" . $product['marka_id'] . "'>
+                                    <h4>" . $product['marka'] . "</h4>";
+                                echo "</a>";
+                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
+                                echo "</a>";
+                            echo "</div>";
+                            echo "<div>";
+                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                                echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
+                            echo "</div>";
                         echo "</div>";
-                        echo "<div>";
-                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                            echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
-                        echo "</div>";
-                    echo "</div>";
-                }
+                    }
                 ?>
             </div>
         </div>
@@ -423,7 +436,7 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
                 <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
                 <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
                 <a href="/sklep/about/our-shop.php">Nasz sklep</a>
@@ -490,5 +503,8 @@
 </html>
 
 <?php
+    $buffer = ob_get_contents();
+    ob_end_clean();
+    echo str_replace("%TITLE%", $displayedCategoryName, $buffer);
     $connection->close();
 ?>

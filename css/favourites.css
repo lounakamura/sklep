@@ -1,6 +1,6 @@
 main {
-  padding-left: 15vw;
-  padding-right: 15vw;
+  padding-left: clamp(0px, 15vw, 15vw);
+  padding-right: clamp(0px, 15vw, 15vw);
 }
 
 /* Product display header */

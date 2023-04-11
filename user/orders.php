@@ -132,7 +132,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='../category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    <a class='uppercase' href='../products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach ( $categories as $category ) {
@@ -143,11 +143,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='../category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    <a class='subcategory uppercase' href='../products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
                                     echo "<ul>";
                                         foreach ( $subcategories as $subcategory ) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='../category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                                <a class='subsubcategory' href='../products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";

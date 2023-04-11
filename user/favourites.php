@@ -83,7 +83,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favourite products | Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Ulubione | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="../images/ui/logo-small.svg">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/favourites.css">
@@ -171,7 +171,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='../category.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    <a class='uppercase' href='../products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach ( $categories as $category ) {
@@ -182,11 +182,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='../category.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    <a class='subcategory uppercase' href='../products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
                                     echo "<ul>";
                                         foreach ( $subcategories as $subcategory ) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='../category.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                                <a class='subsubcategory' href='../products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";
@@ -243,7 +243,7 @@
                                     echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
                                         <img src='".$product['zdjecie']."'>"; 
                                     echo "</a>"; 
-                                    echo "<a href='brand.php?brand=" . $product['marka_id'] . "'>
+                                    echo "<a href='products.php?brand=" . $product['marka_id'] . "'>
                                         <h4>" . $product['marka'] . "</h4>";
                                     echo "</a>";
                                     echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
@@ -292,7 +292,7 @@
         <div class="footer">
             <div>
                 <h4 class="uppercase">O nas</h4>
-                <a href="about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
                 <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
                 <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
                 <a href="/sklep/about/our-shop.php">Nasz sklep</a>

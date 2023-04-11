@@ -1,0 +1,317 @@
+<?php
+    session_start();
+
+    require_once "../php/config.php";
+
+    $connection = new mysqli ($servername, $username, $password, $database);
+    
+    if (!isset($_SESSION['session'])) {
+        newSession($connection);
+    } else {
+        checkIfSessionExists($connection);
+    }
+
+    $cartAmount = [];
+    $maincategories = [];
+
+    // Storing cart amount
+    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
+    if(isset($_SESSION['loggedin'])){
+        $query .= "uzytkownik_id=".$_SESSION['id'];
+    } else {
+        $query .= "sesja_id=".$_SESSION['session'];
+    }    
+    $result = $connection->query($query);
+    $cartAmount = $result->fetch_assoc();
+    $result->free();
+
+    // Storing the main categories
+    $query = "SELECT * FROM kategoria";
+    $result = $connection->query($query);
+    fetchAllToArray($maincategories, $result);
+    $result->free();
+
+    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+?>
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
+    <link rel="stylesheet" href="/sklep/css/main.css">
+    <script src="js/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo_big-container">
+            <a href="/sklep/index.php"><img class="logo_big" src="/sklep/images/ui/logo-big.svg" /></a>
+        </div>
+
+        <div class="search-container">
+            <form>
+                <input class="search-field" type="text" placeholder="Szukaj produktów...">
+                <button class="search-button" type="submit"></button>
+            </form>
+        </div>
+
+        <div class="header-buttons">
+            <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account"></button>
+            <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'></button>
+            <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
+                <div class='container-cart-items-amount' style='opacity:0'>
+                    <div class='circle-cart-items-amount'>
+                        <span class='cart-items-amount'>
+                            -
+                        </span>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <header class="header-small off">
+        <div class="logo_big-container">
+            <a href="/sklep/index.php"><img class="logo_big" src="/sklep/images/ui/logo-big.svg" /></a>
+        </div>
+
+        <div class="search-container">
+            <form>
+                <input class="search-field" type="text" placeholder="Szukaj produktów...">
+                <button class="search-button" type="submit"></button>
+            </form>
+        </div>
+
+        <div class="header-buttons">
+            <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account" data-fixed='yes'></button>
+            <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
+            <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart" data-fixed='yes'>
+                <div class='container-cart-items-amount' style='opacity:0'>
+                    <div class='circle-cart-items-amount'>
+                        <span class='cart-items-amount'>
+                            -
+                        </span>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <nav class="navigation-categories">
+        <ul>
+            <li>
+                <a class="pink-text uppercase" href="/sklep/sale.php">Promocje</a>
+            </li>
+
+            <?php
+            foreach ( $maincategories as $maincategory ) {
+                $categories = [];
+                $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
+                $result = $connection->query($query);
+                fetchAllToArray( $categories, $result );
+                $result->free();
+
+                echo "<li class='category'>
+                    <a class='uppercase' href='/sklep/products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
+                    echo "<section class='categories-bg off'>
+                        <ul class='categories-main'>";
+                            foreach ( $categories as $category ) {
+                                $subcategories = [];
+                                $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
+                                $result = $connection->query($query);
+                                fetchAllToArray( $subcategories, $result );
+                                $result->free();
+
+                                echo "<li>
+                                    <a class='subcategory uppercase' href='/sklep/products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
+                                    echo "<ul>";
+                                        foreach ( $subcategories as $subcategory ) {
+                                            echo "<li>
+                                                <a class='subsubcategory' href='/sklep/products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
+                                            echo "</li>";
+                                        }
+                                    echo "</ul>";
+                                echo "</li>";
+                                unset( $subcategories );
+                            }
+                        echo "</ul>";
+                    echo "</section>";
+                echo "</li>";
+                unset( $categories );
+            }
+            ?>
+
+            <li class="category">
+                <a href="/sklep/brands.php" class="uppercase">Marki</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <main>
+        <h1>Polityka prywatności</h1>
+        <p>
+            <?php echo nl2br("
+            <h3>1. Informacje ogólne</h3>
+            Niniejsza polityka dotyczy Serwisu www, funkcjonującego pod adresem url: kosmetykowo.pl
+            Operatorem serwisu oraz Administratorem danych osobowych jest: Kosmetykowo Limanowa 123, 34-600, Limanowa
+            Adres kontaktowy poczty elektronicznej operatora: kosmetykowo@gmail.com
+            Operator jest Administratorem Twoich danych osobowych w odniesieniu do danych podanych dobrowolnie w Serwisie.
+            Serwis wykorzystuje dane osobowe w następujących celach:
+            Prowadzenie newslettera
+            Prowadzenie systemu komentarzy
+            Obsługa zapytań przez formularz
+            Przygotowanie, pakowanie, wysyłka towarów
+            Realizacja zamówionych usług
+            Prezentacja oferty lub informacji
+            Serwis realizuje funkcje pozyskiwania informacji o użytkownikach i ich zachowaniu w następujący sposób:
+            Poprzez dobrowolnie wprowadzone w formularzach dane, które zostają wprowadzone do systemów Operatora.
+            Poprzez zapisywanie w urządzeniach końcowych plików cookie (tzw. „ciasteczka”).
+
+            <h3>2. Wybrane metody ochrony danych stosowane przez Operatora</h3>
+            Miejsca logowania i wprowadzania danych osobowych są chronione w warstwie transmisji (certyfikat SSL). Dzięki temu dane osobowe i dane logowania, wprowadzone na stronie, zostają zaszyfrowane w komputerze użytkownika i mogą być odczytane jedynie na docelowym serwerze.
+            Dane osobowe przechowywane w bazie danych są zaszyfrowane w taki sposób, że jedynie posiadający Operator klucz może je odczytać. Dzięki temu dane są chronione na wypadek wykradzenia bazy danych z serwera.
+            Hasła użytkowników są przechowywane w postaci hashowanej. Funkcja hashująca działa jednokierunkowo - nie jest możliwe odwrócenie jej działania, co stanowi obecnie współczesny standard w zakresie przechowywania haseł użytkowników.
+            W celu ochrony danych Operator regularnie wykonuje kopie bezpieczeństwa.
+            Istotnym elementem ochrony danych jest regularna aktualizacja wszelkiego oprogramowania, wykorzystywanego przez Operatora do przetwarzania danych osobowych, co w szczególności oznacza regularne aktualizacje komponentów programistycznych.
+
+            <h3>3. Hosting</h3>
+            Serwis jest hostowany (technicznie utrzymywany) na serwerach operatora: smarthost.pl
+
+            <h3>4. Twoje prawa i dodatkowe informacje o sposobie wykorzystania danych</h3>
+            W niektórych sytuacjach Administrator ma prawo przekazywać Twoje dane osobowe innym odbiorcom, jeśli będzie to niezbędne do wykonania zawartej z Tobą umowy lub do zrealizowania obowiązków ciążących na Administratorze. Dotyczy to takich grup odbiorców:
+            firma hostingowa na zasadzie powierzenia
+            kurierzy
+            banki
+            operatorzy płatności
+            operatorzy systemu komentarzy
+            upoważnieni pracownicy i współpracownicy, którzy korzystają z danych w celu realizacji celu działania strony
+            firmy, świadczące usługi marketingu na rzecz Administratora
+            Twoje dane osobowe przetwarzane przez Administratora nie dłużej, niż jest to konieczne do wykonania związanych z nimi czynności określonych osobnymi przepisami (np. o prowadzeniu rachunkowości). W odniesieniu do danych marketingowych dane nie będą przetwarzane dłużej niż przez 3 lata.
+            Przysługuje Ci prawo żądania od Administratora:
+            dostępu do danych osobowych Ciebie dotyczących,
+            ich sprostowania,
+            usunięcia,
+            ograniczenia przetwarzania,
+            oraz przenoszenia danych.
+            Przysługuje Ci prawo do złożenia sprzeciwu w zakresie przetwarzania wskazanego w pkt 3.3 c) wobec przetwarzania danych osobowych w celu wykonania prawnie uzasadnionych interesów realizowanych przez Administratora, w tym profilowania, przy czym prawo sprzeciwu nie będzie mogło być wykonane w przypadku istnienia ważnych prawnie uzasadnionych podstaw do przetwarzania, nadrzędnych wobec Ciebie interesów, praw i wolności, w szczególności ustalenia, dochodzenia lub obrony roszczeń.
+            Na działania Administratora przysługuje skarga do Prezesa Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa.
+            Podanie danych osobowych jest dobrowolne, lecz niezbędne do obsługi Serwisu.
+            W stosunku do Ciebie mogą być podejmowane czynności polegające na zautomatyzowanym podejmowaniu decyzji, w tym profilowaniu w celu świadczenia usług w ramach zawartej umowy oraz w celu prowadzenia przez Administratora marketingu bezpośredniego.
+            Dane osobowe nie są przekazywane od krajów trzecich w rozumieniu przepisów o ochronie danych osobowych. Oznacza to, że nie przesyłamy ich poza teren Unii Europejskiej.
+
+            <h3>5. Informacje w formularzach</h3>
+            Serwis zbiera informacje podane dobrowolnie przez użytkownika, w tym dane osobowe, o ile zostaną one podane.
+            Serwis może zapisać informacje o parametrach połączenia (oznaczenie czasu, adres IP).
+            Serwis, w niektórych wypadkach, może zapisać informację ułatwiającą powiązanie danych w formularzu z adresem e-mail użytkownika wypełniającego formularz. W takim wypadku adres e-mail użytkownika pojawia się wewnątrz adresu url strony zawierającej formularz.
+            Dane podane w formularzu są przetwarzane w celu wynikającym z funkcji konkretnego formularza, np. w celu dokonania procesu obsługi zgłoszenia serwisowego lub kontaktu handlowego, rejestracji usług itp. Każdorazowo kontekst i opis formularza w czytelny sposób informuje, do czego on służy.
+
+            <h3>6. Logi Administratora</h3>
+            Informacje zachowaniu użytkowników w serwisie mogą podlegać logowaniu. Dane te są wykorzystywane w celu administrowania serwisem.
+
+            <h3>7. Istotne techniki marketingowe</h3>
+            Operator stosuje analizę statystyczną ruchu na stronie, poprzez Google Analytics (Google Inc. z siedzibą w USA). Operator nie przekazuje do operatora tej usługi danych osobowych, a jedynie zanonimizowane informacje. Usługa bazuje na wykorzystaniu ciasteczek w urządzeniu końcowym użytkownika. W zakresie informacji o preferencjach użytkownika gromadzonych przez sieć reklamową Google użytkownik może przeglądać i edytować informacje wynikające z plików cookies przy pomocy narzędzia: https://www.google.com/ads/preferences/
+            Operator stosuje techniki remarketingowe, pozwalające na dopasowanie przekazów reklamowych do zachowania użytkownika na stronie, co może dawać złudzenie, że dane osobowe użytkownika są wykorzystywane do jego śledzenia, jednak w praktyce nie dochodzi do przekazania żadnych danych osobowych od Operatora do operatorom reklam. Technologicznym warunkiem takich działań jest włączona obsługa plików cookie.
+            Operator stosuje korzysta z piksela Facebooka. Ta technologia powoduje, że serwis Facebook (Facebook Inc. z siedzibą w USA) wie, że dana osoba w nim zarejestrowana korzysta z Serwisu. Bazuje w tym wypadku na danych, wobec których sam jest administratorem, Operator nie przekazuje od siebie żadnych dodatkowych danych osobowych serwisowi Facebook. Usługa bazuje na wykorzystaniu ciasteczek w urządzeniu końcowym użytkownika.
+            Operator stosuje rozwiązanie badające zachowanie użytkowników poprzez tworzenie map ciepła oraz nagrywanie zachowania na stronie. Te informacje są anonimizowane zanim zostaną przesłane do operatora usługi tak, że nie wie on jakiej osoby fizycznej one dotyczą. W szczególności nagrywaniu nie podlegają wpisywane hasła oraz inne dane osobowe.
+            Operator stosuje rozwiązanie automatyzujące działanie Serwisu w odniesieniu do użytkowników, np. mogące przesłać maila do użytkownika po odwiedzeniu konkretnej podstrony, o ile wyraził on zgodę na otrzymywanie korespondencji handlowej od Operatora.
+            Operator może stosować profilowanie w rozumieniu przepisów o ochronie danych osobowych
+
+            <h3>8. Informacja o plikach cookies</h3>
+            Serwis korzysta z plików cookies.
+            Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.
+            Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu.
+            Pliki cookies wykorzystywane są w następujących celach:
+            utrzymanie sesji użytkownika Serwisu (po zalogowaniu), dzięki której użytkownik nie musi na każdej podstronie Serwisu ponownie wpisywać loginu i hasła;
+            realizacji celów określonych powyżej w części 'Istotne techniki marketingowe';
+            W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne” (session cookies) oraz „stałe” (persistent cookies). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu wylogowania, opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez czas określony w parametrach plików cookies lub do czasu ich usunięcia przez Użytkownika.
+            Oprogramowanie do przeglądania stron internetowych (przeglądarka internetowa) zazwyczaj domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać zmiany ustawień w tym zakresie. Przeglądarka internetowa umożliwia usunięcie plików cookies. Możliwe jest także automatyczne blokowanie plików cookies Szczegółowe informacje na ten temat zawiera pomoc lub dokumentacja przeglądarki internetowej.
+            Ograniczenia stosowania plików cookies mogą wpłynąć na niektóre funkcjonalności dostępne na stronach internetowych Serwisu.
+            Pliki cookies zamieszczane w urządzeniu końcowym Użytkownika Serwisu wykorzystywane mogą być również przez współpracujące z operatorem Serwisu podmioty, w szczególności dotyczy to firm: Google (Google Inc. z siedzibą w USA), Facebook (Facebook Inc. z siedzibą w USA), Twitter (Twitter Inc. z siedzibą w USA)."); ?>
+        </p>
+    </main>
+
+    <section>
+        <div class="social-media">
+            <h2>Znajdziesz nas na:</h2>
+            <div class="social-media-icons">
+                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="/sklep/images/ui/fb-logo.svg"></a>
+                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="/sklep/images/ui/tiktok-logo.svg"></a>
+                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="/sklep/images/ui/instagram-logo.svg"></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer">
+            <div>
+                <h4 class="uppercase">O nas</h4>
+                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
+                <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
+                <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
+                <a href="/sklep/about/our-shop.php">Nasz sklep</a>
+                <a href="/sklep/about/cookie-policy.php">Polityka cookies</a>
+            </div>
+
+
+            <div>
+                <h4 class="uppercase">Obsługa klienta</h4>
+                <a href="/sklep/customer-service/payment-forms.php">Formy płatności</a>
+                <a href="/sklep/customer-service/shipping.php">Formy i koszty dostawy</a>
+                <a href="/sklep/customer-service/return-or-exchange.php">Zwrot i wymiana towaru</a>
+                <a href="/sklep/customer-service/refund.php">Reklamacje</a>
+                <a href="/sklep/customer-service/contact.php">Kontakt</a>
+            </div>
+
+            <div>
+                <h4 class="uppercase">Zakupy</h4>
+                <a href="/sklep/user/account.php">Twoje konto</a>
+                <a href="/sklep/register.php">Rejestracja</a>
+                <a href="/sklep/login.php">Logowanie</a>
+                <a href="/sklep/user/forgotten-password.php">Przypomnij hasło</a>
+                <a href="/sklep/user/orders.php">Zamówienia</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Additional elements -->
+
+    <!-- Account preview -->
+    <section>
+        <iframe src='/sklep/account-preview.php' class='account-container hidden' data-id='account'>
+        </iframe>
+    </section>
+
+    <!-- Cart preview -->
+    <section>
+        <iframe src='/sklep/cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+        </iframe>
+    </section>
+
+    <!-- Loading screen -->
+    <section>
+        <div class='loading-screen not-displayed'>
+            <div class='lds-ring'><div></div><div></div><div></div><div></div></div>
+        </div>
+    </section>
+
+    <!-- Go back to the top of the page button -->
+    <button class="to-top" onclick="location.href='#'"></button>
+
+    <script src="/sklep/js/script.js"></script>
+    <script src="/sklep/js/scrollToTop.js"></script>
+    <script src="/sklep/js/menuHandler.js"></script>
+    <script src="/sklep/js/slideshowGallery.js"></script>
+
+    <script src="/sklep/js/previewCart.js"></script>
+    <script src="/sklep/js/addToCart.js"></script>
+    <script src="/sklep/js/accountPreview.js"></script>
+</body>
+</html>
+
+<?php
+    $connection->close();
+?>
