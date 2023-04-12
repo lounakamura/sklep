@@ -1,4 +1,4 @@
-let favouriteButtons = document.querySelectorAll(".add-to-fav");
+const favouriteButtons = document.querySelectorAll(".add-to-fav");
 
 favouriteButtons.forEach(favouriteButton => {
     favouriteButton.onclick = function() {

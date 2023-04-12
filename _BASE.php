@@ -23,7 +23,6 @@
     <title>Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="/sklep/css/home.css">
     <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
@@ -34,7 +33,7 @@
     ?>
 
     <main>
-        sale
+        
     </main>
 
     <?php 
@@ -43,12 +42,14 @@
         require_once __DIR__.'\page-components\footer.html';
         require_once __DIR__.'\page-components\extras.html';
     ?>
-
-    <script src="/sklep/js/misc.js"></script>
-    <script src="/sklep/js/scrollToTop.js"></script>
-    <script src="/sklep/js/menuHandler.js"></script>
 </body>
 </html>
+
+<script src="/sklep/js/cartPreview.js" ></script>
+<script src="/sklep/js/accountPreview.js"></script>
+<script src="/sklep/js/misc.js"></script>
+<script src="/sklep/js/scrollToTop.js"></script>
+<script src="/sklep/js/menuHandler.js"></script>
 
 <?php
     $connection->close();

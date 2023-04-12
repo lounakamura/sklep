@@ -57,7 +57,6 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-header,
 main,
 .footer {
   padding-left: clamp(0px, 20vw, 20vw);
@@ -133,11 +132,11 @@ body.scroll-block {
   border: none;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url(../images/ui/heart-pink.svg);
+  background-image: url("/sklep/images/ui/heart-pink.svg");
 }
 
 .add-to-fav.fav {
-  background-image: url(../images/ui/heart-pink-filled.svg);
+  background-image: url("/sklep/images/ui/heart-pink-filled.svg");
 }
 
 textarea {
@@ -155,7 +154,10 @@ h1 {
 /*      HEADER      */
 
 header {
+  position: fixed;
+  top: 0;
   height: 7vh;
+  width: 100%;
   padding-top: 6vh;
   padding-bottom: 6vh;
   display: -webkit-box;
@@ -168,9 +170,23 @@ header {
   align-items: center;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
-  justify-content: space-between;
+  justify-content: center;
   border-bottom: 1px solid #e0e0e0;
-  gap: 10px;
+  gap: 2%;
+  background-color: white;
+  -webkit-transition: ease-out 0.3s;
+  -o-transition: ease-out 0.3s;
+  transition: ease-out 0.3s;
+}
+
+header.header-small {
+  z-index: 300;
+  height: 5vh;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  -webkit-transition: ease-out 0.3s;
+  -o-transition: ease-out 0.3s;
+  transition: ease-out 0.3s;
 }
 
 /*      Logo      */
@@ -228,7 +244,7 @@ header {
   width: 23px;
   border: none;
   background-color: white;
-  background-image: url("../images/ui/search.svg");
+  background-image: url("/sklep/images/ui/search.svg");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -269,15 +285,15 @@ header {
 }
 
 .header-buttons button.header-account {
-  background-image: url("../images/ui/user.svg");
+  background-image: url("/sklep/images/ui/user.svg");
 }
 
 .header-buttons button.header-cart {
-  background-image: url("../images/ui/shopping-cart.svg");
+  background-image: url("/sklep/images/ui/shopping-cart.svg");
 }
 
 .header-buttons button.header-fav {
-  background-image: url("../images/ui/heart.svg");
+  background-image: url("/sklep/images/ui/heart.svg");
 }
 
 /*      Cart button - icon showing amount      */
@@ -310,31 +326,11 @@ header {
   color: white;
 }
 
-/*      HEADER - SMALL VERSION      */
-
-.header-small {
-  z-index: 300;
-  position: fixed;
-  top: 0;
-  width: 60vw;
-  height: 5vh;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
-  -webkit-transition: ease-out 0.3s;
-  -o-transition: ease-out 0.3s;
-  transition: ease-out 0.3s;
-  background-color: white;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.header-small.off {
-  top: -9vh;
-  -webkit-transition: ease-out 0.3s;
-  -o-transition: ease-out 0.3s;
-  transition: ease-out 0.3s;
-}
-
 /*      NAVIGATION MENU     */
+
+nav {
+  margin-top: 19vh;
+}
 
 .navigation-categories {
   background-color: white;
@@ -545,7 +541,7 @@ footer h4 {
   border: none;
   background-color: transparent;
   background-repeat: no-repeat;
-  background-image: url("../images/ui/arrow-up.svg");
+  background-image: url("/sklep/images/ui/arrow-up.svg");
 }
 
 .to-top:hover {

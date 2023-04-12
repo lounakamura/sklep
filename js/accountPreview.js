@@ -1,44 +1,42 @@
-const accountButtons = parent.document.querySelectorAll(".header-account");
-const accountContainer = document.querySelector(".account-container");
+const accPrev = document.querySelector(".account-container");
+const accBtn = document.querySelector(".header-account");
 
-let isOverPreview = false;
-let isOverButton = false;
-let timer;
+let isOverAccPreview = false;
+let isOverAccButton = false;
+let accTimer;
 
-accountButtons.forEach(accountButton => {
-    accountButton.onmouseenter = function() {
-        if(accountButton.getAttribute("data-fixed") == 'yes') {
-            $(accountContainer).addClass('fixed');
-        } else {
-            $(accountContainer).removeClass('fixed');
-        }
-
-        timer = setTimeout(() => {
-            isOverButton = true;
-            $(accountContainer).removeClass('hidden');
-        }, 200)
+accBtn.onmouseenter = function() {
+    if(accBtn.getAttribute("data-fixed") == 'yes') {
+        $(accPrev).addClass('fixed');
+    } else {
+        $(accPrev).removeClass('fixed');
     }
 
-    accountButton.onmouseleave = function() {
-        clearTimeout(timer);
-        isOverButton = false;
-        setTimeout(() => {
-            if(isOverPreview == false) {
-                $(accountContainer).addClass('hidden');
-            }
-        }, 200)
-    }
-});
-
-accountContainer.onmouseenter = function() {
-    isOverPreview = true;
+    accTimer = setTimeout(() => {
+        isOverAccButton = true;
+        $(accPrev).removeClass('hidden');
+    }, 200)
 }
 
-accountContainer.onmouseleave = function() {
-    isOverPreview = false;
+accBtn.onmouseleave = function() {
+    clearTimeout(accTimer);
+    isOverAccButton = false;
     setTimeout(() => {
-        if(isOverButton == false) {
-            $(accountContainer).addClass('hidden');
+        if(isOverAccPreview == false) {
+            $(accPrev).addClass('hidden');
+        }
+    }, 200)
+}
+
+accPrev.onmouseenter = function() {
+    isOverAccPreview = true;
+}
+
+accPrev.onmouseleave = function() {
+    isOverAccPreview = false;
+    setTimeout(() => {
+        if(isOverAccButton == false) {
+            $(accPrev).addClass('hidden');
         }
     }, 200)
 }

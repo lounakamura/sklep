@@ -1,0 +1,26 @@
+<header>
+    <div class="logo_big-container">
+        <a href="/sklep/index.php"><img class="logo_big" src="/sklep/images/ui/logo-big.svg" /></a>
+    </div>
+
+    <div class="search-container">
+        <form>
+            <input class="search-field" type="text" placeholder="Szukaj produktów...">
+            <button class="search-button" type="submit"></button>
+        </form>
+    </div>
+
+    <div class="header-buttons">
+        <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account"></button>
+        <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'></button>
+        <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
+            <div class='container-cart-items-amount' style='opacity:0'>
+                <div class='circle-cart-items-amount'>
+                    <span class='cart-items-amount'>
+                        -
+                    </span>
+                </div>
+            </div>
+        </button>
+    </div>
+</header>

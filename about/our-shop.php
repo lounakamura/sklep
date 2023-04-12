@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "../php/config.php";
+    require_once __DIR__."\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
     
@@ -11,27 +11,7 @@
         checkIfSessionExists($connection);
     }
 
-    $cartAmount = [];
-    $maincategories = [];
-
-    // Storing cart amount
-    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
-    if(isset($_SESSION['loggedin'])){
-        $query .= "uzytkownik_id=".$_SESSION['id'];
-    } else {
-        $query .= "sesja_id=".$_SESSION['session'];
-    }    
-    $result = $connection->query($query);
-    $cartAmount = $result->fetch_assoc();
-    $result->free();
-
-    // Storing the main categories
-    $query = "SELECT * FROM kategoria";
-    $result = $connection->query($query);
-    fetchAllToArray($maincategories, $result);
-    $result->free();
-
-    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+    require_once __DIR__.'\..\page-components\required.php';
 ?>
 
 <!DOCTYPE html>
@@ -47,109 +27,10 @@
 </head>
 
 <body>
-    <header>
-        <div class="logo_big-container">
-            <a href="/sklep/index.php"><img class="logo_big" src="/sklep/images/ui/logo-big.svg" /></a>
-        </div>
-
-        <div class="search-container">
-            <form>
-                <input class="search-field" type="text" placeholder="Szukaj produktów...">
-                <button class="search-button" type="submit"></button>
-            </form>
-        </div>
-
-        <div class="header-buttons">
-            <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account"></button>
-            <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'></button>
-            <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
-                <div class='container-cart-items-amount' style='opacity:0'>
-                    <div class='circle-cart-items-amount'>
-                        <span class='cart-items-amount'>
-                            -
-                        </span>
-                    </div>
-                </div>
-            </button>
-        </div>
-    </header>
-
-    <header class="header-small off">
-        <div class="logo_big-container">
-            <a href="/sklep/index.php"><img class="logo_big" src="/sklep/images/ui/logo-big.svg" /></a>
-        </div>
-
-        <div class="search-container">
-            <form>
-                <input class="search-field" type="text" placeholder="Szukaj produktów...">
-                <button class="search-button" type="submit"></button>
-            </form>
-        </div>
-
-        <div class="header-buttons">
-            <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account" data-fixed='yes'></button>
-            <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
-            <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart" data-fixed='yes'>
-                <div class='container-cart-items-amount' style='opacity:0'>
-                    <div class='circle-cart-items-amount'>
-                        <span class='cart-items-amount'>
-                            -
-                        </span>
-                    </div>
-                </div>
-            </button>
-        </div>
-    </header>
-
-    <nav class="navigation-categories">
-        <ul>
-            <li>
-                <a class="pink-text uppercase" href="/sklep/sale.php">Promocje</a>
-            </li>
-
-            <?php
-            foreach ( $maincategories as $maincategory ) {
-                $categories = [];
-                $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
-                $result = $connection->query($query);
-                fetchAllToArray( $categories, $result );
-                $result->free();
-
-                echo "<li class='category'>
-                    <a class='uppercase' href='/sklep/products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
-                    echo "<section class='categories-bg off'>
-                        <ul class='categories-main'>";
-                            foreach ( $categories as $category ) {
-                                $subcategories = [];
-                                $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
-                                $result = $connection->query($query);
-                                fetchAllToArray( $subcategories, $result );
-                                $result->free();
-
-                                echo "<li>
-                                    <a class='subcategory uppercase' href='/sklep/products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
-                                    echo "<ul>";
-                                        foreach ( $subcategories as $subcategory ) {
-                                            echo "<li>
-                                                <a class='subsubcategory' href='/sklep/products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
-                                            echo "</li>";
-                                        }
-                                    echo "</ul>";
-                                echo "</li>";
-                                unset( $subcategories );
-                            }
-                        echo "</ul>";
-                    echo "</section>";
-                echo "</li>";
-                unset( $categories );
-            }
-            ?>
-
-            <li class="category">
-                <a href="/sklep/brands.php" class="uppercase">Marki</a>
-            </li>
-        </ul>
-    </nav>
+    <?php 
+        require_once __DIR__.'\..\page-components\header.html';
+        require_once __DIR__.'\..\page-components\nav.php'; 
+    ?>
     
     <main>
 
@@ -190,8 +71,8 @@
             <div>
                 <h4 class="uppercase">Zakupy</h4>
                 <a href="/sklep/user/account.php">Twoje konto</a>
-                <a href="/sklep/register.php">Rejestracja</a>
-                <a href="/sklep/login.php">Logowanie</a>
+                <a href="/sklep/user/register.php">Rejestracja</a>
+                <a href="/sklep/user/login.php">Logowanie</a>
                 <a href="/sklep/user/forgotten-password.php">Przypomnij hasło</a>
                 <a href="/sklep/user/orders.php">Zamówienia</a>
             </div>
@@ -222,12 +103,12 @@
     <!-- Go back to the top of the page button -->
     <button class="to-top" onclick="location.href='#'"></button>
 
-    <script src="/sklep/js/script.js"></script>
+    <script src="/sklep/js/misc.js"></script>
     <script src="/sklep/js/scrollToTop.js"></script>
     <script src="/sklep/js/menuHandler.js"></script>
     <script src="/sklep/js/slideshowGallery.js"></script>
 
-    <script src="/sklep/js/previewCart.js"></script>
+    <script src="/sklep/js/cartPreview.js"></script>
     <script src="/sklep/js/addToCart.js"></script>
     <script src="/sklep/js/accountPreview.js"></script>
 </body>

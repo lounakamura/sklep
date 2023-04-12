@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "../config.php";
+    require_once __DIR__."\..\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
@@ -10,11 +10,11 @@
     }
 
     if (!isset($_POST['product'])) {
-        header('Location: /sklep/admin.php');
+        header('Location: /sklep//admin/admin.php');
     }
 
     $query = "DELETE FROM produkt WHERE produkt_id=".$_POST['product'];
     $result = $connection->query($query);
 
-    header('Location: /sklep/admin.php');
+    header('Location: /sklep//admin/admin.php');
 ?>

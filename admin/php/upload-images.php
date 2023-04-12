@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "../config.php";
+    require_once __DIR__."\..\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
     
@@ -10,7 +10,7 @@
     }
 
     if(empty($_FILES['files']['name'][0])){
-        header('Location: /sklep/admin.php');
+        header('Location: /sklep//admin/admin.php');
     }
 
     $fileAmount = count($_FILES['upload']['name']);

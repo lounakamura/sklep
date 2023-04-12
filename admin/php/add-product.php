@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "../config.php";
+    require_once __DIR__."\..\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
@@ -10,7 +10,7 @@
     }
 
     if (!isset($_POST['category'], $_POST['category1'], $_POST['category2'], $_POST['name'], $_POST['price'], $_POST['description'], $_POST['brand'], $_POST['amount'])) {
-        header('Location: /sklep/admin.php');
+        header('Location: /sklep//admin/admin.php');
     }
 
     $productId = [];
@@ -49,5 +49,5 @@
         }
     }
 
-    header('Location: /sklep/admin.php');
+    header('Location: /sklep//admin/admin.php');
 ?>

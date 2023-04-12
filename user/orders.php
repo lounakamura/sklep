@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once "../php/config.php";
+    require_once __DIR__."\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
 
@@ -12,32 +12,10 @@
     }
 
     if(!isset($_SESSION['loggedin'])) {
-        header('Location: /sklep/login.php');
+        header('Location: /sklep/user/login.php');
     }
 
-    $cartAmount = [];
-    $maincategories = [];
-    $product = [];
-    $images = [];
-
-    // Storing cart amount
-    $query = "SELECT COUNT(*) AS ilosc FROM koszyk WHERE ";
-    if(isset($_SESSION['loggedin'])){
-        $query .= "uzytkownik_id=".$_SESSION['id'];
-    } else {
-        $query .= "sesja_id=".$_SESSION['session'];
-    }
-    $result = $connection->query($query);
-    $cartAmount = $result->fetch_assoc();
-    $result->free();
-
-    // Storing the main categories
-    $query = "SELECT * FROM kategoria";
-    $result = $connection->query($query);
-    fetchAllToArray( $maincategories, $result );
-    $result->free();
-
-    setcookie('cart-amount', $cartAmount['ilosc'], '0' , '/sklep');
+    require_once __DIR__.'\..\page-components\required.php';
 ?>
 
 <!DOCTYPE html>
@@ -53,211 +31,27 @@
 </head>
 
 <body>
-    <section>
-        <iframe src='../account-preview.php' class='account-container hidden' data-id='account'>
-        </iframe>
-    </section>
-
-    <section>
-        <iframe src='../cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
-        </iframe>
-    </section>
-
-    <header>
-        <div class="logo_big-container">
-            <a href="../index.php"><img class="logo_big" src="../images/ui/logo-big.svg" /></a>
-        </div>
-
-        <div class="search-container">
-            <form>
-                <input class="search-field" type="text" placeholder="Szukaj produktów...">
-                <button class="search-button" type="submit"></button>
-            </form>
-        </div>
-
-        <div class="header-buttons">
-            <button onclick="location.href='account.php'" type="button" class="header-account"></button>
-            <button onclick="location.href='favourites.php'" type="button" class='header-fav'></button>
-            <button onclick="location.href='../cart.php'" type="button" class="header-cart">
-                <div class='container-cart-items-amount' style='opacity:0'>
-                    <div class='circle-cart-items-amount'>
-                        <span class='cart-items-amount'>
-                            -
-                        </span>
-                    </div>
-                </div>
-            </button>
-        </div>
-    </header>
-
-    <header class="header-small off">
-        <div class="logo_big-container">
-            <a href="../index.php"><img class="logo_big" src="../images/ui/logo-big.svg" /></a>
-        </div>
-
-        <div class="search-container">
-            <form>
-                <input class="search-field" type="text" placeholder="Szukaj produktów...">
-                <button class="search-button" type="submit"></button>
-            </form>
-        </div>
-
-        <div class="header-buttons">
-            <button onclick="location.href='account.php'" type="button" class="header-account" data-fixed='yes'></button>
-            <button onclick="location.href='favourites.php'" type="button" class='header-fav' data-fixed='yes'></button>
-            <button onclick="location.href='../cart.php'" type="button" class="header-cart" data-fixed='yes'>
-                <div class='container-cart-items-amount' style='opacity:0'>
-                    <div class='circle-cart-items-amount'>
-                        <span class='cart-items-amount'>
-                            -
-                        </span>
-                    </div>
-                </div>
-            </button>
-        </div>
-    </header>
-
-    <nav class="navigation-categories">
-        <ul>
-            <li>
-                <a class="pink-text uppercase" href="/sklep/sale.php">Promocje</a>
-            </li>
-
-            <?php
-            foreach ( $maincategories as $maincategory ) {
-                $categories = [];
-                $query = "SELECT * FROM kategoria_1 WHERE kategoria_1.parent_id = " . $maincategory['kategoria_id'];
-                $result = $connection->query($query);
-                fetchAllToArray( $categories, $result );
-                $result->free();
-
-                echo "<li class='category'>
-                    <a class='uppercase' href='../products.php?maincategory=" . $maincategory['kategoria_id'] . "'>" . $maincategory['kategoria'] . "</a>";
-                    echo "<section class='categories-bg off'>
-                        <ul class='categories-main'>";
-                            foreach ( $categories as $category ) {
-                                $subcategories = [];
-                                $query = "SELECT * FROM kategoria_2 WHERE kategoria_2.parent_id=" . $category['kategoria_id'];
-                                $result = $connection->query($query);
-                                fetchAllToArray( $subcategories, $result );
-                                $result->free();
-
-                                echo "<li>
-                                    <a class='subcategory uppercase' href='../products.php?category=" . $category['kategoria_id'] . "'>" . $category['kategoria'] . "</a>";
-                                    echo "<ul>";
-                                        foreach ( $subcategories as $subcategory ) {
-                                            echo "<li>
-                                                <a class='subsubcategory' href='../products.php?subcategory=" . $subcategory['kategoria_id'] . "'>" . $subcategory['kategoria'] . "</a>";
-                                            echo "</li>";
-                                        }
-                                    echo "</ul>";
-                                echo "</li>";
-                                unset( $subcategories );
-                            }
-                        echo "</ul>";
-                    echo "</section>";
-                echo "</li>";
-                unset( $categories );
-            }
-            ?>
-
-            <li class="category">
-                <a href="../brands.php" class="uppercase">Marki</a>
-            </li>
-        </ul>
-    </nav>
+    <?php 
+        require_once __DIR__.'\..\page-components\header.html';
+        require_once __DIR__.'\..\page-components\nav.php'; 
+    ?>
 
     <main>
         <span>order info</span>
     </main>
 
-    <!---
+    <?php 
+        require_once __DIR__.'\..\page-components\newsletter.html';
+        require_once __DIR__.'\..\page-components\social-media.html'; 
+        require_once __DIR__.'\..\page-components\footer.html';
+        require_once __DIR__.'\..\page-components\extras.html';
+    ?>
 
-        <section>
-            <div class="newsletter-container">
-                <h2>Zapisz się do naszego newslettera</h2>
-                <form>
-                    <input type="text" placeholder="Podaj adres e-mail">
-                    <button type="submit">Zapisz się</button>
-                </form>
-            </div>
-        </section>
-
-    -->
-
-    <section>
-        <div class="social-media">
-
-            <h2>Znajdziesz nas na:</h2>
-            <div class="social-media-icons">
-                <a id="social-fb" href="https://facebook.com" target='_blank'><img src="../images/ui/fb-logo.svg"></a>
-                <a id="social-tiktok" href="https://tiktok.com" target='_blank'><img src="../images/ui/tiktok-logo.svg"></a>
-                <a id="social-insta" href="https://instagram.com" target='_blank'><img src="../images/ui/instagram-logo.svg"></a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer">
-            <div>
-                <h4 class="uppercase">O nas</h4>
-                <a href="/sklep/about/privacy-policy.php">Polityka prywatności</a>
-                <a href="/sklep/about/terms-of-service.php">Regulamin sklepu</a>
-                <a href="/sklep/about/job-offers.php">Oferty Pracy</a>
-                <a href="/sklep/about/our-shop.php">Nasz sklep</a>
-                <a href="/sklep/about/cookie-policy.php">Polityka cookies</a>
-            </div>
-
-
-            <div>
-                <h4 class="uppercase">Obsługa klienta</h4>
-                <a href="/sklep/customer-service/payment-forms.php">Formy płatności</a>
-                <a href="/sklep/customer-service/shipping.php">Formy i koszty dostawy</a>
-                <a href="/sklep/customer-service/return-or-exchange.php">Zwrot i wymiana towaru</a>
-                <a href="/sklep/customer-service/refund.php">Reklamacje</a>
-                <a href="/sklep/customer-service/contact.php">Kontakt</a>
-            </div>
-
-            <div>
-                <h4 class="uppercase">Zakupy</h4>
-                <a href="/sklep/user/account.php">Twoje konto</a>
-                <a href="/sklep/register.php">Rejestracja</a>
-                <a href="/sklep/login.php">Logowanie</a>
-                <a href="/sklep/user/forgotten-password.php">Przypomnij hasło</a>
-                <a href="/sklep/user/orders.php">Zamówienia</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Additional elements -->
-
-    <!-- Account preview -->
-    <section>
-        <iframe src='../account-preview.php' class='account-container hidden' data-id='account'>
-        </iframe>
-    </section>
-
-    <!-- Cart preview -->
-    <section>
-        <iframe src='../cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
-        </iframe>
-    </section>
-
-    <!-- Loading screen -->
-    <section>
-        <div class='loading-screen not-displayed'>
-            <div class='lds-ring'><div></div><div></div><div></div><div></div></div>
-        </div>
-    </section>
-
-    <!-- Go back to the top of the page button -->
-    <button class="to-top" onclick="location.href='#'"></button>
-
-    <script src="../js/script.js"></script>
+    <script src="../js/misc.js"></script>
     <script src="../js/scrollToTop.js"></script>
     <script src="../js/menuHandler.js"></script>
     <script src="../js/productQuantity.js"></script>
-    <script src="../js/previewCart.js"></script>
+    <script src="../js/cartPreview.js"></script>
     <script src="../js/accountPreview.js"></script>
 </body>
 </html>

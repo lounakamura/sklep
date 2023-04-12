@@ -1,10 +1,9 @@
 const cartPreviewIframe = document.querySelector("[data-id='preview-cart']");
-let addButtons = document.querySelectorAll(".add-to-cart-button");
-let quantityDisplay = document.querySelector(".quantity-display");
+const addButtons = document.querySelectorAll(".add-to-cart-button");
+const quantityDisplay = document.querySelector(".quantity-display");
 let quantity;
 let isPink;
 let isWhite;
-
 
 addButtons.forEach(addButton => {
     if($(addButton).hasClass('available')){
