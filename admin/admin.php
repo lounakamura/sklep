@@ -12,7 +12,7 @@
     }
     
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: /sklep/index.php');
+        header('Location: '.__DIR__.'\index.php');
     }
 
     require_once __DIR__.'\..\page-components\required.php';
@@ -42,8 +42,8 @@
     <title>Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="css/admin.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="/sklep/css/admin.css">
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
@@ -432,13 +432,13 @@
         require_once __DIR__.'\..\page-components\extras.html';
     ?>
 
-    <script src="js/misc.js"></script>
-    <script src="js/scrollToTop.js"></script>
-    <script src="js/menuHandler.js"></script>
-    <script src="js/cartPreview.js"></script>
-    <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
-    <script src="js/accountPreview.js"></script>
+    <script src="/sklep/js/misc.js"></script>
+    <script src="/sklep/js/scrollToTop.js"></script>
+    <script src="/sklep/js/menuHandler.js"></script>
+    <script src="/sklep/js/cartPreview.js"></script>
+    <script src="/sklep/js/addToCart.js"></script>
+    <script src="/sklep/js/removeFromCart.js"></script>
+    <script src="/sklep/js/accountPreview.js"></script>
 
     <script src="/sklep/admin/js/addProduct-CategoryDisplay.js"></script>
 </body>

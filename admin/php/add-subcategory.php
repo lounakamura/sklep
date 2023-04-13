@@ -6,15 +6,15 @@
     $connection = new mysqli ($servername, $username, $password, $database);
 
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: /sklep/index.php');
+        header('Location: '.__DIR__.'\..\..\index.php');
     }
 
     if (!isset($_POST['parent-category'], $_POST['subcategory'])) {
-        header('Location: /sklep//admin/admin.php');
+        header('Location: '.__DIR__.'\..\..\admin\admin.php');
     }
 
     $query = "INSERT INTO kategoria_2 (parent_id, kategoria) VALUES (".$_POST['parent-category'].", '".$_POST['subcategory']."')";
     $result = $connection->query($query);
 
-    header('Location: /sklep//admin/admin.php');
+    header('Location: '.__DIR__.'\..\..\admin\admin.php');
 ?>

@@ -6,11 +6,11 @@
     $connection = new mysqli ($servername, $username, $password, $database);
 
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: /sklep/index.php');
+        header('Location: '.__DIR__.'\..\..\index.php');
     }
 
     if (!isset($_POST['category'], $_POST['category1'], $_POST['category2'], $_POST['name'], $_POST['price'], $_POST['description'], $_POST['brand'], $_POST['amount'])) {
-        header('Location: /sklep//admin/admin.php');
+        header('Location: '.__DIR__.'\..\..\admin\admin.php');
     }
 
     $productId = [];
@@ -49,5 +49,5 @@
         }
     }
 
-    header('Location: /sklep//admin/admin.php');
+    header('Location: '.__DIR__.'\..\..\admin\admin.php');
 ?>

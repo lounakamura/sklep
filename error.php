@@ -23,8 +23,8 @@
     <title>Błąd | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="css/product.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="/sklep/css/product.css">
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>

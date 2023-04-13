@@ -6,11 +6,11 @@
     $connection = new mysqli ($servername, $username, $password, $database);
     
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: /sklep/index.php');
+        header('Location: '.__DIR__.'\..\..\index.php');
     }
 
     if(empty($_FILES['files']['name'][0])){
-        header('Location: /sklep//admin/admin.php');
+        header('Location: '.__DIR__.'\..\..\admin\admin.php');
     }
 
     $fileAmount = count($_FILES['upload']['name']);

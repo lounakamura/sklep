@@ -66,11 +66,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ulubione | Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="../images/ui/logo-small.svg">
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/favourites.css">
+    <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
+    <link rel="stylesheet" href="/sklep/css/main.css">
+    <link rel="stylesheet" href="/sklep/css/favourites.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="../js/jquery-3.6.1.min.js"></script>
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
@@ -113,13 +113,13 @@
                             echo "<div class='product-container ".$product['dostepnosc']."'>";
                                 echo "<div>";
                                     echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
-                                    echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
                                         <img src='".$product['zdjecie']."'>"; 
                                     echo "</a>"; 
-                                    echo "<a href='products.php?brand=" . $product['marka_id'] . "'>
+                                    echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
                                         <h4>" . $product['marka'] . "</h4>";
                                     echo "</a>";
-                                    echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
                                         <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
                                     echo "</a>";
                                 echo "</div>";
@@ -142,13 +142,13 @@
         require_once __DIR__.'\..\page-components\extras.html';
     ?>
 
-    <script src="../js/misc.js"></script>
-    <script src="../js/scrollToTop.js"></script>
-    <script src="../js/menuHandler.js"></script>
-    <script src="../js/productQuantity.js"></script>
-    <script src="../js/cartPreview.js"></script>
-    <script src="../js/accountPreview.js"></script>
-    <script src="../js/productSort.js"></script>
+    <script src="/sklep/js/misc.js"></script>
+    <script src="/sklep/js/scrollToTop.js"></script>
+    <script src="/sklep/js/menuHandler.js"></script>
+    <script src="/sklep/js/productQuantity.js"></script>
+    <script src="/sklep/js/cartPreview.js"></script>
+    <script src="/sklep/js/accountPreview.js"></script>
+    <script src="/sklep/js/productSort.js"></script>
 </body>
 </html>
 

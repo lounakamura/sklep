@@ -106,9 +106,9 @@
     <title>%TITLE% | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="css/category-brand.css">
+    <link rel="stylesheet" href="/sklep/css/category-brand.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
@@ -122,15 +122,15 @@
         <?php    
             echo "<div class='breadcrumbs'>
                     <ul>
-                        <li><a href='index.php'>Strona Główna</a></li>";
+                        <li><a href='/sklep/index.php'>Strona Główna</a></li>";
                         if(isset($_GET['brand'])){
-                            echo "<li><a href='brands.php'>Marki</a></li>
-                            <li><a href='products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
+                            echo "<li><a href='/sklep/brands.php'>Marki</a></li>
+                            <li><a href='/sklep/products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
                         } else {
-                            echo "<li><a href='products.php'>Produkty</a></li>";
+                            echo "<li><a href='/sklep/products.php'>Produkty</a></li>";
                         }
                         if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
-                            echo "<li><a href='products.php?maincategory=";
+                            echo "<li><a href='/sklep/products.php?maincategory=";
                             if(isset($_GET['maincategory'])){
                                 echo $_GET['maincategory']."'>".$displayedCategoryName;
                             } else {
@@ -138,7 +138,7 @@
                             }
                             echo "</a></li>";
                             if (isset($_GET['category']) || isset($_GET['subcategory'])) {
-                                echo "<li><a href='products.php?category=";
+                                echo "<li><a href='/sklep/products.php?category=";
                                 if(isset($_GET['category'])){
                                     echo $_GET['category']."'>".$displayedCategoryName;
                                 } else {
@@ -146,7 +146,7 @@
                                 }
                                 echo "</a></li>";
                                 if (isset($_GET['subcategory'])) {
-                                    echo "<li><a href='products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
+                                    echo "<li><a href='/sklep/products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
                                 }
                             }
                         }
@@ -184,7 +184,7 @@
                             echo "
                             <li $active>
                                 <div class='dropdown-header'>
-                                    <a href='products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
+                                    <a href='/sklep/products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
                                     <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
                                 </div>";
                             echo "<ul class='submenu' $display>";
@@ -214,12 +214,12 @@
                                     echo "
                                     <li $active>
                                         <div class='dropdown-header'>
-                                            <a href='products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
+                                            <a href='/sklep/products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
                                             <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
                                         </div>
                                         <ul class='nested-menu' $display>";
                                             foreach ( $subcategories as $subcategory ) {
-                                                echo "<a href='products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
+                                                echo "<a href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
                                             }
                                             echo "
                                         </ul>
@@ -266,13 +266,13 @@
                         echo "<div class='product-container ".$product['dostepnosc']."'>";
                             echo "<div>";
                                 echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
                                     <img src='".$product['zdjecie']."'>"; 
                                 echo "</a>"; 
-                                echo "<a href='products.php?brand=" . $product['marka_id'] . "'>
+                                echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
                                     <h4>" . $product['marka'] . "</h4>";
                                 echo "</a>";
-                                echo "<a href='product.php?id=" . $product['produkt_id'] . "'>
+                                echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
                                     <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
                                 echo "</a>";
                             echo "</div>";
@@ -294,16 +294,16 @@
         require_once __DIR__.'\page-components\extras.html';
     ?>
 
-    <script src="js/misc.js"></script>
-    <script src="js/scrollToTop.js"></script>
-    <script src="js/menuHandler.js"></script>
-    <script src="js/cartPreview.js"></script>
-    <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
-    <script src="js/accountPreview.js"></script>
-    <script src="js/addOrRemoveFavourite.js"></script>
-    <script src="js/productSort.js"></script>
-    <script src="js/accordionMenu.js"></script>
+    <script src="/sklep/js/misc.js"></script>
+    <script src="/sklep/js/scrollToTop.js"></script>
+    <script src="/sklep/js/menuHandler.js"></script>
+    <script src="/sklep/js/cartPreview.js"></script>
+    <script src="/sklep/js/addToCart.js"></script>
+    <script src="/sklep/js/removeFromCart.js"></script>
+    <script src="/sklep/js/accountPreview.js"></script>
+    <script src="/sklep/js/addOrRemoveFavourite.js"></script>
+    <script src="/sklep/js/productSort.js"></script>
+    <script src="/sklep/js/accordionMenu.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@
     }
 
     if(isset($_SESSION['loggedin'])) {
-        header('Location: /sklep/index.php');
+        header('Location: '.__DIR__.'\index.php');
     }
 
     require_once __DIR__.'\..\page-components\required.php';
@@ -27,8 +27,8 @@
     <title>Rejestracja | Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="css/register.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="/sklep/css/register.css">
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
     <main>
         <div class='register-container'>
             <h1>Zarejestruj się</h1>
-            <form method='POST' action='php/user/register.php'>
+            <form method='POST' action='/sklep/php/register.php'>
                 <label for='email'>E-mail</label><input type='email' name='email' class='register-field' id='email' required minlength='6' maxlength='254'>
                 <label for='username_register'>Nazwa użytkownika</label><input type='text' class='register-field' name='username' id='username_register' required minlength='1' maxlength='50'>
                 <label for='password_register'>Hasło</label><input type='password' name='password' class='register-field' id='password_register' required minlength='5' maxlength='64'>
@@ -63,13 +63,13 @@
         require_once __DIR__.'\..\page-components\extras.html';
     ?>
 
-    <script src="js/misc.js"></script>
-    <script src="js/scrollToTop.js"></script>
-    <script src="js/menuHandler.js"></script>
-    <script src="js/cartPreview.js"></script>
-    <script src="js/addToCart.js"></script>
-    <script src="js/removeFromCart.js"></script>
-    <script src="js/accountPreview.js"></script>
+    <script src="/sklep/js/misc.js"></script>
+    <script src="/sklep/js/scrollToTop.js"></script>
+    <script src="/sklep/js/menuHandler.js"></script>
+    <script src="/sklep/js/cartPreview.js"></script>
+    <script src="/sklep/js/addToCart.js"></script>
+    <script src="/sklep/js/removeFromCart.js"></script>
+    <script src="/sklep/js/accountPreview.js"></script>
 </body>
 </html>
 

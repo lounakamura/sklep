@@ -124,7 +124,7 @@ td {
   background-color: white;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url("../images/ui/cross-medium.svg");
+  background-image: url("/sklep/images/ui/cross-medium.svg");
 }
 
 .shopping-cart-footer {

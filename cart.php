@@ -67,7 +67,7 @@
                 echo "
                 <div class='shopping-cart-empty'>
                     <span>Twój koszyk jest pusty. Dodaj do niego produkty, aby móc rozpocząć składanie zamówienia.</span>
-                    <button onclick='location.href=\"index.php\"' class='white-button'>Powrót</button>
+                    <button onclick='location.href=\"/sklep/index.php\"' class='white-button'>Powrót</button>
                 </div>";
             } else {
                 echo "
@@ -86,8 +86,8 @@
                             echo "
                             <tr class='product-container'>
                                 <td class='product-image product-name'>
-                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
-                                    <a href='product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
+                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
+                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
                                 </td>
                                 <td class='product-price'>
                                     <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
@@ -137,7 +137,7 @@
                                     <button class='button-activate pink-button'>Aktywuj</button>
                                 </div>
                             </div>
-                            <button onclick='location.href=\"index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
+                            <button onclick='location.href=\"/sklep/index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
                         </div>
                         <div class='footer-right'>
                             <div class='order-cost'>

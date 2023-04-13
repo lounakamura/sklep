@@ -19,7 +19,7 @@
     
     // Checking if there is a product chosen
     if(!isset($_GET['id'])){
-        header('Location: error.php');
+        header('Location: '.__DIR__.'\error.php');
     }
 
     // Storing displayed product information
@@ -81,11 +81,11 @@
         <?php
             echo "<div class='breadcrumbs'>
                 <ul>
-                    <li><a href='index.php'>Strona Główna</a></li>
-                    <li><a href='products.php'>Produkty</a></li>
-                    <li><a href='products.php?maincategory=".$product['kategoria_id']."'>".$product['kategoria']."</a></li>
-                    <li><a href='products.php?category=".$product['kategoria1_id'] . "'>".$product['kategoria1']."</a></li>
-                    <li><a href='products.php?subcategory=" . $product['kategoria2_id']."' style='color:#c5c5c5'>".$product['kategoria2']."</a></li>
+                    <li><a href='/sklep/index.php'>Strona Główna</a></li>
+                    <li><a href='/sklep/products.php'>Produkty</a></li>
+                    <li><a href='/sklep/products.php?maincategory=".$product['kategoria_id']."'>".$product['kategoria']."</a></li>
+                    <li><a href='/sklep/products.php?category=".$product['kategoria1_id'] . "'>".$product['kategoria1']."</a></li>
+                    <li><a href='/sklep/products.php?subcategory=" . $product['kategoria2_id']."' style='color:#c5c5c5'>".$product['kategoria2']."</a></li>
                 </ul>
             </div>
 

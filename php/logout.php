@@ -4,5 +4,5 @@
     $_SESSION = [];
     session_destroy();
     
-    header("Location: ../index.php");
+    header("Location: '.__DIR__.'\..\index.php");
 ?>

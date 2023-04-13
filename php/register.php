@@ -6,7 +6,7 @@
     $connection = new mysqli ($servername, $username, $password, $database);
 
     if ( !isset($_POST['email'], $_POST['username'], $_POST['password'], $_POST['repeat-password']) ) {
-        header('Location: ../index.php');
+        header('Location: '.__DIR__.'\..\index.php');
     }
 
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {

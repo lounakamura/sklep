@@ -12,7 +12,7 @@
     }
     
     if(!(isset($_SERVER['HTTP_SEC_FETCH_DEST']) && $_SERVER['HTTP_SEC_FETCH_DEST'] == 'iframe')) {
-        header('Location: index.php');
+        header('Location: '.__DIR__.'\index.php');
     }
 
     $cartProducts = [];

@@ -23,7 +23,7 @@
     <title>Drogeria internetowa Kosmetykowo.pl</title>
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
-    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>

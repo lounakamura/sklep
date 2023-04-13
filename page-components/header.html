@@ -11,7 +11,13 @@
     </div>
 
     <div class="header-buttons">
-        <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account"></button>
+        <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account">
+            <!-- Account preview -->
+            <section>
+                <iframe src='/sklep/account-preview.php' class='account-container hidden' data-id='account'>
+                </iframe>
+            </section>
+        </button>
         <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'></button>
         <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
             <div class='container-cart-items-amount' style='opacity:0'>
@@ -21,6 +27,13 @@
                     </span>
                 </div>
             </div>
+            
+            <!-- Cart preview -->
+            <section>
+                <iframe src='/sklep/cart-preview.php' class='preview-cart-container hidden' data-id='preview-cart'>
+                </iframe>
+            </section>
         </button>
+        
     </div>
 </header>
