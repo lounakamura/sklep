@@ -6,7 +6,7 @@
     $connection = new mysqli ($servername, $username, $password, $database);
 
     if ( !isset($_POST['username'], $_POST['password']) ) {
-        header('Location: '.__DIR__.'\..\index.php');
+        header('Location: ..\index.php');
     }
 
     if ($query = $connection->prepare('SELECT uzytkownik_id, email, haslo FROM uzytkownik WHERE nazwa = ?')) {
@@ -40,12 +40,12 @@
                 if($result['admin']) {
                     $_SESSION['isadmin'] = TRUE;
                 }
-                header("Location: '.__DIR__.'\..\index.php");
+                header("Location: ..\index.php");
             } else {
                 echo "Wrong password";
             }
         } else {
-            echo "Account with this email doesn't exist";
+            echo "Account with this username doesn't exist";
         }
         $query->close();
     }

@@ -10,7 +10,7 @@
     }
 
     if (!isset($_POST['category'], $_POST['category1'], $_POST['category2'], $_POST['name'], $_POST['price'], $_POST['description'], $_POST['brand'], $_POST['amount'])) {
-        header('Location: '.__DIR__.'\..\..\admin\admin.php');
+        header('Location: ..\admin.php');
     }
 
     $productId = [];
@@ -49,5 +49,5 @@
         }
     }
 
-    header('Location: '.__DIR__.'\..\..\admin\admin.php');
+    header('Location: ..\admin.php');
 ?>

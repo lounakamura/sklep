@@ -9,7 +9,7 @@ if ( path == '/sklep/cart.php' ) {
 }
 
 quantityControllers.forEach(quantityController => {
-  if($(quantityController).hasClass('available')){
+  if($(quantityController).hasClass('available') || path == '/sklep/cart.php'){
     const subtractBtn = quantityController.querySelector('.subtract');
     const addBtn = quantityController.querySelector('.add');
     const display = quantityController.querySelector('.quantity-display');

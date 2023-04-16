@@ -10,11 +10,11 @@
     }
 
     if (!isset($_POST['parent-category'] ,$_POST['category'])) {
-        header('Location: '.__DIR__.'\..\..\admin\admin.php');
+        header('Location: ..\admin.php');
     }
 
     $query = "INSERT INTO kategoria_1 (parent_id, kategoria) VALUES (".$_POST['parent-category'].", '".$_POST['category']."')";
     $result = $connection->query($query);
 
-    header('Location: '.__DIR__.'\..\..\admin\admin.php');
+    header('Location: ..\admin.php');
 ?>

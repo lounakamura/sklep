@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once __DIR__."\php\config.php";
+    require_once __DIR__."\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
     
@@ -12,7 +12,7 @@
     }
     
     if(!isset($_SESSION['isadmin'])) {
-        header('Location: '.__DIR__.'\index.php');
+        header('Location: ..\index.php');
     }
 
     require_once __DIR__.'\..\page-components\required.php';
@@ -44,12 +44,15 @@
     <link rel="stylesheet" href="/sklep/css/main.css">
     <link rel="stylesheet" href="/sklep/css/admin.css">
     <script src="/sklep/js/jquery-3.6.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/it.js"></script>
 </head>
 
 <body>
     <?php 
-        require_once __DIR__.'\..\..\page-components\header.html';
-        require_once __DIR__.'\..\..\page-components\nav.php'; 
+        require_once __DIR__.'\..\page-components\header.html';
+        require_once __DIR__.'\..\page-components\nav.php'; 
     ?>
 
     <main>
@@ -64,83 +67,101 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/add-product.php" enctype='multipart/form-data'>
-                        <label for="category">Kategoria główna</label>
-                        <select name="category" id="category">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
-                                }
-                            ?>
-                        </select>
-
-                        <label for="category1">Podkategoria</label>
-                        <select name="category1" id="category1">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    $categories = [];
-                                    $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
-                                    $result = $connection->query($query);
-                                    fetchAllToArray( $categories, $result );
-                                    $result->free();
-
-                                    foreach($categories as $category){
-                                        echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
+                        <div>
+                            <label for="category">Kategoria główna</label>
+                            <select name="category" id="category">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
                                     }
-                                    unset( $categories );
-                                }
-                            ?>
-                        </select>
+                                ?>
+                            </select>
+                        </div>
 
-                        <label for="category2">Kategoria produktu</label>
-                        <select name="category2" id="category2">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    $categories = [];
-                                    $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
-                                    $result = $connection->query($query);
-                                    fetchAllToArray( $categories, $result );
-                                    $result->free();
-
-                                    foreach($categories as $category){
-                                        $subcategories = [];
-                                        $query = "SELECT * FROM kategoria_2 AS k2 WHERE k2.parent_id = ".$category['kategoria_id']." ORDER BY kategoria ASC";
+                        <div>
+                            <label for="category1">Podkategoria</label>
+                            <select name="category1" id="category1">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        $categories = [];
+                                        $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
                                         $result = $connection->query($query);
-                                        fetchAllToArray( $subcategories, $result );
+                                        fetchAllToArray( $categories, $result );
                                         $result->free();
 
-                                        foreach($subcategories as $subcategory){
-                                            echo "<option value='".$subcategory['kategoria_id']."' data-parent='".$category['kategoria_id']."'>".$subcategory['kategoria']."</option>";
+                                        foreach($categories as $category){
+                                            echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
                                         }
-                                        unset($subcategories);
+                                        unset( $categories );
                                     }
-                                    unset($categories);
-                                }
-                            ?>
-                        </select>
+                                ?>
+                            </select>
+                        </div>
 
-                        <label for="name">Nazwa</label>
-                        <input type="text" name="name" id="name" required maxlength="128">
+                        <div>
+                            <label for="category2">Kategoria produktu</label>
+                            <select name="category2" id="category2">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        $categories = [];
+                                        $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
+                                        $result = $connection->query($query);
+                                        fetchAllToArray( $categories, $result );
+                                        $result->free();
 
-                        <label for="price">Cena</label>
-                        <input type="number" name="price" id="price" required min="0.00" max="10000.00" step="0.01">
+                                        foreach($categories as $category){
+                                            $subcategories = [];
+                                            $query = "SELECT * FROM kategoria_2 AS k2 WHERE k2.parent_id = ".$category['kategoria_id']." ORDER BY kategoria ASC";
+                                            $result = $connection->query($query);
+                                            fetchAllToArray( $subcategories, $result );
+                                            $result->free();
 
-                        <label for="description">Opis</label>
-                        <textarea name="description" id="description" required></textarea>
+                                            foreach($subcategories as $subcategory){
+                                                echo "<option value='".$subcategory['kategoria_id']."' data-parent='".$category['kategoria_id']."'>".$subcategory['kategoria']."</option>";
+                                            }
+                                            unset($subcategories);
+                                        }
+                                        unset($categories);
+                                    }
+                                ?>
+                            </select>
+                        </div>
 
-                        <label>Marka</label>
-                        <select name="brand">
-                            <?php
-                                foreach($brands as $brand){
-                                    echo "<option value='".$brand['marka_id']."'>".$brand['marka']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label for="name">Nazwa</label>
+                            <input type="text" name="name" id="name" required maxlength="128">
+                        </div>
 
-                        <label for="amount">Ilość</label>
-                        <input type="number" name="amount" id="amount" required min="0" max="999" step="1" value="999">
+                        <div>
+                            <label for="price">Cena</label>
+                            <input type="number" name="price" id="price" required min="0.00" max="10000.00" step="0.01">
+                        </div>
 
-                        <label for="images">Zdjęcia</label>
-                        <input name="upload[]" type="file" multiple="multiple" id="images">
+                        <div>
+                            <label for="description">Opis</label>
+                            <textarea name="description" id="description" required></textarea>
+                        </div>
+
+                        <div>
+                            <label>Marka</label>
+                            <select name="brand" class="admin-select2">
+                                <?php
+                                    foreach($brands as $brand){
+                                        echo "<option value='".$brand['marka_id']."'>".$brand['marka']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="amount">Ilość</label>
+                            <input type="number" name="amount" id="amount" required min="0" max="999" step="1" value="999">
+                        </div>
+
+                        <div>
+                            <label for="images">Zdjęcia</label>
+                            <input name="upload[]" type="file" multiple="multiple" id="images">
+                        </div>
 
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
@@ -156,14 +177,16 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/upload-images.php" enctype='multipart/form-data'>
-                        <label>Wybierz produkt z listy</label>
-                        <select name="product">
-                            <?php
-                                foreach ($productNames as $product) {
-                                    echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label>Wybierz produkt z listy</label>
+                            <select name="product" class="admin-select2">
+                                <?php
+                                    foreach ($productNames as $product) {
+                                        echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <input name="upload[]" type="file" multiple="multiple" />
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
@@ -179,14 +202,16 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/remove-product.php">
-                        <label>Wybierz produkt z listy</label>
-                        <select name="product">
-                            <?php
-                                foreach ($productNames as $product) {
-                                    echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label>Wybierz produkt z listy</label>
+                            <select name="product" class="admin-select2">
+                                <?php
+                                    foreach ($productNames as $product) {
+                                        echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
                 </div>
@@ -201,14 +226,16 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/modify-product.php">
-                        <label>Wybierz produkt z listy</label>
-                        <select name="product">
-                            <?php
-                                foreach ($productNames as $product) {
-                                    echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label>Wybierz produkt z listy</label>
+                            <select name="product" class="admin-select2">
+                                <?php
+                                    foreach ($productNames as $product) {
+                                        echo "<option value='".$product['produkt_id']."'>".$product['nazwa']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Modyfikuj</button>
                     </form>
                 </div>
@@ -225,8 +252,10 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/add-maincategory.php">
-                        <label for='maincategory-name'>Nazwa</label>
-                        <input type='text' name='maincategory' id='maincategory-name' required maxlength='25'>
+                        <div>
+                            <label for='maincategory-name'>Nazwa</label>
+                            <input type='text' name='maincategory' id='maincategory-name' required maxlength='25'>
+                        </div>
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
                 </div>
@@ -241,16 +270,20 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/add-category.php">
-                        <label>Kategoria nadrzędna</label>
-                        <select name="parent-category">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
-                                }
-                            ?>
-                        </select>
-                        <label for='category-name'>Nazwa</label>
-                        <input type='text' name='category' id='category-name' required maxlength='32'>
+                        <div>
+                            <label>Kategoria nadrzędna</label>
+                            <select name="parent-category" class="admin-select2">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label for='category-name'>Nazwa</label>
+                            <input type='text' name='category' id='category-name' required maxlength='32'>
+                        </div>
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
                 </div>
@@ -265,25 +298,29 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/add-subcategory.php">
-                        <label>Kategoria nadrzędna</label>
-                        <select name="parent-category">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    $categories = [];
-                                    $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
-                                    $result = $connection->query($query);
-                                    fetchAllToArray( $categories, $result );
-                                    $result->free();
+                        <div>
+                            <label>Kategoria nadrzędna</label>
+                            <select name="parent-category" class="admin-select2">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        $categories = [];
+                                        $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
+                                        $result = $connection->query($query);
+                                        fetchAllToArray( $categories, $result );
+                                        $result->free();
 
-                                    foreach($categories as $category){
-                                        echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
+                                        foreach($categories as $category){
+                                            echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
+                                        }
+                                        unset( $categories );
                                     }
-                                    unset( $categories );
-                                }
-                            ?>
-                        </select>
-                        <label for='subcategory-name'>Nazwa</label>
-                        <input type='text' name='subcategory' id='subcategory-name' required maxlength='32'>
+                                ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label for='subcategory-name'>Nazwa</label>
+                            <input type='text' name='subcategory' id='subcategory-name' required maxlength='32'>
+                        </div>
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
                 </div>
@@ -298,14 +335,16 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/remove-maincategory.php">
-                        <label>Wybierz kategorię główną</label>
-                        <select name="maincategory">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label>Wybierz kategorię główną</label>
+                            <select name="maincategory" class="admin-select2">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        echo "<option value='".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
                 </div>
@@ -320,23 +359,25 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/remove-category.php">
-                        <label>Wybierz podkategorię</label>
-                        <select name="category">
-                            <?php
-                            foreach($maincategories as $maincategory){
-                                $categories = [];
-                                $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
-                                $result = $connection->query($query);
-                                fetchAllToArray( $categories, $result );
-                                $result->free();
+                        <div>
+                            <label>Wybierz podkategorię</label>
+                            <select name="category" class="admin-select2">
+                                <?php
+                                foreach($maincategories as $maincategory){
+                                    $categories = [];
+                                    $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
+                                    $result = $connection->query($query);
+                                    fetchAllToArray( $categories, $result );
+                                    $result->free();
 
-                                foreach($categories as $category){
-                                    echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
+                                    foreach($categories as $category){
+                                        echo "<option value='".$category['kategoria_id']."' data-parent='".$maincategory['kategoria_id']."'>".$category['kategoria']."</option>";
+                                    }
+                                    unset( $categories );
                                 }
-                                unset( $categories );
-                            }
-                            ?>
-                        </select>
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
                 </div>
@@ -351,32 +392,34 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/remove-subcategory.php">
+                        <div>
                         <label>Wybierz kategorię produktów</label>
-                        <select name="subcategory">
-                            <?php
-                                foreach($maincategories as $maincategory){
-                                    $categories = [];
-                                    $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
-                                    $result = $connection->query($query);
-                                    fetchAllToArray( $categories, $result );
-                                    $result->free();
-
-                                    foreach($categories as $category){
-                                        $subcategories = [];
-                                        $query = "SELECT * FROM kategoria_2 AS k2 WHERE k2.parent_id = ".$category['kategoria_id']." ORDER BY kategoria ASC";
+                            <select name="subcategory" class="admin-select2">
+                                <?php
+                                    foreach($maincategories as $maincategory){
+                                        $categories = [];
+                                        $query = "SELECT * FROM kategoria_1 AS k1 WHERE k1.parent_id = ".$maincategory['kategoria_id']." ORDER BY kategoria ASC";
                                         $result = $connection->query($query);
-                                        fetchAllToArray( $subcategories, $result );
+                                        fetchAllToArray( $categories, $result );
                                         $result->free();
 
-                                        foreach($subcategories as $subcategory){
-                                            echo "<option value='".$subcategory['kategoria_id']."' data-parent='".$category['kategoria_id']."'>".$subcategory['kategoria']."</option>";
+                                        foreach($categories as $category){
+                                            $subcategories = [];
+                                            $query = "SELECT * FROM kategoria_2 AS k2 WHERE k2.parent_id = ".$category['kategoria_id']." ORDER BY kategoria ASC";
+                                            $result = $connection->query($query);
+                                            fetchAllToArray( $subcategories, $result );
+                                            $result->free();
+
+                                            foreach($subcategories as $subcategory){
+                                                echo "<option value='".$subcategory['kategoria_id']."' data-parent='".$category['kategoria_id']."'>".$subcategory['kategoria']."</option>";
+                                            }
+                                            unset($subcategories);
                                         }
-                                        unset($subcategories);
+                                        unset($categories);
                                     }
-                                    unset($categories);
-                                }
-                            ?>
-                        </select>
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
                 </div>
@@ -393,8 +436,10 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/add-brand.php">
-                        <label for='brand-name'>Nazwa</label>
-                        <input type='text' name='brand' id='brand-name' required maxlength='32'>
+                        <div>
+                            <label for='brand-name'>Nazwa</label>
+                            <input type='text' name='brand' id='brand-name' required maxlength='32'>
+                        </div>
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
                 </div>
@@ -409,14 +454,16 @@
             <div class='accordion-content'>
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/admin/php/remove-brand.php">
-                        <label>Wybierz markę</label>
-                        <select name="brand">
-                            <?php
-                                foreach($brands as $brand){
-                                    echo "<option value='".$brand['marka_id']."'>".$brand['marka']."</option>";
-                                }
-                            ?>
-                        </select>
+                        <div>
+                            <label>Wybierz markę</label>
+                            <select name="brand" class="admin-select2">
+                                <?php
+                                    foreach($brands as $brand){
+                                        echo "<option value='".$brand['marka_id']."'>".$brand['marka']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
                 </div>
@@ -435,6 +482,7 @@
     <script src="/sklep/js/misc.js"></script>
     <script src="/sklep/js/scrollToTop.js"></script>
     <script src="/sklep/js/menuHandler.js"></script>
+<script src="/sklep/js/select2.js"></script>
     <script src="/sklep/js/cartPreview.js"></script>
     <script src="/sklep/js/addToCart.js"></script>
     <script src="/sklep/js/removeFromCart.js"></script>

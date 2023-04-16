@@ -41,7 +41,7 @@
         }
 
         // Storing favourited products
-        if($_SESSION['loggedin']){
+        if(isset($_SESSION['loggedin'])){
             $query = "SELECT produkt_id FROM ulubiony WHERE uzytkownik_id=".$_SESSION['id'];
             $result = $connection->query($query);
             fetchAllToArray($favourited, $result);
@@ -71,6 +71,9 @@
     <link rel="stylesheet" href="/sklep/css/favourites.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <script src="/sklep/js/jquery-3.6.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/it.js"></script>
 </head>
 
 <body>
@@ -145,6 +148,7 @@
     <script src="/sklep/js/misc.js"></script>
     <script src="/sklep/js/scrollToTop.js"></script>
     <script src="/sklep/js/menuHandler.js"></script>
+<script src="/sklep/js/select2.js"></script>
     <script src="/sklep/js/productQuantity.js"></script>
     <script src="/sklep/js/cartPreview.js"></script>
     <script src="/sklep/js/accountPreview.js"></script>

@@ -24,6 +24,9 @@
     <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
     <link rel="stylesheet" href="/sklep/css/main.css">
     <script src="/sklep/js/jquery-3.6.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/it.js"></script>
 </head>
 
 <body>
@@ -33,7 +36,37 @@
     ?>
     
     <main>
-
+        <h1>Oferty Pracy</h1>
+        <p>
+            <?php echo nl2br("
+            <h3>Copywriter</h3>
+            <h4>Opis stanowiska:</h4>
+            <ul><li>Tworzenie tekstów eksperckich o szeroko rozumianej tematyce beauty</li>
+            <li>Przygotowywanie opisów produktów na potrzeby sklepu internetowego</li>
+            <li>Tworzenie i optymalizacja treści sklepu internetowego pod kątem wyszukiwarek internetowych</li>
+            <li>Tworzenie treści na bloga</li>
+            <li>Tworzenie tekstów na strony</li></ul>
+            
+            <h4>Wymagania:</h4>
+            <ul><li>Rozumiesz i bardzo dobrze znasz branżę beauty, śledzisz trendy makijażowe i kosmetyczne</li>
+            <li>Posiadasz lekkie pióro pdf</li>
+            <li>Znasz doskonale zasady pisowni języka polskiego (gramatyka, ortografia, interpunkcja)</li>
+            <li>Bogate słownictwo</li>
+            <li>Potrafisz dostosować stylu do komunikatu</li>
+            <li>Jesteś kreatywna/y</li>
+            <li>Jesteś sumienna/y, dokładna/y i terminowa/y</li>
+            <li>Rozumiesz czym jest SEO i potrafisz budować treści na strony internetowe</li></ul>
+        
+            <h4>Oferujemy:</h4>
+            <ul><li>Praca w dużym, młodym zespole</li>
+            <li>Umowa o pracę na pełen etat, współpraca B2B</li>
+            <li>Komfortowe miejsce i warunki pracy</li>
+            <li>Praca w młodym, energicznym zespole</li>
+            <li>Szkolenie wdrożeniowe</li>
+            <li>Rabat pracowniczy</li></ul>
+            "); ?>
+        </p>
+        <a href='mailto:rekrutacja@kosmetykowo.pl' style='text-align:center;'><h3>Aplikuj</h3></a>
     </main>
 
     <section>
@@ -106,6 +139,7 @@
     <script src="/sklep/js/misc.js"></script>
     <script src="/sklep/js/scrollToTop.js"></script>
     <script src="/sklep/js/menuHandler.js"></script>
+<script src="/sklep/js/select2.js"></script>
     <script src="/sklep/js/slideshowGallery.js"></script>
 
     <script src="/sklep/js/cartPreview.js"></script>

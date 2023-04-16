@@ -29,8 +29,17 @@ main h2 {
   align-items: stretch;
 }
 
-.container form * {
+.container form > div {
   margin-bottom: 5px;
+}
+
+.container form > div label {
+  margin-bottom: 5px;
+}
+
+.container form > div {
+  display: flex;
+  flex-direction: column;
 }
 
 .container input,
@@ -110,4 +119,22 @@ main h2 {
 .state:checked ~ .accordion-content {
   max-height: 5000px;
   border-width: 0 2px 2px 2px;
+}
+
+/* SELECT2 */
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  color: black !important;
+  line-height: 42px !important;
+}
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 42px !important;
+  width: 25px !important;
+}
+
+.select2-container .select2-selection--single {
+  height: 42px !important;
 }

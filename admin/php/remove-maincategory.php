@@ -10,11 +10,11 @@
     }
 
     if (!isset($_POST['maincategory'])) {
-        header('Location: '.__DIR__.'\..\..\admin\admin.php');
+        header('Location: ..\admin.php');
     }
 
     $query = "DELETE FROM kategoria WHERE kategoria_id=".$_POST['maincategory'];
     $result = $connection->query($query);
 
-    header('Location: /sklep/'.__DIR__.'\..\..\admin\admin.php');
+    header('Location: ..\admin.php');
 ?>

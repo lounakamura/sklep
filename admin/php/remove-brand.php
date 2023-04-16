@@ -10,11 +10,11 @@
     }
 
     if (!isset($_POST['brand'])) {
-        header('Location: '.__DIR__.'\..\..\admin\admin.php');
+        header('Location: ..\admin.php');
     }
 
     $query = "DELETE FROM marka WHERE marka_id=".$_POST['brand'];
     $result = $connection->query($query);
 
-    header('Location:'.__DIR__.'\..\..\admin\admin.php');
+    header('Location:..\admin.php');
 ?>
