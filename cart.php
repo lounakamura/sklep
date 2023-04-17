@@ -47,13 +47,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koszyk | Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
-    <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="/sklep/css/shopping-cart.css">
-    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/it.js"></script>
+    <?php
+        require_once __DIR__.'\page-components\head.html';
+    ?>
+    <link rel="stylesheet" href="/sklep/css/cart.css">
 </head>
 
 <body>
@@ -163,7 +160,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <button class='button-next pink-button'>Realizuj zamówienie</button>
+                            <form method='POST' action='/sklep/order/shipping.php'>
+                                <button type='submit' class='button-next pink-button'>Realizuj zamówienie</button>
+                            </form>
                         </div>
                     </div>
                 </div>";
@@ -180,12 +179,9 @@
 </body>
 </html>
 
-<script src="/sklep/js/cartPreview.js" ></script>
-<script src="/sklep/js/accountPreview.js"></script>
-<script src="/sklep/js/misc.js"></script>
-<script src="/sklep/js/scrollToTop.js"></script>
-<script src="/sklep/js/menuHandler.js"></script>
-<script src="/sklep/js/select2.js"></script>
+<?php 
+    require_once __DIR__.'\page-components\scripts.html';
+?>
 
 <script src="/sklep/js/productQuantity.js"></script>
 <script src="/sklep/js/removeFromCart.js"></script>

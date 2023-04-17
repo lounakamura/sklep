@@ -1,3 +1,5 @@
+/*      Sticky header & previews      */
+
 const header = document.querySelector("header");
 const sticky = 75;
 
@@ -20,8 +22,27 @@ window.addEventListener ("scroll", function () { //
   }
 })
 
+/*      Loading screen       */
+
 const loadingScreen = document.querySelector(".loading-screen");
 
 function displayLoadingScreen(){
     $(loadingScreen).removeClass("not-displayed");
 }
+
+/*      Select2 config     */
+
+$('.sort').select2({
+    minimumResultsForSearch: Infinity
+});
+$('.admin-select2').select2({
+    language: "pl",
+    minimumResultsForSearch: 5
+});
+
+/*      SmallPop config       */
+
+spop.defaults = {
+	autoclose : 3000,
+	position  : 'bottom-left'
+};

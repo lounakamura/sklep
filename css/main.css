@@ -110,13 +110,13 @@ span.line-limit {
 }
 
 button.add-to-cart-success {
-  background-color: #3fe864;
+  background-color: #69c894;
   color: white;
   border: none;
 }
 
 button.add-to-cart-failure {
-  background-color: #e83f45;
+  background-color: #cf5d5f;
   color: white;
   border: none;
 }

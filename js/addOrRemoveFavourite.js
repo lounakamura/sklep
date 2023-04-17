@@ -8,18 +8,21 @@ favouriteButtons.forEach(favouriteButton => {
         REQUEST.send("product_id="+favouriteButton.getAttribute("data-product_id"));
         REQUEST.onreadystatechange = function() {
             if (REQUEST.readyState == XMLHttpRequest.DONE) {
-                if($(favouriteButton).hasClass('fav')){
-                    $(favouriteButton).removeClass('fav');
-                    $(favouriteButton).addClass('not-fav');
-                } else {
-                    $(favouriteButton).removeClass('not-fav');
-                    $(favouriteButton).addClass('fav');
-                }
+                
 
                 if(REQUEST.responseText == 'not logged in'){
-                    document.location.href = '/sklep/user/favourites.php';
+                    window.open(
+                        '/sklep/user/favourites.php',
+                        '_blank'
+                    );
                 } else {
-                    console.log("działa");
+                    if($(favouriteButton).hasClass('fav')){
+                        $(favouriteButton).removeClass('fav');
+                        $(favouriteButton).addClass('not-fav');
+                    } else {
+                        $(favouriteButton).removeClass('not-fav');
+                        $(favouriteButton).addClass('fav');
+                    }
                 }
             }
         }

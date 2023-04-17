@@ -23,11 +23,11 @@
     $displayedCategoryName = 'Produkty';
     if(isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])){
         if (isset($_GET['maincategory'])) {
-            $baseSelectionOn = ' WHERE k.kategoria_id=' . $_GET['maincategory'];
+            $baseSelectionOn = 'AND k.kategoria_id=' . $_GET['maincategory'];
             $displayedCategory = $_GET['maincategory'];
             $categoryTable = 'kategoria';
         } else if (isset($_GET['category'])) {
-            $baseSelectionOn = ' WHERE k1.kategoria_id=' . $_GET['category'];
+            $baseSelectionOn = 'AND k1.kategoria_id=' . $_GET['category'];
             $displayedCategory = $_GET['category'];
             $categoryTable = 'kategoria_1';
             $query = "SELECT k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_1 AS k1 JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k1.kategoria_id=$displayedCategory";
@@ -35,7 +35,7 @@
             $displayedCategoryParents =  $result->fetch_assoc();
             $result->free();
         } else if (isset($_GET['subcategory'])) {
-            $baseSelectionOn = ' WHERE k2.kategoria_id=' . $_GET['subcategory'];
+            $baseSelectionOn = 'AND k2.kategoria_id=' . $_GET['subcategory'];
             $displayedCategory = $_GET['subcategory'];
             $categoryTable = 'kategoria_2';
             $query = "SELECT k1.kategoria AS k1_nazwa, k1.kategoria_id AS k1_id, k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_2 AS k2 JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k2.kategoria_id=$displayedCategory";
@@ -64,12 +64,24 @@
     }
 
     // Storing products
-    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) $baseSelectionOn GROUP BY p.produkt_id $sort";
+    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc>0 $baseSelectionOn GROUP BY p.produkt_id $sort";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
     $productsFound = mysqli_num_rows($result);
     $result->free();
+    
+    // Adding unavailable products at the end
+    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc=0 $baseSelectionOn GROUP BY p.produkt_id $sort";
+    $result = $connection->query($query);
+    $i = count($products);
+    while ( $row = $result->fetch_assoc() ) {
+        $products[$i] = $row;
+        $i++;
+    }
+    $productsFound += mysqli_num_rows($result);
+    $result->free();
 
+    
     // Storing product availability
     for($i=0; $i<count($products); $i++){
         if($products[$i]['ilosc']>0) {
@@ -104,18 +116,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>%TITLE% | Drogeria internetowa Kosmetykowo.pl</title>
-    <link rel="icon" type="image/ico" href="/sklep/images/ui/logo-small.svg">
-    <link rel="stylesheet" href="/sklep/css/main.css">
-    <link rel="stylesheet" href="/sklep/css/category-brand.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="/sklep/js/jquery-3.6.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/it.js"></script>
+    <?php
+        require_once __DIR__.'\page-components\head.html';
+    ?>
+    <link rel="stylesheet" href="/sklep/css/products.css">
 </head>
 
 <body>
-<section>
     <?php 
         require_once __DIR__.'\page-components\header.html';
         require_once __DIR__.'\page-components\nav.php'; 
@@ -253,7 +260,7 @@
                             }
                         ?>
                         <label for='sort'>Sortuj wg</label>
-                        <select name='sort' id='sort'>
+                        <select name='sort' id='sort' class='sort'>
                             <option value='' selected>domyślnie</option>
                             <option value='p.produkt_id DESC'>najnowsze</option>
                             <option value='p.nazwa ASC'>nazwa a-z</option>
@@ -296,21 +303,17 @@
         require_once __DIR__.'\page-components\footer.html';
         require_once __DIR__.'\page-components\extras.html';
     ?>
-
-    <script src="/sklep/js/misc.js"></script>
-    <script src="/sklep/js/scrollToTop.js"></script>
-    <script src="/sklep/js/menuHandler.js"></script>
-<script src="/sklep/js/select2.js"></script>
-    <script src="/sklep/js/cartPreview.js"></script>
-    <script src="/sklep/js/addToCart.js"></script>
-    <script src="/sklep/js/removeFromCart.js"></script>
-    <script src="/sklep/js/accountPreview.js"></script>
-    <script src="/sklep/js/addOrRemoveFavourite.js"></script>
-    <script src="/sklep/js/productSort.js"></script>
-    <script src="/sklep/js/accordionMenu.js"></script>
 </body>
-
 </html>
+
+<?php 
+    require_once __DIR__.'\page-components\scripts.html';
+?>
+<script src="/sklep/js/addToCart.js"></script>
+<script src="/sklep/js/removeFromCart.js"></script>
+<script src="/sklep/js/addOrRemoveFavourite.js"></script>
+<script src="/sklep/js/productSort.js"></script>
+<script src="/sklep/js/accordionMenu.js"></script>
 
 <?php
     $buffer = ob_get_contents();
