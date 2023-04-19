@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 18 Kwi 2023, 20:08
--- Wersja serwera: 10.4.22-MariaDB
--- Wersja PHP: 8.0.13
+-- Czas generowania: 19 Kwi 2023, 10:28
+-- Wersja serwera: 10.4.24-MariaDB
+-- Wersja PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -222,14 +222,8 @@ CREATE TABLE `koszyk` (
 --
 
 INSERT INTO `koszyk` (`koszyk_id`, `produkt_id`, `ilosc`, `sesja_id`, `uzytkownik_id`) VALUES
-(25, 153, 1, 17, 2),
-(26, 151, 1, 17, 2),
-(27, 152, 1, 17, 2),
-(28, 150, 1, 17, 2),
-(29, 9, 1, 17, 2),
-(30, 4, 1, 17, 2),
-(31, 31, 1, 17, 2),
-(32, 149, 1, 17, 2);
+(37, 1, 1, 3, 2),
+(38, 111, 1, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -519,23 +513,10 @@ CREATE TABLE `sesja` (
 --
 
 INSERT INTO `sesja` (`sesja_id`, `data_dodania`) VALUES
-(1, '2023-03-24 15:43:54'),
-(2, '2023-03-24 15:43:54'),
-(3, '2023-03-24 15:50:49'),
-(4, '2023-03-25 13:25:14'),
-(5, '2023-03-25 16:21:38'),
-(6, '2023-03-25 16:21:43'),
-(7, '2023-03-25 16:21:45'),
-(8, '2023-03-25 16:21:50'),
-(9, '2023-03-25 19:50:18'),
-(10, '2023-03-25 19:54:32'),
-(11, '2023-04-01 20:42:48'),
-(12, '2023-04-01 20:43:12'),
-(13, '2023-04-01 20:52:01'),
-(14, '2023-04-05 16:49:47'),
-(15, '2023-04-08 15:05:48'),
-(16, '2023-04-12 15:06:54'),
-(17, '2023-04-13 19:16:55');
+(1, '2023-04-19 06:50:45'),
+(2, '2023-04-19 06:50:45'),
+(3, '2023-04-19 06:51:03'),
+(4, '2023-04-19 07:49:58');
 
 -- --------------------------------------------------------
 
@@ -555,10 +536,33 @@ CREATE TABLE `ulubiony` (
 
 INSERT INTO `ulubiony` (`ulubiony_id`, `uzytkownik_id`, `produkt_id`) VALUES
 (8, 2, 135),
-(9, 2, 111),
 (11, 2, 11),
-(12, 2, 120),
-(21, 2, 154);
+(23, 2, 153),
+(26, 2, 148),
+(28, 2, 13),
+(29, 2, 12),
+(30, 2, 15),
+(31, 2, 10),
+(32, 2, 150),
+(35, 2, 155),
+(36, 2, 98),
+(37, 2, 99),
+(38, 2, 97),
+(39, 2, 8),
+(40, 2, 7),
+(41, 2, 107),
+(42, 2, 19),
+(43, 2, 106),
+(44, 2, 108),
+(45, 2, 31),
+(46, 2, 29),
+(47, 2, 30),
+(48, 2, 27),
+(49, 2, 28),
+(50, 2, 24),
+(51, 2, 23),
+(52, 2, 32),
+(53, 2, 22);
 
 -- --------------------------------------------------------
 
@@ -1073,13 +1077,13 @@ ALTER TABLE `zdjecie`
 -- AUTO_INCREMENT dla tabeli `kategoria`
 --
 ALTER TABLE `kategoria`
-  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `kategoria_1`
 --
 ALTER TABLE `kategoria_1`
-  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT dla tabeli `kategoria_2`
@@ -1091,7 +1095,7 @@ ALTER TABLE `kategoria_2`
 -- AUTO_INCREMENT dla tabeli `koszyk`
 --
 ALTER TABLE `koszyk`
-  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT dla tabeli `kraj`
@@ -1109,13 +1113,13 @@ ALTER TABLE `marka`
 -- AUTO_INCREMENT dla tabeli `metoda_dostawy`
 --
 ALTER TABLE `metoda_dostawy`
-  MODIFY `metoda_dostawy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `metoda_dostawy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `metoda_platnosci`
 --
 ALTER TABLE `metoda_platnosci`
-  MODIFY `metoda_platnosci_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `metoda_platnosci_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT dla tabeli `produkt`
@@ -1127,13 +1131,13 @@ ALTER TABLE `produkt`
 -- AUTO_INCREMENT dla tabeli `sesja`
 --
 ALTER TABLE `sesja`
-  MODIFY `sesja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `sesja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT dla tabeli `ulubiony`
 --
 ALTER TABLE `ulubiony`
-  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT dla tabeli `uzytkownik`
@@ -1152,57 +1156,6 @@ ALTER TABLE `uzytkownik_adres`
 --
 ALTER TABLE `zdjecie`
   MODIFY `zdjecie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=426;
-
---
--- Ograniczenia dla zrzutów tabel
---
-
---
--- Ograniczenia dla tabeli `kategoria_1`
---
-ALTER TABLE `kategoria_1`
-  ADD CONSTRAINT `kategoria_1_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `kategoria` (`kategoria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `kategoria_2`
---
-ALTER TABLE `kategoria_2`
-  ADD CONSTRAINT `kategoria_2_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `kategoria_1` (`kategoria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `koszyk`
---
-ALTER TABLE `koszyk`
-  ADD CONSTRAINT `koszyk_ibfk_1` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `koszyk_ibfk_2` FOREIGN KEY (`sesja_id`) REFERENCES `sesja` (`sesja_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `koszyk_ibfk_3` FOREIGN KEY (`uzytkownik_id`) REFERENCES `uzytkownik` (`uzytkownik_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `produkt`
---
-ALTER TABLE `produkt`
-  ADD CONSTRAINT `produkt_ibfk_2` FOREIGN KEY (`marka_id`) REFERENCES `marka` (`marka_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `produkt_ibfk_3` FOREIGN KEY (`kategoria_id`) REFERENCES `kategoria_2` (`kategoria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `ulubiony`
---
-ALTER TABLE `ulubiony`
-  ADD CONSTRAINT `ulubiony_ibfk_1` FOREIGN KEY (`uzytkownik_id`) REFERENCES `uzytkownik` (`uzytkownik_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ulubiony_ibfk_2` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `uzytkownik_adres`
---
-ALTER TABLE `uzytkownik_adres`
-  ADD CONSTRAINT `uzytkownik_adres_ibfk_1` FOREIGN KEY (`uzytkownik_id`) REFERENCES `uzytkownik` (`uzytkownik_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `uzytkownik_adres_ibfk_2` FOREIGN KEY (`kraj_id`) REFERENCES `kraj` (`kraj_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ograniczenia dla tabeli `zdjecie`
---
-ALTER TABLE `zdjecie`
-  ADD CONSTRAINT `zdjecie_ibfk_1` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

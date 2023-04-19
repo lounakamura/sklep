@@ -1,3 +1,5 @@
+updateCartValue();
+
 const cartPreviewIframe = document.querySelector("[data-id='preview-cart']");
 const addButtons = document.querySelectorAll(".add-to-cart-button");
 const quantityDisplay = document.querySelector(".quantity-display");
@@ -14,7 +16,7 @@ addButtons.forEach(addButton => {
                 quantity = 1;
             }
             const REQUEST = new XMLHttpRequest();
-            REQUEST.open("POST", "php/add-to-cart.php");
+            REQUEST.open("POST", "/sklep/php/add-to-cart.php");
             REQUEST.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             REQUEST.send("product_id="+addButton.getAttribute("data-product_id")+"&quantity="+quantity);
             REQUEST.onreadystatechange = function() {

@@ -18,6 +18,19 @@
     $favourited = [];
     $displayedCategoryParents = [];
 
+    // Pagination
+    $pageAmt = 24;
+    $pageNo = 1;
+    if(isset($_GET['pageAmt'])){
+        if($_GET['pageAmt'] == 48 || $_GET['pageAmt'] == 96){
+            $pageAmt = $_GET['pageAmt'];
+        }
+    }
+    if(isset($_GET['pageNo'])){
+        $pageNo = $_GET['pageNo'];
+    }
+    $productsToDisplay = "LIMIT $pageAmt OFFSET ".($pageAmt*($pageNo-1));
+
     // Product display based on category
     $baseSelectionOn = '';
     $displayedCategoryName = 'Produkty';
@@ -52,7 +65,7 @@
         $result = $connection->query($query);
         $displayedBrand = $result->fetch_assoc()['marka'];
         $result->free();
-        $baseSelectionOn = 'WHERE p.marka_id='.$_GET['brand'];
+        $baseSelectionOn = 'AND p.marka_id='.$_GET['brand'];
         $displayedCategoryName = $displayedBrand;
     }
 
@@ -60,27 +73,16 @@
     if (isset($_GET['sort']) && $_GET['sort']!='') {
         $sort = 'ORDER BY '.$_GET['sort'];
     } else {
-        $sort = 'ORDER BY p.nazwa ASC';
+        $sort = 'ORDER BY nazwa ASC';
     }
 
     // Storing products
-    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc>0 $baseSelectionOn GROUP BY p.produkt_id $sort";
+    $query = "(SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc>0 $baseSelectionOn GROUP BY p.produkt_id) UNION ALL (SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc=0 $baseSelectionOn GROUP BY p.produkt_id) $sort $productsToDisplay";
+    echo $query;
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
     $productsFound = mysqli_num_rows($result);
     $result->free();
-    
-    // Adding unavailable products at the end
-    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc=0 $baseSelectionOn GROUP BY p.produkt_id $sort";
-    $result = $connection->query($query);
-    $i = count($products);
-    while ( $row = $result->fetch_assoc() ) {
-        $products[$i] = $row;
-        $i++;
-    }
-    $productsFound += mysqli_num_rows($result);
-    $result->free();
-
     
     // Storing product availability
     for($i=0; $i<count($products); $i++){
@@ -131,38 +133,38 @@
     <main>
         <?php    
             echo "<div class='breadcrumbs'>
-                    <ul>
-                        <li><a href='/sklep/index.php'>Strona Główna</a></li>";
-                        if(isset($_GET['brand'])){
-                            echo "<li><a href='/sklep/brands.php'>Marki</a></li>
-                            <li><a href='/sklep/products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
+                <ul>
+                    <li><a href='/sklep/index.php'>Strona Główna</a></li>";
+                    if(isset($_GET['brand'])){
+                        echo "<li><a href='/sklep/brands.php'>Marki</a></li>
+                        <li><a href='/sklep/products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
+                    } else {
+                        echo "<li><a href='/sklep/products.php'>Produkty</a></li>";
+                    }
+                    if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
+                        echo "<li><a href='/sklep/products.php?maincategory=";
+                        if(isset($_GET['maincategory'])){
+                            echo $_GET['maincategory']."'>".$displayedCategoryName;
                         } else {
-                            echo "<li><a href='/sklep/products.php'>Produkty</a></li>";
+                            echo $displayedCategoryParents['k_id']."'>".$displayedCategoryParents['k_nazwa'];
                         }
-                        if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
-                            echo "<li><a href='/sklep/products.php?maincategory=";
-                            if(isset($_GET['maincategory'])){
-                                echo $_GET['maincategory']."'>".$displayedCategoryName;
+                        echo "</a></li>";
+                        if (isset($_GET['category']) || isset($_GET['subcategory'])) {
+                            echo "<li><a href='/sklep/products.php?category=";
+                            if(isset($_GET['category'])){
+                                echo $_GET['category']."'>".$displayedCategoryName;
                             } else {
-                                echo $displayedCategoryParents['k_id']."'>".$displayedCategoryParents['k_nazwa'];
+                                echo $displayedCategoryParents['k1_id']."'>".$displayedCategoryParents['k1_nazwa'];
                             }
                             echo "</a></li>";
-                            if (isset($_GET['category']) || isset($_GET['subcategory'])) {
-                                echo "<li><a href='/sklep/products.php?category=";
-                                if(isset($_GET['category'])){
-                                    echo $_GET['category']."'>".$displayedCategoryName;
-                                } else {
-                                    echo $displayedCategoryParents['k1_id']."'>".$displayedCategoryParents['k1_nazwa'];
-                                }
-                                echo "</a></li>";
-                                if (isset($_GET['subcategory'])) {
-                                    echo "<li><a href='/sklep/products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
-                                }
+                            if (isset($_GET['subcategory'])) {
+                                echo "<li><a href='/sklep/products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
                             }
                         }
-                    echo "
-                    </ul>
-                </div>";
+                    }
+                echo "
+                </ul>
+            </div>";
         ?>
 
         <div class='product-display'>
@@ -258,13 +260,36 @@
                             } else if (isset($_GET['subcategory'])) {
                                 echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
                             }
+                            if (isset($_GET['sort'])){
+                                echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
+                            }
+                        ?>
+                        <label for='pageAmt'>Pokaż</label>
+                        <select name='pageAmt' id='pageAmt' class='pageAmt'>
+                            <option value='24' selected>24 produkty</option>
+                            <option value='48'>48 produktów</option>
+                            <option value='96'>96 produktów</option>
+                        </select>
+                    </form>
+                    <form method='GET'>
+                        <?php
+                            if (isset($_GET['maincategory'])) {
+                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                            } else if (isset($_GET['category'])) {
+                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                            } else if (isset($_GET['subcategory'])) {
+                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                            }
+                            if (isset($_GET['pageAmt'])){
+                                echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
+                            }
                         ?>
                         <label for='sort'>Sortuj wg</label>
                         <select name='sort' id='sort' class='sort'>
                             <option value='' selected>domyślnie</option>
-                            <option value='p.produkt_id DESC'>najnowsze</option>
-                            <option value='p.nazwa ASC'>nazwa a-z</option>
-                            <option value='p.nazwa DESC'>nazwa z-a</option>
+                            <option value='produkt_id DESC'>najnowsze</option>
+                            <option value='nazwa ASC'>nazwa a-z</option>
+                            <option value='nazwa DESC'>nazwa z-a</option>
                             <option value='cena ASC'>cena od najniższej</option>
                             <option value='cena DESC'>cena od najwyższej</option>
                         </select>
@@ -311,7 +336,6 @@
 ?>
 <script src="/sklep/js/addToCart.js"></script>
 <script src="/sklep/js/removeFromCart.js"></script>
-<script src="/sklep/js/addOrRemoveFavourite.js"></script>
 <script src="/sklep/js/productSort.js"></script>
 <script src="/sklep/js/accordionMenu.js"></script>
 

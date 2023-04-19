@@ -297,20 +297,22 @@ header.header-small {
   background-image: url("/sklep/images/ui/heart.svg");
 }
 
-/*      Cart button - icon showing amount      */
+/*       Icons showing cart & favourites amounts      */
 
-.container-cart-items-amount {
+.container-cart-items-amount,
+.container-favourites-amount {
   height: 100%;
   width: 100%;
   position: relative;
 }
 
-.circle-cart-items-amount {
+.circle-cart-items-amount,
+.circle-favourites-amount {
   position: absolute;
-  bottom: 0;
-  right: 1px;
-  height: 15px;
-  width: 15px;
+  bottom: 1px;
+  right: 4px;
+  height: 17px;
+  width: 17px;
   background-color: #e83f6f;
   border-radius: 50%;
   display: -webkit-box;
@@ -321,8 +323,10 @@ header.header-small {
   justify-content: center;
 }
 
-.cart-items-amount {
-  font-size: 13px;
+.cart-items-amount,
+.favourites-amount {
+  line-height: 19px;
+  font-size: 12px;
   font-weight: 500;
   color: white;
 }

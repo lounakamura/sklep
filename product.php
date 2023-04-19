@@ -179,7 +179,6 @@
 
 <script src="/sklep/js/productQuantity.js"></script>
 <script src="/sklep/js/addToCart.js"></script>
-<script src="/sklep/js/addOrRemoveFavourite.js"></script>
 <script src="/sklep/js/productImageGallery.js"></script>
 
 <?php

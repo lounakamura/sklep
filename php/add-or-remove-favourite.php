@@ -25,5 +25,14 @@
             $query = "INSERT INTO ulubiony (uzytkownik_id, produkt_id) VALUES (".$_SESSION['id'].", ".$_POST['product_id'].")";
             $result = $connection->query($query);
         }
+
+        // Count the number of favourites afterwards
+        $query = "SELECT COUNT(*) AS ilosc FROM ulubiony WHERE uzytkownik_id=".$_SESSION['id'];
+        $result = $connection->query($query);
+        $favAmount = $result->fetch_assoc();
+        $result->free();
+
+        // Update cookie responsible for amount of items in the cart
+        setcookie('favourites-amount', $favAmount['ilosc'], '0', '/sklep');
     }
 ?>

@@ -79,9 +79,15 @@
     ?>
 
     <main>
-        <h1>Ulubione</h1>
-        
         <?php
+            echo "<div class='breadcrumbs'>
+                <ul>
+                    <li><a href='/sklep/index.php'>Strona Główna</a></li>
+                    <li><a href='/sklep/user/account.php'>Konto</a></li>
+                    <li><a href='/sklep/user/favourites.php'>Ulubione</a></li>
+                </ul>
+            </div>";
+
             if(!isset($_SESSION['loggedin'])) {
                 echo '
                 <div class="not-logged-in">
@@ -91,10 +97,18 @@
                     <button onclick="location.href=\'/sklep/user/register.php\'" class="register-button pink-button">Zarejestruj się</button>
                 </div>';
             } else {
-                echo "<div class='products-misc'>
+                echo "<div class='products-container'>
+                <div class='products-misc'>
                         <h3>".$productsFound." wyników</h3>
-                    <form method='GET'>
-                        <label>Sortuj wg</label>
+                    <form method='GET'>";
+                            if (isset($_GET['maincategory'])) {
+                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                            } else if (isset($_GET['category'])) {
+                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                            } else if (isset($_GET['subcategory'])) {
+                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                            }
+                        echo "<label for='sort'>Sortuj wg</label>
                         <select name='sort' id='sort' class='sort'>
                             <option value='' selected>domyślnie</option>
                             <option value='p.produkt_id DESC'>najnowsze</option>
@@ -105,30 +119,26 @@
                         </select>
                     </form>
                 </div>";
-
-                echo "<div class='product-display'>";
-                    echo "<div class='products-container'>";
-                        foreach ($products as $product) {
-                            echo "<div class='product-container ".$product['dostepnosc']."'>";
-                                echo "<div>";
-                                    echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
-                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
-                                        <img src='".$product['zdjecie']."'>"; 
-                                    echo "</a>"; 
-                                    echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
-                                        <h4>" . $product['marka'] . "</h4>";
-                                    echo "</a>";
-                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
-                                        <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
-                                    echo "</a>";
-                                echo "</div>";
-                                echo "<div>";
-                                    echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                    echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
-                                echo "</div>";
-                            echo "</div>";
-                        }
+                foreach ($products as $product) {
+                    echo "<div class='product-container ".$product['dostepnosc']."'>";
+                        echo "<div>";
+                            echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
+                            echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
+                                <img src='".$product['zdjecie']."'>"; 
+                            echo "</a>"; 
+                            echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
+                                <h4>" . $product['marka'] . "</h4>";
+                            echo "</a>";
+                            echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
+                                <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
+                            echo "</a>";
+                        echo "</div>";
+                        echo "<div>";
+                            echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                            echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
+                        echo "</div>";
                     echo "</div>";
+                }
                 echo "</div>";
             }
         ?>
@@ -147,7 +157,8 @@
     require_once __DIR__.'\..\page-components\scripts.html';
 ?>
 
-<script src="/sklep/js/productQuantity.js"></script>
+<script src="/sklep/js/addToCart.js"></script>
+<script src="/sklep/js/removeFromCart.js"></script>
 <script src="/sklep/js/productSort.js"></script>
 
 <?php

@@ -18,7 +18,15 @@
                 </iframe>
             </section>
         </button>
-        <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'></button>
+        <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'>
+            <div class='container-favourites-amount' style='opacity:0'>
+                <div class='circle-favourites-amount'>
+                    <span class='favourites-amount'>
+                        -
+                    </span>
+                </div>
+            </div>
+        </button>
         <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
             <div class='container-cart-items-amount' style='opacity:0'>
                 <div class='circle-cart-items-amount'>
