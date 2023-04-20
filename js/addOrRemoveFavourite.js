@@ -24,10 +24,7 @@ favouriteButtons.forEach(favouriteButton => {
         REQUEST.onreadystatechange = function() {
             if (REQUEST.readyState == XMLHttpRequest.DONE) {
                 if(REQUEST.responseText == 'not logged in'){
-                    window.open(
-                        '/sklep/user/favourites.php',
-                        '_blank'
-                    );
+                    spop("Zaloguj się lub utwórz konto aby dodawać produkty do ulubionych.");
                 } else {
                     if($(favouriteButton).hasClass('fav')){
                         $(favouriteButton).removeClass('fav');
@@ -36,6 +33,7 @@ favouriteButtons.forEach(favouriteButton => {
                         $(favouriteButton).removeClass('not-fav');
                         $(favouriteButton).addClass('fav');
                     }
+                    spop("Produkt został dodany do ulubionych.", "success");
                     updateFavouritesValue();
                 }
             }

@@ -126,16 +126,16 @@
 
 .spop {
   position: relative;
-  min-height: 56px;
-  line-height: 1.25;
-  font-size: 14px;
+  min-height: 70px;
+  font-size: 16px;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 @media screen and (min-width: 30em) {
   .spop {
-    width: 320px;
-    margin: 0.7em;
+    width: 350px;
+    margin-left: 1.5em;
+    margin-bottom: 1.5em;
   }
 }
 
@@ -223,7 +223,7 @@
 }
 
 .spop-body {
-  padding: 1.4em;
+  padding: 1.5em;
 }
 .spop-body p {
   margin: 0;
@@ -265,7 +265,7 @@
 
 .spop-icon {
   position: absolute;
-  top: 13px;
+  top: 20px;
   left: 16px;
   width: 30px;
   height: 30px;

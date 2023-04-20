@@ -159,7 +159,7 @@
 
 <script src="/sklep/js/addToCart.js"></script>
 <script src="/sklep/js/removeFromCart.js"></script>
-<script src="/sklep/js/productSort.js"></script>
+<script src="/sklep/js/productFilter.js"></script>
 
 <?php
     $connection->close();

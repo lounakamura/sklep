@@ -12,24 +12,38 @@
         checkIfSessionExists($connection);
     }
 
+    if(!isset($_GET['pageNo']) || !isset($_GET['pageAmt']) || !isset($_GET['sort'])){
+        if (!isset($_GET['sort'])) {
+            $_GET['sort'] = 'default';
+        }
+        if (!isset($_GET['pageAmt'])) {
+            $_GET['pageAmt'] = 24;
+        }
+        if (!isset($_GET['pageNo'])) {
+            $_GET['pageNo'] = 1;
+        }
+        $counter = 1;
+        $newUrl = '';
+        foreach($_GET as $name=>$val) {
+            $newUrl.= "$name=$val";
+            if($counter<count($_GET)){
+                $newUrl.= "&";
+            }
+            $counter++;
+        }
+        header('Location: products.php?'.$newUrl);
+    }
+
     require_once __DIR__.'\page-components\required.php';
 
     $products = [];
     $favourited = [];
     $displayedCategoryParents = [];
-
+    
     // Pagination
-    $pageAmt = 24;
-    $pageNo = 1;
-    if(isset($_GET['pageAmt'])){
-        if($_GET['pageAmt'] == 48 || $_GET['pageAmt'] == 96){
-            $pageAmt = $_GET['pageAmt'];
-        }
-    }
-    if(isset($_GET['pageNo'])){
-        $pageNo = $_GET['pageNo'];
-    }
-    $productsToDisplay = "LIMIT $pageAmt OFFSET ".($pageAmt*($pageNo-1));
+    $pageAmt = $_GET['pageAmt'];
+    $pageNo = $_GET['pageNo'];
+    $pagination = "LIMIT $pageAmt OFFSET ".($pageAmt*($pageNo-1));
 
     // Product display based on category
     $baseSelectionOn = '';
@@ -69,19 +83,28 @@
         $displayedCategoryName = $displayedBrand;
     }
 
-    // Sorting products
-    if (isset($_GET['sort']) && $_GET['sort']!='') {
-        $sort = 'ORDER BY '.$_GET['sort'];
-    } else {
-        $sort = 'ORDER BY nazwa ASC';
-    }
+    // Sorting
+    $sortTypes = array(
+        'default' => 'nazwa ASC',
+        'newest' => 'produkt_id DESC',
+        'alphAsc' => 'nazwa ASC',
+        'alphDesc' => 'nazwa DESC',
+        'priceAsc' => 'cena ASC',
+        'priceDesc' => 'cena DESC'
+    );
+    $sort = 'ORDER BY ';
+    $sort .= $sortTypes[$_GET['sort']];
+    
+    // Counting total amount of found products
+    $query = "SELECT COUNT(*) AS ilosc FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) WHERE ilosc=ilosc $baseSelectionOn";
+    $result = $connection->query($query);
+    $productsFound = $result->fetch_assoc()['ilosc'];
+    $result->free();
 
-    // Storing products
-    $query = "(SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc>0 $baseSelectionOn GROUP BY p.produkt_id) UNION ALL (SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc=0 $baseSelectionOn GROUP BY p.produkt_id) $sort $productsToDisplay";
-    echo $query;
+    // Storing currently displayed products
+    $query = "(SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc>0 $baseSelectionOn GROUP BY p.produkt_id) UNION ALL (SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) WHERE ilosc=0 $baseSelectionOn GROUP BY p.produkt_id) $sort $pagination";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
-    $productsFound = mysqli_num_rows($result);
     $result->free();
     
     // Storing product availability
@@ -260,9 +283,7 @@
                             } else if (isset($_GET['subcategory'])) {
                                 echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
                             }
-                            if (isset($_GET['sort'])){
-                                echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
-                            }
+                            echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
                         ?>
                         <label for='pageAmt'>Pokaż</label>
                         <select name='pageAmt' id='pageAmt' class='pageAmt'>
@@ -280,18 +301,16 @@
                             } else if (isset($_GET['subcategory'])) {
                                 echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
                             }
-                            if (isset($_GET['pageAmt'])){
-                                echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
-                            }
+                            echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
                         ?>
                         <label for='sort'>Sortuj wg</label>
                         <select name='sort' id='sort' class='sort'>
-                            <option value='' selected>domyślnie</option>
-                            <option value='produkt_id DESC'>najnowsze</option>
-                            <option value='nazwa ASC'>nazwa a-z</option>
-                            <option value='nazwa DESC'>nazwa z-a</option>
-                            <option value='cena ASC'>cena od najniższej</option>
-                            <option value='cena DESC'>cena od najwyższej</option>
+                            <option value='default' selected>domyślnie</option>
+                            <option value='newest'>najnowsze</option>
+                            <option value='alphAsc'>nazwa a-z</option>
+                            <option value='alphDesc'>nazwa z-a</option>
+                            <option value='priceAsc'>cena od najniższej</option>
+                            <option value='priceDesc'>cena od najwyższej</option>
                         </select>
                     </form>
                 </div>
@@ -318,6 +337,29 @@
                         echo "</div>";
                     }
                 ?>
+
+                <div class='pagination-container'>
+                    <form method='GET'>
+                        <?php
+                            if (isset($_GET['maincategory'])) {
+                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                            } else if (isset($_GET['category'])) {
+                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                            } else if (isset($_GET['subcategory'])) {
+                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                            }
+                            echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
+                            echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
+                        ?>
+                        <ul>
+                            <li><input type='submit' name='pageNo' value='<'></li>
+                            <li><input type='submit' name='pageNo' value='1'></li>
+                            <li class='active'><input type='submit' name='pageNo' value='2'></li>
+                            <li><input type='submit' name='pageNo' value='3'></li>
+                            <li><input type='submit' name='pageNo' value='>'></li>
+                        </ul>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
@@ -336,7 +378,7 @@
 ?>
 <script src="/sklep/js/addToCart.js"></script>
 <script src="/sklep/js/removeFromCart.js"></script>
-<script src="/sklep/js/productSort.js"></script>
+<script src="/sklep/js/productFilter.js"></script>
 <script src="/sklep/js/accordionMenu.js"></script>
 
 <?php

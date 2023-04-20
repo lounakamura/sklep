@@ -1,19 +1,21 @@
+const urlParams = new URLSearchParams(window.location.search);
+
 document.getElementById('sort').onchange = function() {
-    localStorage.setItem('selectedItem', document.getElementById('sort').value);
+    localStorage.setItem('sort', document.getElementById('sort').value);
     this.form.submit();
 };
-
-if (localStorage.getItem('selectedItem')) {
-    let selected = localStorage.getItem('selectedItem');
-    $(".sort option[value='"+selected+"']").attr("selected", "true");
-} 
 
 document.getElementById('pageAmt').onchange = function() {
     localStorage.setItem('pageAmt', document.getElementById('pageAmt').value);
     this.form.submit();
 };
 
-if (localStorage.getItem('pageAmt')) {
+if (localStorage.getItem('sort')==urlParams.get('sort')) {
+    let selected = localStorage.getItem('sort');
+    $(".sort option[value='"+selected+"']").attr("selected", "true");
+} 
+
+if (localStorage.getItem('pageAmt')==urlParams.get('pageAmt')) {
     let selected = localStorage.getItem('pageAmt');
     $(".pageAmt option[value='"+selected+"']").attr("selected", "true");
 }

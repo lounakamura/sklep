@@ -280,3 +280,35 @@ button.add-to-cart-button.unavailable {
   border: none;
   cursor: default;
 }
+
+/*      Pagination      */
+
+.pagination-container {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.pagination-container ul {
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination-container input {
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 17px;
+  color: black;
+}
+
+.pagination-container li.active input {
+  outline: 2px solid black;
+}
+
+.pagination-container li:not(li.active) input:hover {
+  outline: 2px solid rgb(137, 137, 137);
+}

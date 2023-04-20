@@ -46,6 +46,6 @@ $('.admin-select2').select2({
 /*      SmallPop config       */
 
 spop.defaults = {
-	autoclose : 3000,
+	autoclose : 5000,
 	position  : 'bottom-left'
 };

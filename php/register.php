@@ -10,11 +10,15 @@
     }
 
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        exit('Email is not valid!');
+        $_SESSION['message'] = 'Podaj poprawny email!';
+        $_SESSION['message-type'] = 'error';
+        header('Location: ..\user\register.php');
     }
 
     if (!($_POST['password'] === $_POST['repeat-password'])) {
-        exit('Passwords don\'t match!');
+        $_SESSION['message'] = 'Podane przez ciebie hasła różnią się od siebie!';
+        $_SESSION['message-type'] = 'error';
+        header('Location: ..\user\register.php');
     }
     
     if ($stmt = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE nazwa = ?')) {
@@ -22,20 +26,26 @@
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
-            echo 'Istnieje już konto o podanej nazwie uzytkownika';
+            $_SESSION['message'] = 'Istnieje już konto o podanej nazwie użytkownika!';
+            $_SESSION['message-type'] = 'error';
+            header('Location: ..\user\register.php');
         } else {
             if ($stmt = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE email = ?')) {
                 $stmt->bind_param('s', $_POST['email']);
                 $stmt->execute();
                 $stmt->store_result();
                 if ($stmt->num_rows > 0) {
-                    echo 'Istnieje już konto o podanym emailu';
+                    $_SESSION['message'] = 'Istnieje już konto o podanym emailu!';
+                    $_SESSION['message-type'] = 'error';
+                    header('Location: ..\user\register.php');
                 } else {
                     if ($stmt = $connection->prepare('INSERT INTO uzytkownik (nazwa, email, haslo) VALUES (?, ?, ?)')) {
                         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                         $stmt->bind_param('sss', $_POST['username'], $_POST['email'], $password);
                         $stmt->execute();
-                        echo 'You have successfully registered! You can now login!';
+                        $_SESSION['message'] = 'Twoje konto zostało utworzone! Możesz teraz się zalogować.';
+                        $_SESSION['message-type'] = 'success';
+                        header('Location: ..\user\login.php');
                     } else {
                         echo 'Could not prepare statement!';
                     }

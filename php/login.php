@@ -40,12 +40,19 @@
                 if($result['admin']) {
                     $_SESSION['isadmin'] = TRUE;
                 }
+
+                $_SESSION['message'] = 'Zostałeś poprawnie zalogowany!';
+                $_SESSION['message-type'] = 'success';
                 header("Location: ..\index.php");
             } else {
-                echo "Wrong password";
+                $_SESSION['message'] = 'Nieprawidłowe hasło!';
+                $_SESSION['message-type'] = 'error';
+                header("Location: ..\user\login.php");
             }
         } else {
-            echo "Account with this username doesn't exist";
+            $_SESSION['message'] = 'Konto o podanej nazwie nie istnieje!';
+            $_SESSION['message-type'] = 'error';
+            header("Location: ..\user\login.php");
         }
         $query->close();
     }
