@@ -15,8 +15,6 @@
         header('Location: account.php');
     }
 
-    
-
     require_once __DIR__.'\..\page-components\required.php';
 ?>
 

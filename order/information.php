@@ -11,6 +11,10 @@
         checkIfSessionExists($connection);
     }
 
+    if(!isset($_SESSION['loggedin'])){
+        header('Location: login.php');
+    }
+
     require_once __DIR__.'\..\page-components\required.php';
 ?>
 
@@ -35,7 +39,7 @@
     </header>
 
     <main>
-        <div class='order-navigation'>
+    <div class='order-navigation'>
             <a class='nav' href='/sklep/cart.php'>
                 <span class='order-icons'>
                     <i class="fa-solid fa-cart-shopping fa-xl" style="color: #000000;"></i>
@@ -74,31 +78,28 @@
             </a>
         </div>
 
-        <div class='payment-forms'>
-            BLIK
-            PayU
-        </div>
-        <div class='shipping-forms'>
-            Paczkomaty
-            Kurier inpost
-            DPD
-            Pocztex
-            Pocztex odbior
-            Fedex
-            DHL
-        </div>
-        <div class='order-sum'>
-            Wartosc zamowienia
-            Koszt przesylki
-            Do zaplaty
-            Przejd dalej
+        <div class='client-info'>
+            <h1>Twoje dane</h1>
+            <form method='POST'>
+                <input type='radio' name='company' value='no' id='private-person'><label for='private-person'>Osoba prywatna</label>
+                <input type='radio' name='company' value='yes' id='company'><label for='company'>Firma</label>
+                <label for='first-name'>Imię</label><input type='text' name='first-name' id='first-name'>
+                <label for='last-name'>Nazwisko</label><input type='text' name='last-name' id='last-name'>
+                <label for='street'>Ulica</label><input type='text' name='street' id='street'>
+                <label for='street-no'>Nr domu</label><input type='text' name='street-no' id='street-no'>
+                <label for='house-no'>Nr mieszkania</label><input type='text' name='house-no' id='house-no'>
+                <label for='postal-code'>Kod pocztowy</label><input type='text' name='postal-code' id='postal-code'>
+                <label for='city'>Miejscowość</label><input type='text' name='city' id='city'>
+                <label for='country'>Kraj</label><select name='country' id='country'>
+                <label for='phone'>Numer telefonu</label><input type='tel' name='phone' id='phone'>
+                <label for='email'>Adres email</label><input type='email' name='email' id='email'>
+                <button type='submit'>Przejdź dalej</button>
+            </form>
         </div>
     </main>
 
     <?php 
-        
         require_once __DIR__.'\..\page-components\footer.html';
-        
     ?>
 </body>
 </html>

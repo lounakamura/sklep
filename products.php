@@ -154,211 +154,213 @@
     ?>
 
     <main>
-        <?php    
-            echo "<div class='breadcrumbs'>
-                <ul>
-                    <li><a href='/sklep/index.php'>Strona Główna</a></li>";
-                    if(isset($_GET['brand'])){
-                        echo "<li><a href='/sklep/brands.php'>Marki</a></li>
-                        <li><a href='/sklep/products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
-                    } else {
-                        echo "<li><a href='/sklep/products.php'>Produkty</a></li>";
-                    }
-                    if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
-                        echo "<li><a href='/sklep/products.php?maincategory=";
-                        if(isset($_GET['maincategory'])){
-                            echo $_GET['maincategory']."'>".$displayedCategoryName;
+        <div class='main-content'>
+            <?php
+                echo "<div class='breadcrumbs'>
+                    <ul>
+                        <li><a href='/sklep/index.php'>Strona Główna</a></li>";
+                        if(isset($_GET['brand'])){
+                            echo "<li><a href='/sklep/brands.php'>Marki</a></li>
+                            <li><a href='/sklep/products.php?brand=".$_GET['brand']."'>$displayedBrand</a></li>";
                         } else {
-                            echo $displayedCategoryParents['k_id']."'>".$displayedCategoryParents['k_nazwa'];
+                            echo "<li><a href='/sklep/products.php'>Produkty</a></li>";
                         }
-                        echo "</a></li>";
-                        if (isset($_GET['category']) || isset($_GET['subcategory'])) {
-                            echo "<li><a href='/sklep/products.php?category=";
-                            if(isset($_GET['category'])){
-                                echo $_GET['category']."'>".$displayedCategoryName;
+                        if (isset($_GET['maincategory']) || isset($_GET['category']) || isset($_GET['subcategory'])) {
+                            echo "<li><a href='/sklep/products.php?maincategory=";
+                            if(isset($_GET['maincategory'])){
+                                echo $_GET['maincategory']."'>".$displayedCategoryName;
                             } else {
-                                echo $displayedCategoryParents['k1_id']."'>".$displayedCategoryParents['k1_nazwa'];
+                                echo $displayedCategoryParents['k_id']."'>".$displayedCategoryParents['k_nazwa'];
                             }
                             echo "</a></li>";
-                            if (isset($_GET['subcategory'])) {
-                                echo "<li><a href='/sklep/products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
+                            if (isset($_GET['category']) || isset($_GET['subcategory'])) {
+                                echo "<li><a href='/sklep/products.php?category=";
+                                if(isset($_GET['category'])){
+                                    echo $_GET['category']."'>".$displayedCategoryName;
+                                } else {
+                                    echo $displayedCategoryParents['k1_id']."'>".$displayedCategoryParents['k1_nazwa'];
+                                }
+                                echo "</a></li>";
+                                if (isset($_GET['subcategory'])) {
+                                    echo "<li><a href='/sklep/products.php?subcategory=".$_GET['subcategory']."'>$displayedCategoryName</a></li>";
+                                }
                             }
                         }
-                    }
-                echo "
-                </ul>
-            </div>";
-        ?>
+                    echo "
+                    </ul>
+                </div>";
+            ?>
 
-        <div class='product-display'>
-            <div class='categories-container'>
-                <h3>Kategorie</h3>
-                <ul class='accordion-menu'>
-                    <?php
-                        foreach ( $maincategories as $maincategory ) {
-                            $categories = [];
-                            $query = "SELECT * FROM kategoria_1 as k1 WHERE k1.parent_id = " . $maincategory['kategoria_id'];
-                            $result = $connection->query($query);
-                            fetchAllToArray( $categories, $result );
-                            $result->free();
+            <div class='product-display'>
+                <div class='categories-container'>
+                    <h3>Kategorie</h3>
+                    <ul class='accordion-menu'>
+                        <?php
+                            foreach ( $maincategories as $maincategory ) {
+                                $categories = [];
+                                $query = "SELECT * FROM kategoria_1 as k1 WHERE k1.parent_id = " . $maincategory['kategoria_id'];
+                                $result = $connection->query($query);
+                                fetchAllToArray( $categories, $result );
+                                $result->free();
 
-                            $active = '';
-                            $display = '';
+                                $active = '';
+                                $display = '';
 
-                            if (isset($_GET['maincategory'])) {
-                                if ($maincategory['kategoria_id'] == $_GET['maincategory']){
-                                    $active = "class='active'";
-                                    $display = "style='display:block'";
-                                }
-                            } else if (isset($_GET['category']) || isset($_GET['subcategory'])) {
-                                if($maincategory['kategoria_id'] == $displayedCategoryParents['k_id']){
-                                    $active = "class='active'";
-                                    $display = "style='display:block'";
-                                }
-                            }
-                            echo "
-                            <li $active>
-                                <div class='dropdown-header'>
-                                    <a href='/sklep/products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
-                                    <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
-                                </div>";
-                            echo "<ul class='submenu' $display>";
-
-                                foreach ( $categories as $category ) {
-                                    $subcategories = [];
-                                    $query = "SELECT * FROM kategoria_2 as k2 WHERE k2.parent_id=" . $category['kategoria_id'];
-                                    $result = $connection->query($query);
-                                    fetchAllToArray( $subcategories, $result );
-                                    $result->free();
-
-                                    $active = '';
-                                    $display = '';
-
-                                    if (isset($_GET['category'])) {
-                                        if($category['kategoria_id'] == $_GET['category']){
-                                            $active = "class='active'";
-                                            $display = "style='display:block'";
-                                        }
-                                    } else if (isset($_GET['subcategory'])){
-                                        if($category['kategoria_id'] == $displayedCategoryParents['k1_id']){
-                                            $active = "class='active'";
-                                            $display = "style='display:block'";
-                                        }
+                                if (isset($_GET['maincategory'])) {
+                                    if ($maincategory['kategoria_id'] == $_GET['maincategory']){
+                                        $active = "class='active'";
+                                        $display = "style='display:block'";
                                     }
-
-                                    echo "
-                                    <li $active>
-                                        <div class='dropdown-header'>
-                                            <a href='/sklep/products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
-                                            <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
-                                        </div>
-                                        <ul class='nested-menu' $display>";
-                                            foreach ( $subcategories as $subcategory ) {
-                                                echo "<a href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
-                                            }
-                                            echo "
-                                        </ul>
-                                    </li>";
-                                    unset($subcategories);
+                                } else if (isset($_GET['category']) || isset($_GET['subcategory'])) {
+                                    if($maincategory['kategoria_id'] == $displayedCategoryParents['k_id']){
+                                        $active = "class='active'";
+                                        $display = "style='display:block'";
+                                    }
                                 }
-                            echo "</ul>
-                            </li>";
-                            unset($categories);
-                        }
-                    ?>
-                </ul>
-            </div>
+                                echo "
+                                <li $active>
+                                    <div class='dropdown-header'>
+                                        <a href='/sklep/products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>
+                                        <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
+                                    </div>";
+                                echo "<ul class='submenu' $display>";
 
-            <div class='products-container'>
-                <div class='products-misc'>
-                    <?php
-                        echo "<h3>".$productsFound." wyników</h3>";
-                    ?>
-                    <form method='GET'>
-                        <?php
-                            if (isset($_GET['maincategory'])) {
-                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
-                            } else if (isset($_GET['category'])) {
-                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
-                            } else if (isset($_GET['subcategory'])) {
-                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                                    foreach ( $categories as $category ) {
+                                        $subcategories = [];
+                                        $query = "SELECT * FROM kategoria_2 as k2 WHERE k2.parent_id=" . $category['kategoria_id'];
+                                        $result = $connection->query($query);
+                                        fetchAllToArray( $subcategories, $result );
+                                        $result->free();
+
+                                        $active = '';
+                                        $display = '';
+
+                                        if (isset($_GET['category'])) {
+                                            if($category['kategoria_id'] == $_GET['category']){
+                                                $active = "class='active'";
+                                                $display = "style='display:block'";
+                                            }
+                                        } else if (isset($_GET['subcategory'])){
+                                            if($category['kategoria_id'] == $displayedCategoryParents['k1_id']){
+                                                $active = "class='active'";
+                                                $display = "style='display:block'";
+                                            }
+                                        }
+
+                                        echo "
+                                        <li $active>
+                                            <div class='dropdown-header'>
+                                                <a href='/sklep/products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>
+                                                <i class='fa fa-chevron-down dropdown-btn' data-hidden='true'></i>
+                                            </div>
+                                            <ul class='nested-menu' $display>";
+                                                foreach ( $subcategories as $subcategory ) {
+                                                    echo "<a href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
+                                                }
+                                                echo "
+                                            </ul>
+                                        </li>";
+                                        unset($subcategories);
+                                    }
+                                echo "</ul>
+                                </li>";
+                                unset($categories);
                             }
-                            echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
                         ?>
-                        <label for='pageAmt'>Pokaż</label>
-                        <select name='pageAmt' id='pageAmt' class='pageAmt'>
-                            <option value='24' selected>24 produkty</option>
-                            <option value='48'>48 produktów</option>
-                            <option value='96'>96 produktów</option>
-                        </select>
-                    </form>
-                    <form method='GET'>
-                        <?php
-                            if (isset($_GET['maincategory'])) {
-                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
-                            } else if (isset($_GET['category'])) {
-                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
-                            } else if (isset($_GET['subcategory'])) {
-                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
-                            }
-                            echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
-                        ?>
-                        <label for='sort'>Sortuj wg</label>
-                        <select name='sort' id='sort' class='sort'>
-                            <option value='default' selected>domyślnie</option>
-                            <option value='newest'>najnowsze</option>
-                            <option value='alphAsc'>nazwa a-z</option>
-                            <option value='alphDesc'>nazwa z-a</option>
-                            <option value='priceAsc'>cena od najniższej</option>
-                            <option value='priceDesc'>cena od najwyższej</option>
-                        </select>
-                    </form>
+                    </ul>
                 </div>
 
-                <?php
-                    foreach ($products as $product) {
-                        echo "<div class='product-container ".$product['dostepnosc']."'>";
-                            echo "<div>";
-                                echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
-                                echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
-                                    <img src='".$product['zdjecie']."'>"; 
-                                echo "</a>"; 
-                                echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
-                                    <h4>" . $product['marka'] . "</h4>";
-                                echo "</a>";
-                                echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
-                                    <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
-                                echo "</a>";
-                            echo "</div>";
-                            echo "<div>";
-                                echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
-                                echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
-                            echo "</div>";
-                        echo "</div>";
-                    }
-                ?>
-
-                <div class='pagination-container'>
-                    <form method='GET'>
+                <div class='products-container'>
+                    <div class='products-misc'>
                         <?php
-                            if (isset($_GET['maincategory'])) {
-                                echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
-                            } else if (isset($_GET['category'])) {
-                                echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
-                            } else if (isset($_GET['subcategory'])) {
-                                echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
-                            }
-                            echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
-                            echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
+                            echo "<h3>".$productsFound." wyników</h3>";
                         ?>
-                        <ul>
-                            <li><input type='submit' name='pageNo' value='<'></li>
-                            <li><input type='submit' name='pageNo' value='1'></li>
-                            <li class='active'><input type='submit' name='pageNo' value='2'></li>
-                            <li><input type='submit' name='pageNo' value='3'></li>
-                            <li><input type='submit' name='pageNo' value='>'></li>
-                        </ul>
-                    </form>
+                        <form method='GET'>
+                            <?php
+                                if (isset($_GET['maincategory'])) {
+                                    echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                                } else if (isset($_GET['category'])) {
+                                    echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                                } else if (isset($_GET['subcategory'])) {
+                                    echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                                }
+                                echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
+                            ?>
+                            <label for='pageAmt'>Pokaż</label>
+                            <select name='pageAmt' id='pageAmt' class='pageAmt'>
+                                <option value='24' selected>24 produkty</option>
+                                <option value='48'>48 produktów</option>
+                                <option value='96'>96 produktów</option>
+                            </select>
+                        </form>
+                        <form method='GET'>
+                            <?php
+                                if (isset($_GET['maincategory'])) {
+                                    echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                                } else if (isset($_GET['category'])) {
+                                    echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                                } else if (isset($_GET['subcategory'])) {
+                                    echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                                }
+                                echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
+                            ?>
+                            <label for='sort'>Sortuj wg</label>
+                            <select name='sort' id='sort' class='sort'>
+                                <option value='default' selected>domyślnie</option>
+                                <option value='newest'>najnowsze</option>
+                                <option value='alphAsc'>nazwa a-z</option>
+                                <option value='alphDesc'>nazwa z-a</option>
+                                <option value='priceAsc'>cena od najniższej</option>
+                                <option value='priceDesc'>cena od najwyższej</option>
+                            </select>
+                        </form>
+                    </div>
+
+                    <?php
+                        foreach ($products as $product) {
+                            echo "<div class='product-container ".$product['dostepnosc']."'>";
+                                echo "<div>";
+                                    echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
+                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
+                                        <img src='".$product['zdjecie']."'>"; 
+                                    echo "</a>"; 
+                                    echo "<a href='/sklep/products.php?brand=" . $product['marka_id'] . "'>
+                                        <h4>" . $product['marka'] . "</h4>";
+                                    echo "</a>";
+                                    echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
+                                        <h3 class='line-limit'>" . $product['nazwa'] . "</h3>";
+                                    echo "</a>";
+                                echo "</div>";
+                                echo "<div>";
+                                    echo "<span>" . number_format($product['cena'], 2, ',') . "<span> zł</span></span><br>";
+                                    echo "<button class='pink-button add-to-cart-button ".$product['dostepnosc']."' data-product_id='".$product['produkt_id']."'>Dodaj do koszyka</button>";
+                                echo "</div>";
+                            echo "</div>";
+                        }
+                    ?>
+
+                    <div class='pagination-container'>
+                        <form method='GET'>
+                            <?php
+                                if (isset($_GET['maincategory'])) {
+                                    echo "<input type='hidden' name='maincategory' value='".htmlspecialchars($_GET['maincategory'])."'>";
+                                } else if (isset($_GET['category'])) {
+                                    echo "<input type='hidden' name='category' value='".htmlspecialchars($_GET['category'])."'>";
+                                } else if (isset($_GET['subcategory'])) {
+                                    echo "<input type='hidden' name='subcategory' value='".htmlspecialchars($_GET['subcategory'])."'>";
+                                }
+                                echo "<input type='hidden' name='pageAmt' value='".htmlspecialchars($_GET['pageAmt'])."'>";
+                                echo "<input type='hidden' name='sort' value='".htmlspecialchars($_GET['sort'])."'>";
+                            ?>
+                            <ul>
+                                <li><input type='submit' name='pageNo' value='<'></li>
+                                <li><input type='submit' name='pageNo' value='1'></li>
+                                <li class='active'><input type='submit' name='pageNo' value='2'></li>
+                                <li><input type='submit' name='pageNo' value='3'></li>
+                                <li><input type='submit' name='pageNo' value='>'></li>
+                            </ul>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

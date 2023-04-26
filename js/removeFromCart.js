@@ -16,6 +16,7 @@ removeButtons.forEach(removeButton => {
             }
             displayLoadingScreen();
             document.location.reload();
+            /* spop("Produkt został usunięty z koszyka.", "success"); */
             updateCartValue();
         }
     }

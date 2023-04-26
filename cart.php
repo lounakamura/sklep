@@ -160,7 +160,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <form method='POST' action='/sklep/order/shipping.php'>
+                            <form method='POST' action='/sklep/order/information.php'>
                                 <button type='submit' class='button-next pink-button'>Realizuj zamówienie</button>
                             </form>
                         </div>
