@@ -11,6 +11,19 @@
         checkIfSessionExists($connection);
     }
 
+    $paymentMethods = [];
+    $shippingMethods = [];
+
+    $query = "SELECT * FROM metoda_platnosci";
+    $result = $connection->query($query);
+    fetchAllToArray($paymentMethods, $result);
+    $result->free();
+
+    $query = "SELECT * FROM metoda_dostawy";
+    $result = $connection->query($query);
+    fetchAllToArray($shippingMethods, $result);
+    $result->free();
+
     require_once __DIR__.'\..\page-components\required.php';
 ?>
 
@@ -74,25 +87,35 @@
             </a>
         </div>
 
-        <div class='payment-forms'>
-            BLIK
-            PayU
-        </div>
-        <div class='shipping-forms'>
-            Paczkomaty
-            Kurier inpost
-            DPD
-            Pocztex
-            Pocztex odbior
-            Fedex
-            DHL
-        </div>
-        <div class='order-sum'>
-            Wartosc zamowienia
-            Koszt przesylki
-            Do zaplaty
-            Przejd dalej
-        </div>
+    <div class='shipping-payment'>
+        <h1>Dostawa i płatność</h1>
+        <form method='POST'>
+            <div class='payment-forms'>
+                <?php
+                    foreach ($paymentMethods as $paymentMethod) {
+                        echo "<div>
+                            <input type='radio' name='payment' value='".$paymentMethod['metoda_platnosci_id']."' id='".$paymentMethod['rodzaj']."'><label for='".$paymentMethod['rodzaj']."'>".$paymentMethod['rodzaj']."<img src='".$paymentMethod['zdjecie_sciezka']."'></label>
+                        </div>";
+                    }
+                ?>
+            </div>
+            <div class='shipping-forms'>
+                <?php
+                    foreach ($shippingMethods as $shippingMethod) {
+                        echo "<div>
+                            <input type='radio' name='shipping' value='".$shippingMethod['metoda_dostawy_id']."' id='".$shippingMethod['rodzaj']."'><label for='".$shippingMethod['rodzaj']."'>".$shippingMethod['rodzaj']."<img src='".$shippingMethod['zdjecie_sciezka']."'></label>
+                        </div>";
+                    }
+                ?>
+            </div>
+            <div class='order-sum'>
+                Wartosc zamowienia
+                Koszt przesylki
+                Do zaplaty
+            </div>
+            <button type='submit'>Przejdź dalej</button>
+        </form>
+    </div>
     </main>
 
     <?php 

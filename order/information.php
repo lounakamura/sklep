@@ -15,6 +15,13 @@
         header('Location: login.php');
     }
 
+    $countries = [];
+
+    $query = "SELECT * FROM kraj";
+    $result = $connection->query($query);
+    fetchAllToArray($countries, $result);
+    $result->free();
+
     require_once __DIR__.'\..\page-components\required.php';
 ?>
 
@@ -81,18 +88,46 @@
         <div class='client-info'>
             <h1>Twoje dane</h1>
             <form method='POST'>
-                <input type='radio' name='company' value='no' id='private-person'><label for='private-person'>Osoba prywatna</label>
-                <input type='radio' name='company' value='yes' id='company'><label for='company'>Firma</label>
-                <label for='first-name'>Imię</label><input type='text' name='first-name' id='first-name'>
-                <label for='last-name'>Nazwisko</label><input type='text' name='last-name' id='last-name'>
-                <label for='street'>Ulica</label><input type='text' name='street' id='street'>
-                <label for='street-no'>Nr domu</label><input type='text' name='street-no' id='street-no'>
-                <label for='house-no'>Nr mieszkania</label><input type='text' name='house-no' id='house-no'>
-                <label for='postal-code'>Kod pocztowy</label><input type='text' name='postal-code' id='postal-code'>
-                <label for='city'>Miejscowość</label><input type='text' name='city' id='city'>
-                <label for='country'>Kraj</label><select name='country' id='country'>
-                <label for='phone'>Numer telefonu</label><input type='tel' name='phone' id='phone'>
-                <label for='email'>Adres email</label><input type='email' name='email' id='email'>
+                <div>
+                    <input type='radio' name='company' value='no' id='private-person'><label for='private-person'>Osoba prywatna</label>
+                    <input type='radio' name='company' value='yes' id='company'><label for='company'>Firma</label>
+                </div>
+                <div>
+                    <label for='first-name'>Imię</label><input type='text' name='first-name' id='first-name'>
+                </div>
+                <div>
+                    <label for='last-name'>Nazwisko</label><input type='text' name='last-name' id='last-name'>
+                </div>
+                <div>
+                    <label for='street'>Ulica</label><input type='text' name='street' id='street'>
+                </div>
+                <div>
+                    <label for='street-no'>Nr domu</label><input type='text' name='street-no' id='street-no'>
+                </div>
+                <div>
+                    <label for='house-no'>Nr mieszkania</label><input type='text' name='house-no' id='house-no'>
+                </div>
+                <div>
+                    <label for='postal-code'>Kod pocztowy</label><input type='text' name='postal-code' id='postal-code'>
+                </div>
+                <div>
+                    <label for='city'>Miejscowość</label><input type='text' name='city' id='city'>
+                </div>
+                <div>
+                    <label for='country'>Kraj</label><select name='country' id='country'>
+                        <?php
+                            foreach ($countries as $country) {
+                                echo "<option value='".$country['kraj_id']."'>".$country['nazwa']."</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div>
+                    <label for='phone'>Numer telefonu</label><input type='tel' name='phone' id='phone'>
+                </div>
+                <div>
+                    <label for='email'>Adres email</label><input type='email' name='email' id='email'>
+                </div>
                 <button type='submit'>Przejdź dalej</button>
             </form>
         </div>
