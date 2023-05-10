@@ -48,74 +48,96 @@
     </header>
 
     <main>
-        <div class='order-navigation'>
-            <a class='nav' href='/sklep/cart.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-cart-shopping fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Koszyk</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/login.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-file-lines fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Twoje dane</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/shipping.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-truck fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Dostawa i płatność</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/check.php'>
-                <span class='order-icons bubble-icon'>
-                    <i class="fa-solid fa-clipboard-check fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Weryfikacja danych</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-        </div>
+        <?php
+            require_once 'nav.php';
+        ?>
 
-    <div class='shipping-payment'>
-        <h1>Dostawa i płatność</h1>
-        <form method='POST'>
-            <div class='payment-forms'>
-                <?php
-                    foreach ($paymentMethods as $paymentMethod) {
-                        echo "<div>
-                            <input type='radio' name='payment' value='".$paymentMethod['metoda_platnosci_id']."' id='".$paymentMethod['rodzaj']."'><label for='".$paymentMethod['rodzaj']."'>".$paymentMethod['rodzaj']."<img src='".$paymentMethod['zdjecie_sciezka']."'></label>
-                        </div>";
-                    }
-                ?>
-            </div>
-            <div class='shipping-forms'>
-                <?php
-                    foreach ($shippingMethods as $shippingMethod) {
-                        echo "<div>
-                            <input type='radio' name='shipping' value='".$shippingMethod['metoda_dostawy_id']."' id='".$shippingMethod['rodzaj']."'><label for='".$shippingMethod['rodzaj']."'>".$shippingMethod['rodzaj']."<img src='".$shippingMethod['zdjecie_sciezka']."'></label>
-                        </div>";
-                    }
-                ?>
-            </div>
-            <div class='order-sum'>
-                Wartosc zamowienia
-                Koszt przesylki
-                Do zaplaty
-            </div>
-            <button type='submit'>Przejdź dalej</button>
-        </form>
-    </div>
+        <div class='shipping-payment'>
+            <h1>Dostawa i płatność</h1>
+            <form method='POST' action='check.php'>
+                <div class='payment-forms'>
+                    <h2>Płatność</h2>
+                    <?php
+                        $first = 0;
+                        foreach ($paymentMethods as $paymentMethod) {
+                            echo "<div>
+                                <input type='radio' name='payment' value='".$paymentMethod['metoda_platnosci_id']."' id='".$paymentMethod['rodzaj']."' ";
+                                    if($first == 0){
+                                        echo "checked";
+                                        $first++;
+                                    }
+                                echo ">
+                                <label for='".$paymentMethod['rodzaj']."'>
+                                    <span>".$paymentMethod['rodzaj']."</span>
+                                    <img src='".$paymentMethod['zdjecie_sciezka']."'>
+                                </label>
+                            </div>";
+                        }
+                    ?>
+                </div>
+                <div class='shipping-forms'>
+                    <h2>Dostawa</h2>
+                    <?php
+                        $first = 0;
+                        foreach ($shippingMethods as $shippingMethod) {
+                            echo "<div>
+                                <input type='radio' name='shipping' value='".$shippingMethod['metoda_dostawy_id']."' id='".$shippingMethod['rodzaj']."' onclick='calculateOrderValue()' ";
+                                    if($first == 0){
+                                        echo "checked";
+                                        $first++;
+                                    }
+                                echo ">
+                                <label for='".$shippingMethod['rodzaj']."'>
+                                    <div>
+                                        <span>".$shippingMethod['rodzaj']."</span>
+                                        <span>Dostawa ".$shippingMethod['oczekiwanie_min']."-".$shippingMethod['oczekiwanie_max']." dni roboczych</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <span>".str_replace('.', ',',$shippingMethod['cena'])."</span> zł
+                                        </span>
+                                        <img src='".$shippingMethod['zdjecie_sciezka']."'>
+                                    </div>
+                                </label>
+                            </div>";
+                        }
+                    ?>
+                </div>
+                <div class='order-cost'>
+                    <div class='order-cost-row'>
+                        <span>Wartość zamówienia</span>
+                        <span class='order-product-sum'>
+                            <span class='product-sum'>
+                                <?php
+                                    echo number_format($productSum, 2, ',', '');
+                                ?>
+                            </span>
+                            <span>  zł</span>
+                        </span>
+                    </div>
+                    <div class='order-cost-row'>
+                        <span>Dostawa</span>
+                        <span class='order-shipping-price'>
+                            <span class='shipping-price'>
+                            </span>
+                            <span> zł</span>
+                        </span>
+                    </div>
+                    <div class='order-cost-row'>
+                        <span>Razem</span>
+                        <span class='order-total-sum'>
+                            <span class='total-sum'>
+                                <?php
+                                    echo number_format($productSum, 2, ',', '');
+                                ?>
+                            </span>
+                            <span> zł</span
+                        </span>
+                    </div>
+                </div>
+                <button type='submit' class='pink-button'>Przejdź dalej</button>
+            </form>
+        </div>
     </main>
 
     <?php 
@@ -125,6 +147,8 @@
     ?>
 </body>
 </html>
+
+<script src="/sklep/js/orderCalcTotal.js"></script>
 
 <?php
     $connection->close();

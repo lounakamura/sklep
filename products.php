@@ -255,7 +255,7 @@
                                             </div>
                                             <ul class='nested-menu' $display>";
                                                 foreach ( $subcategories as $subcategory ) {
-                                                    echo "<a href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
+                                                    echo "<li><a href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a></li>";
                                                 }
                                                 echo "
                                             </ul>

@@ -46,75 +46,62 @@
     </header>
 
     <main>
-    <div class='order-navigation'>
-            <a class='nav' href='/sklep/cart.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-cart-shopping fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Koszyk</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/login.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-file-lines fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Twoje dane</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/shipping.php'>
-                <span class='order-icons'>
-                    <i class="fa-solid fa-truck fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Dostawa i płatność</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-            <a class='nav' href='/sklep/order/check.php'>
-                <span class='order-icons bubble-icon'>
-                    <i class="fa-solid fa-clipboard-check fa-xl" style="color: #000000;"></i>
-                </span>
-                <span class='nav-text'>
-                    <span class='nav-name'>Weryfikacja danych</span>
-                    <span class='nav-desc'>Jakiś tekst</span>
-                </span>
-            </a>
-        </div>
+        <?php
+            require_once 'nav.php';
+        ?>
 
         <div class='client-info'>
             <h1>Twoje dane</h1>
-            <form method='POST'>
-                <div>
-                    <input type='radio' name='company' value='no' id='private-person'><label for='private-person'>Osoba prywatna</label>
-                    <input type='radio' name='company' value='yes' id='company'><label for='company'>Firma</label>
+            <form method='POST' action='../php/saveInformation.php'>
+                <div class='company'>
+                    <div>
+                        <input class='info-field' type='radio' name='company' value='no' id='private-person' onclick='changeFormDisplay(this)' checked>
+                        <label for='private-person'>Osoba prywatna</label>
+                    </div>
+                    <div>
+                        <input class='info-field' type='radio' name='company' value='yes' id='company' onclick='changeFormDisplay(this)'>
+                        <label for='company'>Firma</label>
+                    </div>
                 </div>
-                <div>
-                    <label for='first-name'>Imię</label><input type='text' name='first-name' id='first-name'>
+                <div class='name'>
+                    <label for='first-name' class='required'>Imię</label>
+                    <input class='info-field' type='text' name='first-name' id='first-name' required>
                 </div>
-                <div>
-                    <label for='last-name'>Nazwisko</label><input type='text' name='last-name' id='last-name'>
+                <div class='last-name'>
+                    <label for='last-name' class='required'>Nazwisko</label>
+                    <input class='info-field' type='text' name='last-name' id='last-name' required>
                 </div>
-                <div>
-                    <label for='street'>Ulica</label><input type='text' name='street' id='street'>
+                <div class='company-name not-displayed'>
+                    <label for='company-name' class='required'>Nazwa firmy</label>
+                    <input class='info-field' type='text' name='company-name' id='company-name'>
                 </div>
-                <div>
-                    <label for='street-no'>Nr domu</label><input type='text' name='street-no' id='street-no'>
+                <div class='nip not-displayed'>
+                    <label for='nip' class='required'>NIP</label>
+                    <input class='info-field' type='text' name='nip' id='nip'>
                 </div>
-                <div>
-                    <label for='house-no'>Nr mieszkania</label><input type='text' name='house-no' id='house-no'>
+                <div class='street'>
+                    <label for='street' class='required'>Ulica</label>
+                    <input class='info-field' type='text' name='street' id='street' required>
                 </div>
-                <div>
-                    <label for='postal-code'>Kod pocztowy</label><input type='text' name='postal-code' id='postal-code'>
+                <div class='street-no'>
+                    <label for='street-no' class='required'>Nr domu</label>
+                    <input class='info-field' type='text' name='street-no' id='street-no' required>
                 </div>
-                <div>
-                    <label for='city'>Miejscowość</label><input type='text' name='city' id='city'>
+                <div class='house-no'>
+                    <label for='house-no'>Nr mieszkania</label>
+                    <input class='info-field' type='text' name='house-no' id='house-no'>
                 </div>
-                <div>
-                    <label for='country'>Kraj</label><select name='country' id='country'>
+                <div class='city'>
+                    <label for='city' class='required'>Miasto</label>
+                    <input class='info-field' type='text' name='city' id='city' required>
+                </div>
+                <div class='postal-code'>
+                    <label for='postal-code' class='required'>Kod pocztowy</label>
+                    <input class='info-field' type='text' name='postal-code' id='postal-code' required>
+                </div>
+                <div class='country'>
+                    <label for='country' class='required'>Kraj</label>
+                    <select class='info-field' name='country' id='country'>
                         <?php
                             foreach ($countries as $country) {
                                 echo "<option value='".$country['kraj_id']."'>".$country['nazwa']."</option>";
@@ -122,13 +109,19 @@
                         ?>
                     </select>
                 </div>
-                <div>
-                    <label for='phone'>Numer telefonu</label><input type='tel' name='phone' id='phone'>
+                <div class='phone'>
+                    <label for='phone' class='required'>Numer telefonu</label>
+                    <input class='info-field' type='tel' name='phone' id='phone' required>
+                </div>
+                <div class='email'>
+                    <label for='email' class='required'>Adres email</label>
+                    <input class='info-field' type='email' name='email' id='email' required>
                 </div>
                 <div>
-                    <label for='email'>Adres email</label><input type='email' name='email' id='email'>
+                    <input type='checkbox' name='save-info' id='save-info' value='yes'>
+                    <label for='save-info'>Zapisz moje dane do kolejnych zakupów</label>
                 </div>
-                <button type='submit'>Przejdź dalej</button>
+                <button type='submit' class='pink-button'>Przejdź dalej</button>
             </form>
         </div>
     </main>
@@ -138,6 +131,9 @@
     ?>
 </body>
 </html>
+
+<script src="/sklep/js/orderInfoDisplay.js"></script>
+<script src="/sklep/js/misc.js"></script>
 
 <?php
     $connection->close();

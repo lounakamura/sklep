@@ -4,7 +4,30 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 3vh;
 }
+
+h1 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  text-align: center;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 23px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  width: 20px;
+  margin-right: 10px;
+}
+
+/*      Order navigation      */
 
 .order-navigation {
   display: flex;
@@ -54,14 +77,7 @@ main {
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* Login section, todo some checking */
-
-h1 {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  font-weight: 500;
-  text-align: center;
-}
+/*      Login section     */
 
 .login-container {
   width: 500px;
@@ -92,7 +108,8 @@ h1 {
   padding-bottom: 5px;
 }
 
-.login-field {
+.login-field,
+.info-field {
   height: 45px;
   font-size: 17px;
   border-radius: 1px;
@@ -125,10 +142,174 @@ h3 {
   padding: 0;
 }
 
+/*      Client info     */
+
 .client-info form {
-  width: 500px;
+  max-width: 600px;
+  min-width: 400px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: stretch;
+  justify-content: center;
+}
+
+.client-info form > div {
+  display: flex;
+  padding: 5px;
+}
+
+.client-info form > div:not(div.company, div:last-of-type) label {
+  padding-bottom: 5px;
+}
+
+.client-info form > div:not(div.company, div:last-of-type) {
+  flex-direction: column;
+}
+
+.client-info form > div.company {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.client-info form > div:last-of-type {
+  flex-direction: row;
+}
+
+.client-info form > div.company > div {
+  display: flex;
+  align-items: center;
+}
+
+.client-info form > div:first-child,
+.client-info form > button[type="submit"],
+.client-info form > div {
+  width: calc(100% - 10px);
+}
+
+.client-info form > div.name,
+.client-info form > div.last-name,
+.client-info form > div.city,
+.client-info form > div.postal-code,
+.client-info form > div.company div,
+.client-info form > div.street {
+  width: calc(50% - 10px);
+}
+
+.client-info form > div.street-no,
+.client-info form > div.house-no {
+  width: calc(25% - 10px);
+}
+
+label.required:after {
+  color: rgb(0, 0, 0);
+  content: " *";
+  font-weight: 500;
+  display: inline;
+}
+
+.client-info form button[type="submit"] {
+  margin-top: 15px;
+}
+
+/*      Shipping & payment      */
+
+.shipping-payment {
+  width: 600px;
+}
+
+.payment-forms,
+.shipping-forms {
+  width: 100%;
+  padding: 5px 0 5px 0;
+}
+
+.payment-forms > div,
+.shipping-forms > div {
+  display: flex;
+  height: 50px;
+  padding: 15px;
+  border-color: #c2c2c2;
+  border-style: solid;
+  border-width: 0px 1px 1px 1px;
+}
+
+.payment-forms > div:first-of-type,
+.shipping-forms > div:first-of-type {
+  border-width: 1px 1px 1px 1px;
+}
+
+.payment-forms img,
+.shipping-forms img {
+  height: 100%;
+}
+
+.payment-forms span,
+.shipping-forms span {
+  height: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.shipping-payment label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.shipping-payment label div {
+  height: 100%;
+  display: flex;
+}
+
+.shipping-payment label div:first-of-type {
+  flex-direction: column;
+}
+
+.shipping-payment label div:last-of-type {
+  width: 30%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.shipping-payment label div:first-of-type span:last-of-type {
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.order-cost {
+  margin: 15px 0 15px 0;
+  font-size: 17px;
+}
+
+.order-cost-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.order-cost-row:nth-of-type(2) {
+  padding-bottom: 15px;
+}
+
+.order-cost-row:last-of-type {
+  font-weight: 500;
+  font-size: 22px;
+  padding-top: 15px;
+  border-top: 1px solid #c2c2c2;
+}
+
+.shipping-payment button[type="submit"] {
+  width: 100%;
+  margin-top: 15px;
 }
