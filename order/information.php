@@ -52,7 +52,7 @@
 
         <div class='client-info'>
             <h1>Twoje dane</h1>
-            <form method='POST' action='../php/saveInformation.php'>
+            <form method='POST' action='../php/save-information.php'>
                 <div class='company'>
                     <div>
                         <input class='info-field' type='radio' name='company' value='no' id='private-person' onclick='changeFormDisplay(this)' checked>
@@ -116,6 +116,10 @@
                 <div class='email'>
                     <label for='email' class='required'>Adres email</label>
                     <input class='info-field' type='email' name='email' id='email' required>
+                </div>
+                <div> <!--- To jest do zrobienia, faktura na inne dane --->
+                    <input type='checkbox' name='invoice-info' id='invoice-info' value='yes'>
+                    <label for='invoice-info'>Faktura na inne dane</label>
                 </div>
                 <div>
                     <input type='checkbox' name='save-info' id='save-info' value='yes'>

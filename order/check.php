@@ -39,7 +39,40 @@
             require_once 'nav.php';
         ?>
         
-        
+        <h1>Sprawdź poprawność zamówienia</h1>
+        <div class='client-info'>
+            <h2>Dane zamawiającego</h2>
+            <?php
+                
+                if($_SESSION['client-info']['isCompany'] == 1){
+                    echo "
+                    <span>".$_SESSION['client-info']['company-name']."</span>
+                    <span>".$_SESSION['client-info']['nip']."</span>
+                    ";
+                } else {
+                    echo "
+                    <span>".$_SESSION['client-info']['first-name']."</span>
+                    <span>".$_SESSION['client-info']['last-name']."</span>
+                    ";
+                }
+                echo "
+                <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no']." ".$_SESSION['client-info']['house-no']."</span>
+                ";
+            ?>
+        </div>
+        <div class='delivery-info'>
+            <h2>Adres dostawy</h2>
+        </div>
+        <div class='invoice-info'>
+            <h2>Dane do faktury</h2>
+        </div>
+        <div class='products'>
+            <h3>Zamówione produkty</h3>
+        </div>
+        <div class='remarks'>
+            <h2>Uwagi do zamówienia</h3>
+            <textarea></textarea>
+        </div>
     </main>
 
     <?php 
