@@ -40,14 +40,13 @@
 
     if(isset($_POST['save-info']) && $_POST['save-info'] == 'yes'){
         $query = "INSERT INTO `uzytkownik_adres` (`uzytkownik_adres_id`, `uzytkownik_id`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `nr_mieszkania`, `miasto`, `kod_pocztowy`, `kraj_id`, `telefon`, `czy_firma`, `nazwa_firmy`, `nip`) VALUES (NULL, ".$_SESSION['id'].", ".$_SESSION['client-info']['first-name'].", ".$_SESSION['client-info']['last-name'].", ".$_SESSION['client-info']['street'].", ".$_SESSION['client-info']['street-no'].", ".$_SESSION['client-info']['house-no'].", ".$_SESSION['client-info']['city'].", ".$_SESSION['client-info']['postal-code'].", ".$_SESSION['client-info']['country'].", ".$_SESSION['client-info']['phone'].", ".$_SESSION['client-info']['isCompany'].", ".$_SESSION['client-info']['company-name'].", ".$_SESSION['client-info']['nip'].")";
-        echo $query;
         $result = $connection->query($query);
     }
 
-    foreach ($_SESSION['client-info'] as $info) {
-        $info = str_replace("'", "", $info);
+    foreach ($_SESSION['client-info'] as $key => $value) {
+        $_SESSION['client-info'][$key] = str_replace("'", "", $_SESSION['client-info'][$key]);
     }
-
+    
     header('Location: ..\order\shipping.php');
     
     $connection->close();
