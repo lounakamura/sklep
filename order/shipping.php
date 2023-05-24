@@ -54,7 +54,7 @@
 
         <div class='shipping-payment'>
             <h1>Dostawa i płatność</h1>
-            <form method='POST' action='check.php'>
+            <form method='POST' action='/sklep/php/save-shipping-payment-method.php'>
                 <div class='payment-forms'>
                     <h2>Płatność</h2>
                     <?php
@@ -135,6 +135,7 @@
                         </span>
                     </div>
                 </div>
+                <input type='hidden' name='previous' value='shipping'>
                 <button type='submit' class='pink-button'>Przejdź dalej</button>
             </form>
         </div>

@@ -4,12 +4,40 @@
     require_once __DIR__."\..\php\config.php";
 
     $connection = new mysqli ($servername, $username, $password, $database);
-    
+
     if (!isset($_SESSION['session'])) {
         newSession($connection);
     } else {
         checkIfSessionExists($connection);
     }
+
+    $cartProducts = [];
+    $country = [];
+    $paymentMethod = [];
+    $shippingMethod = [];
+
+    $query = "SELECT koszyk_id, p.produkt_id, p.nazwa, p.cena, k.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM koszyk AS k JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id);";
+    $result = $connection->query($query);
+    fetchAllToArray($cartProducts, $result);
+    $result->free();
+
+    $query = "SELECT nazwa FROM kraj WHERE kraj_id=".$_SESSION['client-info']['country'];
+    $result = $connection->query($query);
+    $country = $result->fetch_assoc()['nazwa'];
+    $result->free();
+
+    $query = "SELECT * FROM metoda_platnosci WHERE metoda_platnosci_id=".$_SESSION['order-info']['payment'];
+    $result = $connection->query($query);
+    fetchAllToArray($paymentMethod, $result);
+    $result->free();
+
+    $query = "SELECT * FROM metoda_dostawy WHERE metoda_dostawy_id=".$_SESSION['order-info']['shipping'];
+    $result = $connection->query($query);
+    $shippingMethod = $result->fetch_assoc();
+    $result->free();
+
+    print_r($shippingMethod);
+    print_r($paymentMethod);
 
     require_once __DIR__.'\..\page-components\required.php';
 ?>
@@ -24,7 +52,8 @@
     <?php
         require_once __DIR__.'\..\page-components\head.html';
     ?>
-    <link rel="stylesheet" href="/sklep/css/order.css">
+    <link rel="stylesheet" href="/sklep/css/cart.css">
+    <link rel="stylesheet" href="/sklep/css/order.css"> 
 </head>
 
 <body>
@@ -38,41 +67,156 @@
         <?php
             require_once 'nav.php';
         ?>
-        
-        <h1>Sprawdź poprawność zamówienia</h1>
-        <div class='client-info'>
-            <h2>Dane zamawiającego</h2>
-            <?php
-                
-                if($_SESSION['client-info']['isCompany'] == 1){
+
+        <form method='POST'>
+            <h1>Sprawdź poprawność zamówienia</h1>
+            <div class='client-info'>
+                <h2>Dane zamawiającego</h2>
+                <?php
+                    if($_SESSION['client-info']['isCompany'] == 1){
+                        echo "
+                        <span>".$_SESSION['client-info']['company-name']."</span>
+                        <span>".$_SESSION['client-info']['nip']."</span>
+                        ";
+                    } else {
+                        echo "
+                        <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
+                        ";
+                    }
                     echo "
-                    <span>".$_SESSION['client-info']['company-name']."</span>
-                    <span>".$_SESSION['client-info']['nip']."</span>
+                    <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
+                    if($_SESSION['client-info']['house-no']){
+                        echo "/".$_SESSION['client-info']['house-no'];
+                    }
+                    echo "</span>
+                    <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
+                    <span>$country</span>
+                    <span>".$_SESSION['client-info']['email']."</span>
+                    <span>".$_SESSION['client-info']['phone']."</span>
                     ";
-                } else {
+                ?>
+            </div>
+
+            <div class='delivery-info'>
+                <h2>Adres dostawy</h2>
+            </div>
+
+            <div class='invoice-info'>
+                <h2>Dane do faktury</h2>
+                <?php
+                    if($_SESSION['client-info']['isCompany'] == 1){
+                        echo "
+                        <span>".$_SESSION['client-info']['company-name']."</span>
+                        <span>".$_SESSION['client-info']['nip']."</span>
+                        ";
+                    } else {
+                        echo "
+                        <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
+                        ";
+                    }
                     echo "
-                    <span>".$_SESSION['client-info']['first-name']."</span>
-                    <span>".$_SESSION['client-info']['last-name']."</span>
+                    <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
+                    if($_SESSION['client-info']['house-no']){
+                        echo "/".$_SESSION['client-info']['house-no'];
+                    }
+                    echo "</span>
+                    <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
+                    <span>$country</span>
+                    <span>".$_SESSION['client-info']['phone']."</span>
                     ";
-                }
+                ?>
+            </div>
+
+            <div class='remarks'>
+                <h2>Uwagi do zamówienia</h3>
+                <textarea></textarea>
+            </div>
+
+            <div class='shipping-payment'>
+                <h3>Wybrana metoda płatności</h3>
+                <h3>Wybrana metoda dostawy</h3>
+            </div>
+
+            <div class='products'>
+                <h3>Zamówione produkty</h3>
+                <?php
                 echo "
-                <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no']." ".$_SESSION['client-info']['house-no']."</span>
-                ";
-            ?>
-        </div>
-        <div class='delivery-info'>
-            <h2>Adres dostawy</h2>
-        </div>
-        <div class='invoice-info'>
-            <h2>Dane do faktury</h2>
-        </div>
-        <div class='products'>
-            <h3>Zamówione produkty</h3>
-        </div>
-        <div class='remarks'>
-            <h2>Uwagi do zamówienia</h3>
-            <textarea></textarea>
-        </div>
+                    <div class='shopping-cart-with-products'>
+                    <table class='cart'>
+                        <thead>
+                            <tr>
+                                <th class='first'></th>
+                                <th class='table-header uppercase'>Cena</th>
+                                <th class='table-header uppercase'>Ilość</th>
+                                <th class='table-header uppercase'>Wartość</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+                        foreach ( $cartProducts as $cartProduct ) {
+                            echo "
+                            <tr class='product-container'>
+                                <td class='product-image product-name'>
+                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
+                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
+                                </td>
+                                <td class='product-price'>
+                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
+                                </td>
+                                <td class='product-quantity'>
+                                    <span class='quantity-display' data-cart_id='".$cartProduct['koszyk_id']."'>".$cartProduct['ilosc']."</span>
+                                </td>
+                                <td class='product-total-price'>
+                                    <span>
+                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',', '')."</span><span> zł</span
+                                    </span>
+                                </td>
+                            </tr>";
+                        }
+                    
+                    echo "</table>
+                    </div>";
+                ?>
+            </div>
+
+            <div class='order-cost'>
+                <div class='order-cost-row'>
+                    <span>Wartość zamówienia</span>
+                    <span class='order-product-sum'>
+                        <span class='product-sum'>
+                            <?php
+                                echo number_format($productSum, 2, ',', '');
+                            ?>
+                        </span>
+                        <span>  zł</span>
+                    </span>
+                </div>
+                <div class='order-cost-row'>
+                    <span>Dostawa</span>
+                    <span class='order-shipping-price'>
+                        <span class='shipping-price'>
+                            <?php
+                            echo number_format($shippingMethod['cena'], 2, ',', '');
+                            ?>
+                        </span>
+                        <span> zł</span>
+                    </span>
+                </div>
+                <div class='order-cost-row'>
+                    <span>Razem</span>
+                    <span class='order-total-sum'>
+                        <span class='total-sum'>
+                            <?php
+                                echo number_format($productSum, 2, ',', '');
+                            ?>
+                        </span>
+                        <span> zł</span
+                    </span>
+                </div>
+            </div>
+
+            <button>Wróć</button>
+            <button type='submit' class='pink-button'>Zamawiam</button>
+        </form>
     </main>
 
     <?php 
