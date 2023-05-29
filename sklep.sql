@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 10, 2023 at 08:49 PM
+-- Generation Time: Maj 29, 2023 at 11:02 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -217,14 +217,6 @@ CREATE TABLE `koszyk` (
   `uzytkownik_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
---
--- Dumping data for table `koszyk`
---
-
-INSERT INTO `koszyk` (`koszyk_id`, `produkt_id`, `ilosc`, `sesja_id`, `uzytkownik_id`) VALUES
-(52, 4, 3, 3, 2),
-(53, 30, 1, 5, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -326,11 +318,10 @@ CREATE TABLE `metoda_dostawy` (
 --
 
 INSERT INTO `metoda_dostawy` (`metoda_dostawy_id`, `rodzaj`, `cena`, `oczekiwanie_min`, `oczekiwanie_max`, `zdjecie_sciezka`) VALUES
-(1, 'InPost Paczkomaty 24/7', 9.90, 1, 2, '/sklep/images/shipping/inpost.png'),
-(2, 'Kurier Inpost', 11.90, 1, 2, '/sklep/images/shipping/inpost.png'),
-(3, 'Kurier DPD', 12.90, 1, 2, '/sklep/images/shipping/dpd.png'),
-(4, 'Kurier DHL', 12.90, 1, 2, '/sklep/images/shipping/dhl.png'),
-(5, 'Pocztex', 9.90, 2, 3, '/sklep/images/shipping/pocztex.png');
+(1, 'Kurier Inpost', 11.90, 1, 2, '/sklep/images/shipping/inpost.png'),
+(2, 'Kurier DPD', 12.90, 1, 2, '/sklep/images/shipping/dpd.png'),
+(3, 'Kurier DHL', 12.90, 1, 2, '/sklep/images/shipping/dhl.png'),
+(4, 'Pocztex', 9.90, 2, 3, '/sklep/images/shipping/pocztex.png');
 
 -- --------------------------------------------------------
 
@@ -362,7 +353,7 @@ CREATE TABLE `produkt` (
   `produkt_id` int(11) NOT NULL,
   `kategoria_id` int(11) NOT NULL,
   `nazwa` varchar(128) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
-  `cena` decimal(10,2) NOT NULL,
+  `cena` decimal(10,2) NOT NULL COMMENT '[zł]',
   `opis` text NOT NULL,
   `marka_id` int(11) NOT NULL,
   `ilosc` smallint(6) NOT NULL
@@ -522,6 +513,27 @@ INSERT INTO `sesja` (`sesja_id`, `data_dodania`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `status_zamowienia`
+--
+
+CREATE TABLE `status_zamowienia` (
+  `status_id` int(11) NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `status_zamowienia`
+--
+
+INSERT INTO `status_zamowienia` (`status_id`, `status`) VALUES
+(1, 'Przyjęte do realizacji'),
+(2, 'Gotowe do wysyłki'),
+(3, 'Wysłane'),
+(4, 'Zakończone');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `ulubiony`
 --
 
@@ -575,33 +587,60 @@ INSERT INTO `uzytkownik` (`uzytkownik_id`, `nazwa`, `email`, `haslo`, `admin`, `
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `uzytkownik_adres`
+-- Struktura tabeli dla tabeli `zamowienie`
 --
 
-CREATE TABLE `uzytkownik_adres` (
-  `uzytkownik_adres_id` int(11) NOT NULL,
+CREATE TABLE `zamowienie` (
+  `zamowienie_id` int(11) NOT NULL,
   `uzytkownik_id` int(11) NOT NULL,
-  `imie` varchar(50) DEFAULT NULL,
-  `nazwisko` varchar(50) DEFAULT NULL,
-  `ulica` varchar(50) NOT NULL,
-  `nr_domu` smallint(6) NOT NULL,
-  `nr_mieszkania` smallint(6) DEFAULT NULL,
-  `miasto` varchar(50) NOT NULL,
-  `kod_pocztowy` varchar(6) NOT NULL,
-  `kraj_id` int(11) NOT NULL,
-  `telefon` varchar(50) NOT NULL,
-  `czy_firma` tinyint(1) NOT NULL DEFAULT 0,
-  `nazwa_firmy` varchar(50) DEFAULT NULL,
-  `nip` varchar(10) DEFAULT NULL
+  `metoda_platnosci_id` int(11) NOT NULL,
+  `metoda_dostawy_id` int(11) NOT NULL,
+  `uwagi` text NOT NULL,
+  `do_zaplaty` decimal(10,2) NOT NULL COMMENT '[zł]',
+  `klient_czy_firma` tinyint(1) NOT NULL DEFAULT 0,
+  `klient_imie` varchar(50) DEFAULT NULL,
+  `klient_nazwisko` varchar(50) DEFAULT NULL,
+  `klient_nazwa_firmy` varchar(50) DEFAULT NULL,
+  `klient_nip` varchar(10) DEFAULT NULL,
+  `klient_email` varchar(254) NOT NULL,
+  `klient_telefon` varchar(50) NOT NULL,
+  `adres_ulica` varchar(50) NOT NULL,
+  `adres_nr_domu` smallint(6) NOT NULL,
+  `adres_nr_mieszkania` smallint(6) DEFAULT NULL,
+  `adres_kod_pocztowy` varchar(6) NOT NULL,
+  `adres_miasto` varchar(50) NOT NULL,
+  `adres_kraj_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
--- Dumping data for table `uzytkownik_adres`
+-- Dumping data for table `zamowienie`
 --
 
-INSERT INTO `uzytkownik_adres` (`uzytkownik_adres_id`, `uzytkownik_id`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `nr_mieszkania`, `miasto`, `kod_pocztowy`, `kraj_id`, `telefon`, `czy_firma`, `nazwa_firmy`, `nip`) VALUES
-(1, 2, NULL, NULL, 'Ulica', 4, 1, 'Limanowa', '34-600', 1, '987 654 321', 1, 'Firma', 'nip'),
-(2, 2, NULL, NULL, 'Ulica', 4, 1, 'Limanowa', '34-600', 1, '987 654 321', 1, 'Firma', 'nip');
+INSERT INTO `zamowienie` (`zamowienie_id`, `uzytkownik_id`, `metoda_platnosci_id`, `metoda_dostawy_id`, `uwagi`, `do_zaplaty`, `klient_czy_firma`, `klient_imie`, `klient_nazwisko`, `klient_nazwa_firmy`, `klient_nip`, `klient_email`, `klient_telefon`, `adres_ulica`, `adres_nr_domu`, `adres_nr_mieszkania`, `adres_kod_pocztowy`, `adres_miasto`, `adres_kraj_id`, `status_id`) VALUES
+(1, 2, 2, 2, 'test\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nlorem ipsum', 179.86, 0, 'Walter', 'White', '', '', 'email@email.com', '+1 111 111 111', 'Ulica', 1, 0, '34-600', 'Limanowa', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `zamowienie_produkt`
+--
+
+CREATE TABLE `zamowienie_produkt` (
+  `zamowienie_produkt_id` int(11) NOT NULL,
+  `zamowienie_id` int(11) NOT NULL,
+  `produkt_id` int(11) NOT NULL,
+  `ilosc` int(11) NOT NULL,
+  `cena` decimal(10,2) NOT NULL COMMENT 'zł'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `zamowienie_produkt`
+--
+
+INSERT INTO `zamowienie_produkt` (`zamowienie_produkt_id`, `zamowienie_id`, `produkt_id`, `ilosc`, `cena`) VALUES
+(1, 1, 4, 3, 49.99),
+(2, 1, 30, 1, 16.99);
 
 -- --------------------------------------------------------
 
@@ -1034,6 +1073,12 @@ ALTER TABLE `sesja`
   ADD PRIMARY KEY (`sesja_id`);
 
 --
+-- Indeksy dla tabeli `status_zamowienia`
+--
+ALTER TABLE `status_zamowienia`
+  ADD PRIMARY KEY (`status_id`);
+
+--
 -- Indeksy dla tabeli `ulubiony`
 --
 ALTER TABLE `ulubiony`
@@ -1048,13 +1093,23 @@ ALTER TABLE `uzytkownik`
   ADD PRIMARY KEY (`uzytkownik_id`);
 
 --
--- Indeksy dla tabeli `uzytkownik_adres`
+-- Indeksy dla tabeli `zamowienie`
 --
-ALTER TABLE `uzytkownik_adres`
-  ADD PRIMARY KEY (`uzytkownik_adres_id`),
+ALTER TABLE `zamowienie`
+  ADD PRIMARY KEY (`zamowienie_id`),
   ADD KEY `uzytkownik_id` (`uzytkownik_id`),
-  ADD KEY `kraj` (`kraj_id`),
-  ADD KEY `kraj_id` (`kraj_id`);
+  ADD KEY `metoda_platnosci_id` (`metoda_platnosci_id`),
+  ADD KEY `metoda_dostawy_id` (`metoda_dostawy_id`),
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `adres_kraj_id` (`adres_kraj_id`);
+
+--
+-- Indeksy dla tabeli `zamowienie_produkt`
+--
+ALTER TABLE `zamowienie_produkt`
+  ADD PRIMARY KEY (`zamowienie_produkt_id`),
+  ADD KEY `zamowienie_id` (`zamowienie_id`),
+  ADD KEY `produkt_id` (`produkt_id`);
 
 --
 -- Indeksy dla tabeli `zdjecie`
@@ -1107,7 +1162,7 @@ ALTER TABLE `marka`
 -- AUTO_INCREMENT for table `metoda_dostawy`
 --
 ALTER TABLE `metoda_dostawy`
-  MODIFY `metoda_dostawy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `metoda_dostawy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `metoda_platnosci`
@@ -1128,6 +1183,12 @@ ALTER TABLE `sesja`
   MODIFY `sesja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT for table `status_zamowienia`
+--
+ALTER TABLE `status_zamowienia`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `ulubiony`
 --
 ALTER TABLE `ulubiony`
@@ -1140,10 +1201,16 @@ ALTER TABLE `uzytkownik`
   MODIFY `uzytkownik_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `uzytkownik_adres`
+-- AUTO_INCREMENT for table `zamowienie`
 --
-ALTER TABLE `uzytkownik_adres`
-  MODIFY `uzytkownik_adres_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `zamowienie`
+  MODIFY `zamowienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `zamowienie_produkt`
+--
+ALTER TABLE `zamowienie_produkt`
+  MODIFY `zamowienie_produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `zdjecie`
@@ -1190,11 +1257,21 @@ ALTER TABLE `ulubiony`
   ADD CONSTRAINT `ulubiony_ibfk_2` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `uzytkownik_adres`
+-- Constraints for table `zamowienie`
 --
-ALTER TABLE `uzytkownik_adres`
-  ADD CONSTRAINT `uzytkownik_adres_ibfk_1` FOREIGN KEY (`uzytkownik_id`) REFERENCES `uzytkownik` (`uzytkownik_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `uzytkownik_adres_ibfk_2` FOREIGN KEY (`kraj_id`) REFERENCES `kraj` (`kraj_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `zamowienie`
+  ADD CONSTRAINT `zamowienie_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `status_zamowienia` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `zamowienie_ibfk_2` FOREIGN KEY (`uzytkownik_id`) REFERENCES `uzytkownik` (`uzytkownik_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `zamowienie_ibfk_3` FOREIGN KEY (`metoda_platnosci_id`) REFERENCES `metoda_platnosci` (`metoda_platnosci_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `zamowienie_ibfk_4` FOREIGN KEY (`metoda_dostawy_id`) REFERENCES `metoda_dostawy` (`metoda_dostawy_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `zamowienie_ibfk_5` FOREIGN KEY (`adres_kraj_id`) REFERENCES `kraj` (`kraj_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `zamowienie_produkt`
+--
+ALTER TABLE `zamowienie_produkt`
+  ADD CONSTRAINT `zamowienie_produkt_ibfk_1` FOREIGN KEY (`zamowienie_id`) REFERENCES `zamowienie` (`zamowienie_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `zamowienie_produkt_ibfk_2` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `zdjecie`

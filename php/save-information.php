@@ -13,39 +13,30 @@
 
     if($_POST['company'] == 'yes'){
         $_SESSION['client-info']['isCompany'] = 1;
-        $_SESSION['client-info']['first-name'] = 'NULL';
-        $_SESSION['client-info']['last-name'] = 'NULL';
-        $_SESSION['client-info']['company-name'] = "'".$_POST['company-name']."'";
-        $_SESSION['client-info']['nip'] = "'".$_POST['nip']."'";
+        $_SESSION['client-info']['first-name'] = NULL;
+        $_SESSION['client-info']['last-name'] = NULL;
+        $_SESSION['client-info']['company-name'] = $_POST['company-name'];
+        $_SESSION['client-info']['nip'] = $_POST['nip'];
     } else {
         $_SESSION['client-info']['isCompany'] = 0;
-        $_SESSION['client-info']['first-name'] = "'".$_POST['first-name']."'";
-        $_SESSION['client-info']['last-name'] = "'".$_POST['last-name']."'";
-        $_SESSION['client-info']['nip'] = 'NULL';
-        $_SESSION['client-info']['company-name'] = 'NULL';
+        $_SESSION['client-info']['first-name'] = $_POST['first-name'];
+        $_SESSION['client-info']['last-name'] = $_POST['last-name'];
+        $_SESSION['client-info']['nip'] = NULL;
+        $_SESSION['client-info']['company-name'] = NULL;
     }
 
-    $_SESSION['client-info']['street'] = "'".$_POST['street']."'";
-    $_SESSION['client-info']['street-no'] = "'".$_POST['street-no']."'";
+    $_SESSION['client-info']['street'] = $_POST['street'];
+    $_SESSION['client-info']['street-no'] = $_POST['street-no'];
     if(isset($_POST['house-no'])){
-        $_SESSION['client-info']['house-no'] = "'".$_POST['house-no']."'";
+        $_SESSION['client-info']['house-no'] = $_POST['house-no'];
     } else {
-        $_SESSION['client-info']['house-no'] = 'NULL';
+        $_SESSION['client-info']['house-no'] = NULL;
     }
-    $_SESSION['client-info']['city'] = "'".$_POST['city']."'";
-    $_SESSION['client-info']['postal-code'] = "'".$_POST['postal-code']."'";
+    $_SESSION['client-info']['city'] = $_POST['city'];
+    $_SESSION['client-info']['postal-code'] = $_POST['postal-code'];
     $_SESSION['client-info']['country'] = $_POST['country'];
-    $_SESSION['client-info']['phone'] = "'".$_POST['phone']."'";
-    $_SESSION['client-info']['email'] = "'".$_POST['email']."'";
-
-    if(isset($_POST['save-info']) && $_POST['save-info'] == 'yes'){
-        $query = "INSERT INTO `uzytkownik_adres` (`uzytkownik_adres_id`, `uzytkownik_id`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `nr_mieszkania`, `miasto`, `kod_pocztowy`, `kraj_id`, `telefon`, `czy_firma`, `nazwa_firmy`, `nip`) VALUES (NULL, ".$_SESSION['id'].", ".$_SESSION['client-info']['first-name'].", ".$_SESSION['client-info']['last-name'].", ".$_SESSION['client-info']['street'].", ".$_SESSION['client-info']['street-no'].", ".$_SESSION['client-info']['house-no'].", ".$_SESSION['client-info']['city'].", ".$_SESSION['client-info']['postal-code'].", ".$_SESSION['client-info']['country'].", ".$_SESSION['client-info']['phone'].", ".$_SESSION['client-info']['isCompany'].", ".$_SESSION['client-info']['company-name'].", ".$_SESSION['client-info']['nip'].")";
-        $result = $connection->query($query);
-    }
-
-    foreach ($_SESSION['client-info'] as $key => $value) {
-        $_SESSION['client-info'][$key] = str_replace("'", "", $_SESSION['client-info'][$key]);
-    }
+    $_SESSION['client-info']['phone'] = $_POST['phone'];
+    $_SESSION['client-info']['email'] = $_POST['email'];
     
     header('Location: ..\order\shipping.php');
     

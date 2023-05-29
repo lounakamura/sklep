@@ -136,6 +136,7 @@
                     </div>
                 </div>
                 <input type='hidden' name='previous' value='shipping'>
+                <button type='button' onclick="location.href='/sklep/order/information.php'">Wróć</button>
                 <button type='submit' class='pink-button'>Przejdź dalej</button>
             </form>
         </div>

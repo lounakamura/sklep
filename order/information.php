@@ -117,14 +117,7 @@
                     <label for='email' class='required'>Adres email</label>
                     <input class='info-field' type='email' name='email' id='email' required>
                 </div>
-                <div> <!--- To jest do zrobienia, faktura na inne dane --->
-                    <input type='checkbox' name='invoice-info' id='invoice-info' value='yes'>
-                    <label for='invoice-info'>Faktura na inne dane</label>
-                </div>
-                <div>
-                    <input type='checkbox' name='save-info' id='save-info' value='yes'>
-                    <label for='save-info'>Zapisz moje dane do kolejnych zakupów</label>
-                </div>
+                <button type='button' onclick="location.href='/sklep/cart.php'">Wróć</button>
                 <button type='submit' class='pink-button'>Przejdź dalej</button>
             </form>
         </div>

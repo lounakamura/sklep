@@ -166,21 +166,17 @@ h3 {
   padding: 5px;
 }
 
-.client-info form > div:not(div.company, div:last-of-type) label {
+.client-info form > div:not(div.company) label {
   padding-bottom: 5px;
 }
 
-.client-info form > div:not(div.company, div:last-of-type) {
+.client-info form > div:not(div.company) {
   flex-direction: column;
 }
 
 .client-info form > div.company {
   flex-direction: row;
   justify-content: space-between;
-}
-
-.client-info form > div:last-of-type {
-  flex-direction: row;
 }
 
 .client-info form > div.company > div {

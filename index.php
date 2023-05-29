@@ -34,13 +34,13 @@
 
     <main>
         <div class='slideshow-container'>
-            <a class='promo-banner-container' href='/sklep/sale.php'>
+            <a class='promo-banner-container' href='/sklep/products.php'>
                 <div class='promo-banner'></div>
             </a>
-            <a class='promo-banner-container' href=''>
+            <a class='promo-banner-container' href='/sklep/products.php'>
                 <div class='promo-banner'></div>
             </a>
-            <a class='promo-banner-container' href=''>
+            <a class='promo-banner-container' href='/sklep/products.php'>
                 <div class='promo-banner'></div>
             </a>
         </div>

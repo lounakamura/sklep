@@ -16,7 +16,7 @@
     $paymentMethod = [];
     $shippingMethod = [];
 
-    $query = "SELECT koszyk_id, p.produkt_id, p.nazwa, p.cena, k.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM koszyk AS k JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id);";
+    $query = "SELECT koszyk_id, p.produkt_id, p.nazwa, p.cena, k.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM koszyk AS k JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id)";
     $result = $connection->query($query);
     fetchAllToArray($cartProducts, $result);
     $result->free();
@@ -28,16 +28,13 @@
 
     $query = "SELECT * FROM metoda_platnosci WHERE metoda_platnosci_id=".$_SESSION['order-info']['payment'];
     $result = $connection->query($query);
-    fetchAllToArray($paymentMethod, $result);
+    $paymentMethod = $result->fetch_assoc();
     $result->free();
 
     $query = "SELECT * FROM metoda_dostawy WHERE metoda_dostawy_id=".$_SESSION['order-info']['shipping'];
     $result = $connection->query($query);
     $shippingMethod = $result->fetch_assoc();
     $result->free();
-
-    print_r($shippingMethod);
-    print_r($paymentMethod);
 
     require_once __DIR__.'\..\page-components\required.php';
 ?>
@@ -68,7 +65,7 @@
             require_once 'nav.php';
         ?>
 
-        <form method='POST'>
+        <form method='POST' action='/sklep/php/place-order.php'>
             <h1>Sprawdź poprawność zamówienia</h1>
             <div class='client-info'>
                 <h2>Dane zamawiającego</h2>
@@ -97,50 +94,26 @@
                 ?>
             </div>
 
-            <div class='delivery-info'>
-                <h2>Adres dostawy</h2>
-            </div>
-
-            <div class='invoice-info'>
-                <h2>Dane do faktury</h2>
-                <?php
-                    if($_SESSION['client-info']['isCompany'] == 1){
-                        echo "
-                        <span>".$_SESSION['client-info']['company-name']."</span>
-                        <span>".$_SESSION['client-info']['nip']."</span>
-                        ";
-                    } else {
-                        echo "
-                        <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
-                        ";
-                    }
-                    echo "
-                    <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
-                    if($_SESSION['client-info']['house-no']){
-                        echo "/".$_SESSION['client-info']['house-no'];
-                    }
-                    echo "</span>
-                    <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
-                    <span>$country</span>
-                    <span>".$_SESSION['client-info']['phone']."</span>
-                    ";
-                ?>
-            </div>
-
             <div class='remarks'>
                 <h2>Uwagi do zamówienia</h3>
-                <textarea></textarea>
+                <textarea id='remarks' name='remarks' placeholder='Tutaj wpisz uwagi...'></textarea>
             </div>
 
             <div class='shipping-payment'>
                 <h3>Wybrana metoda płatności</h3>
+                <?php
+                    echo $paymentMethod['rodzaj'];
+                ?>
                 <h3>Wybrana metoda dostawy</h3>
+                <?php
+                    echo $shippingMethod['rodzaj'];
+                ?>
             </div>
 
             <div class='products'>
                 <h3>Zamówione produkty</h3>
                 <?php
-                echo "
+                    echo "
                     <div class='shopping-cart-with-products'>
                     <table class='cart'>
                         <thead>
@@ -214,7 +187,8 @@
                 </div>
             </div>
 
-            <button>Wróć</button>
+            <input type='hidden' name='place-order' value='yes'>
+            <button type='button' onclick="location.href='/sklep/order/shipping.php'">Wróć</button>
             <button type='submit' class='pink-button'>Zamawiam</button>
         </form>
     </main>
