@@ -289,7 +289,7 @@
                         foreach ($products as $product) {
                             echo "<div class='product-container ".$product['dostepnosc']."'>";
                                 echo "<div>";
-                                    echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>";
+                                    echo "<button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."' title='Ulubione'></button>";
                                     echo "<a href='/sklep/product.php?id=" . $product['produkt_id'] . "'>
                                         <img src='".$product['zdjecie']."'>"; 
                                     echo "</a>"; 

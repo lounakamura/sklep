@@ -93,8 +93,8 @@
                 <div class='product-information'>
                     <div class='img-gallery'>
                         <div class='gallery-container'>
-                            <button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."'></button>
-                            <img class='gallery-main-img' src='".$images[0]['zdjecie']."'>
+                            <button class='add-to-fav ".$product['ulubiony']."' data-product_id='".$product['produkt_id']."' title='Ulubione'></button>
+                            <img class='gallery-main-img' src='".$images[0]['zdjecie']."' title='Kliknij aby otworzyć galerię'>
                             <div class='gallery-thumbs'>";
                                 foreach ($images as $image) {
                                     echo "<img class='thumbnail' src='".$image['zdjecie']."'>";

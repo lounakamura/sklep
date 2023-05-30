@@ -9,7 +9,7 @@
                 $result->free();
 
                 echo "<li class='category'>
-                    <a class='uppercase' href='/sklep/products.php?maincategory=".$maincategory['kategoria_id']."' title='".$maincategory['kategoria']."'>".$maincategory['kategoria']."</a>";
+                    <a class='uppercase' href='/sklep/products.php?maincategory=".$maincategory['kategoria_id']."'>".$maincategory['kategoria']."</a>";
                     echo "<section class='categories-bg off'>
                         <ul class='categories-main'>";
                             foreach($categories as $category){
@@ -20,11 +20,11 @@
                                 $result->free();
 
                                 echo "<li>
-                                    <a class='subcategory uppercase' href='/sklep/products.php?category=".$category['kategoria_id']."' title='".$category['kategoria']."'>".$category['kategoria']."</a>";
+                                    <a class='subcategory uppercase' href='/sklep/products.php?category=".$category['kategoria_id']."'>".$category['kategoria']."</a>";
                                     echo "<ul>";
                                         foreach ($subcategories as $subcategory) {
                                             echo "<li>
-                                                <a class='subsubcategory' href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."' title='".$subcategory['kategoria']."'>".$subcategory['kategoria']."</a>";
+                                                <a class='subsubcategory' href='/sklep/products.php?subcategory=".$subcategory['kategoria_id']."'>".$subcategory['kategoria']."</a>";
                                             echo "</li>";
                                         }
                                     echo "</ul>";
@@ -39,7 +39,7 @@
         ?>
 
         <li class="category">
-            <a href="/sklep/brands.php" class="uppercase" title="Marki">Marki</a>
+            <a href="/sklep/brands.php" class="uppercase">Marki</a>
         </li>
     </ul>
 </nav>

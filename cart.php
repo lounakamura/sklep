@@ -115,7 +115,7 @@
                                     </span>
                                 </td>
                                 <td class='product-remove'>
-                                    <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
+                                    <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."' title='Usuń'></button>
                                 </td>
                             </tr>";
                         }
@@ -134,7 +134,7 @@
 
                     <div class='shopping-cart-footer'>
                         <div class='footer-left'>
-                            <button onclick='location.href=\"/sklep/index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
+                            <button onclick='location.href=\"/sklep/products.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
                         </div>
                         <div class='footer-right'>
                             <div class='order-cost'>

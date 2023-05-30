@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div>
-                            <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."'></button>
+                            <button type='button' class='remove-from-cart' data-cart_id='".$cartProduct['koszyk_id']."' title='Usuń'></button>
                         </div>
                     </div>";
                 }

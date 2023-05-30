@@ -49,12 +49,12 @@
                 }
             ?>
         </section>
-        <section>
+        <section class='brands-by-letter'>
             <?php
                 foreach ($letters as $letter) {
                     $brands = [];
                     echo "<div id='" . $letter['litera'] . "' class='brand'>";
-                        echo "<h2>" . $letter['litera'] . "</h2>";
+                        echo "<h3>" . $letter['litera'] . "</h3>";
 
                         $query = "SELECT * FROM marka WHERE UPPER(SUBSTRING(marka, 1, 1))='" . $letter['litera'] . "'";
                         $result = $connection->query($query);

@@ -1,9 +1,37 @@
 .alphabet-ref {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    font-size: 20px;
-    -webkit-box-pack: space-evenly;
-        -ms-flex-pack: space-evenly;
-            justify-content: space-evenly;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 20px;
+  -webkit-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
+}
+
+.alphabet-ref a {
+  margin: 20px 0 20px 0;
+  padding: 15px;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.alphabet-ref a:hover {
+  font-weight: 600;
+}
+
+.brands-by-letter div {
+  margin: 10px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.brands-by-letter h3 {
+  font-weight: 500;
+  font-size: 22px;
+  cursor: default;
+}
+
+.brands-by-letter a {
+  font-size: 16px;
+  margin: 5px 0 5px 0;
 }
