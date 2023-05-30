@@ -15,6 +15,12 @@
         header('Location: login.php');
     }
 
+    $query = "SELECT koszyk_id FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];
+    $result = $connection->query($query);
+    if(mysqli_num_rows($result)<=0){
+        header('Location: ../cart.php');
+    }
+
     $countries = [];
 
     $query = "SELECT * FROM kraj";
@@ -117,8 +123,10 @@
                     <label for='email' class='required'>Adres email</label>
                     <input class='info-field' type='email' name='email' id='email' required>
                 </div>
-                <button type='button' onclick="location.href='/sklep/cart.php'">Wróć</button>
-                <button type='submit' class='pink-button'>Przejdź dalej</button>
+                <div class='buttons'>
+                    <button type='submit' class='pink-button'>Przejdź dalej</button>
+                    <button type='button' class='white-button go-back' onclick="location.href='/sklep/cart.php'">Wróć</button>
+                </div>
             </form>
         </div>
     </main>

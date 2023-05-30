@@ -37,12 +37,15 @@
     foreach ($cartProducts as $cartProduct) {
         $query = "INSERT INTO zamowienie_produkt (zamowienie_produkt_id, zamowienie_id, produkt_id, ilosc, cena) VALUES (NULL, $order_id, '".$cartProduct['produkt_id']."', '".$cartProduct['ilosc']."', '".$cartProduct['cena']."')";
         $result = $connection->query($query);
+
+        $query = "UPDATE produkt SET ilosc = ilosc -".$cartProduct['ilosc']." WHERE produkt_id = ".$cartProduct['produkt_id'];
+        $result = $connection->query($query);
     }
 
     $query = "DELETE FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];
     $result = $connection->query($query);
 
-    /* header('Location: ..\order\.php'); */
+    header('Location: ..\order\payment.php');
     
     $connection->close();
 ?>

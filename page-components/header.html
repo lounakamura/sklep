@@ -6,19 +6,19 @@
     <div class="search-container">
         <form>
             <input class="search-field" type="text" placeholder="Szukaj produktów...">
-            <button class="search-button" type="submit"></button>
+            <button class="search-button" type="submit" title="Szukaj"></button>
         </form>
     </div>
 
     <div class="header-buttons">
-        <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account">
+        <button onclick="location.href='/sklep/user/account.php'" type="button" class="header-account" title="Konto">
             <!-- Account preview -->
             <section>
                 <iframe src='/sklep/account-preview.php' class='account-container hidden' data-id='account'>
                 </iframe>
             </section>
         </button>
-        <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav'>
+        <button onclick="location.href='/sklep/user/favourites.php'" type="button" class='header-fav' title="Ulubione">
             <div class='container-favourites-amount' style='opacity:0'>
                 <div class='circle-favourites-amount'>
                     <span class='favourites-amount'>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </button>
-        <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart">
+        <button onclick="location.href='/sklep/cart.php'" type="button" class="header-cart" title="Koszyk">
             <div class='container-cart-items-amount' style='opacity:0'>
                 <div class='circle-cart-items-amount'>
                     <span class='cart-items-amount'>

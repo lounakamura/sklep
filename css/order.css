@@ -34,6 +34,15 @@ input[type="checkbox"] {
   margin-right: 10px;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+button.go-back {
+  margin-top: 15px;
+}
+
 /*      Order navigation      */
 
 .order-navigation {
@@ -211,10 +220,6 @@ label.required:after {
   display: inline;
 }
 
-.client-info form button[type="submit"] {
-  margin-top: 15px;
-}
-
 /*      Shipping & payment      */
 
 .shipping-payment {
@@ -315,4 +320,8 @@ label.required:after {
 .shipping-payment button[type="submit"] {
   width: 100%;
   margin-top: 15px;
+}
+
+.check-order {
+  width: 700px;
 }

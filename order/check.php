@@ -11,6 +11,16 @@
         checkIfSessionExists($connection);
     }
 
+    if(!isset($_SESSION['loggedin'])){
+        header('Location: login.php');
+    }
+
+    $query = "SELECT koszyk_id FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];
+    $result = $connection->query($query);
+    if(mysqli_num_rows($result)<=0){
+        header('Location: ../cart.php');
+    }
+
     $cartProducts = [];
     $country = [];
     $paymentMethod = [];
@@ -64,133 +74,137 @@
         <?php
             require_once 'nav.php';
         ?>
-
-        <form method='POST' action='/sklep/php/place-order.php'>
-            <h1>Sprawdź poprawność zamówienia</h1>
-            <div class='client-info'>
-                <h2>Dane zamawiającego</h2>
-                <?php
-                    if($_SESSION['client-info']['isCompany'] == 1){
-                        echo "
-                        <span>".$_SESSION['client-info']['company-name']."</span>
-                        <span>".$_SESSION['client-info']['nip']."</span>
-                        ";
-                    } else {
-                        echo "
-                        <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
-                        ";
-                    }
-                    echo "
-                    <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
-                    if($_SESSION['client-info']['house-no']){
-                        echo "/".$_SESSION['client-info']['house-no'];
-                    }
-                    echo "</span>
-                    <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
-                    <span>$country</span>
-                    <span>".$_SESSION['client-info']['email']."</span>
-                    <span>".$_SESSION['client-info']['phone']."</span>
-                    ";
-                ?>
-            </div>
-
-            <div class='remarks'>
-                <h2>Uwagi do zamówienia</h3>
-                <textarea id='remarks' name='remarks' placeholder='Tutaj wpisz uwagi...'></textarea>
-            </div>
-
-            <div class='shipping-payment'>
-                <h3>Wybrana metoda płatności</h3>
-                <?php
-                    echo $paymentMethod['rodzaj'];
-                ?>
-                <h3>Wybrana metoda dostawy</h3>
-                <?php
-                    echo $shippingMethod['rodzaj'];
-                ?>
-            </div>
-
-            <div class='products'>
-                <h3>Zamówione produkty</h3>
-                <?php
-                    echo "
-                    <div class='shopping-cart-with-products'>
-                    <table class='cart'>
-                        <thead>
-                            <tr>
-                                <th class='first'></th>
-                                <th class='table-header uppercase'>Cena</th>
-                                <th class='table-header uppercase'>Ilość</th>
-                                <th class='table-header uppercase'>Wartość</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-                        foreach ( $cartProducts as $cartProduct ) {
+        <div class='check-order'>
+            <form method='POST' action='/sklep/php/place-order.php'>
+                <h1>Sprawdź poprawność zamówienia</h1>
+                <div class='client-info'>
+                    <h2>Dane zamawiającego</h2>
+                    <?php
+                        if($_SESSION['client-info']['isCompany'] == 1){
                             echo "
-                            <tr class='product-container'>
-                                <td class='product-image product-name'>
-                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
-                                    <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
-                                </td>
-                                <td class='product-price'>
-                                    <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
-                                </td>
-                                <td class='product-quantity'>
-                                    <span class='quantity-display' data-cart_id='".$cartProduct['koszyk_id']."'>".$cartProduct['ilosc']."</span>
-                                </td>
-                                <td class='product-total-price'>
-                                    <span>
-                                        <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',', '')."</span><span> zł</span
-                                    </span>
-                                </td>
-                            </tr>";
+                            <span>".$_SESSION['client-info']['company-name']."</span>
+                            <span>".$_SESSION['client-info']['nip']."</span>
+                            ";
+                        } else {
+                            echo "
+                            <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
+                            ";
                         }
-                    
-                    echo "</table>
-                    </div>";
-                ?>
-            </div>
+                        echo "
+                        <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
+                        if($_SESSION['client-info']['house-no']){
+                            echo "/".$_SESSION['client-info']['house-no'];
+                        }
+                        echo "</span>
+                        <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
+                        <span>$country</span>
+                        <span>".$_SESSION['client-info']['email']."</span>
+                        <span>".$_SESSION['client-info']['phone']."</span>
+                        ";
+                    ?>
+                </div>
 
-            <div class='order-cost'>
-                <div class='order-cost-row'>
-                    <span>Wartość zamówienia</span>
-                    <span class='order-product-sum'>
-                        <span class='product-sum'>
-                            <?php
-                                echo number_format($productSum, 2, ',', '');
-                            ?>
-                        </span>
-                        <span>  zł</span>
-                    </span>
+                <div class='remarks'>
+                    <h2>Uwagi do zamówienia</h3>
+                    <textarea id='remarks' name='remarks' placeholder='Tutaj wpisz uwagi...'></textarea>
                 </div>
-                <div class='order-cost-row'>
-                    <span>Dostawa</span>
-                    <span class='order-shipping-price'>
-                        <span class='shipping-price'>
-                            <?php
-                            echo number_format($shippingMethod['cena'], 2, ',', '');
-                            ?>
-                        </span>
-                        <span> zł</span>
-                    </span>
-                </div>
-                <div class='order-cost-row'>
-                    <span>Razem</span>
-                    <span class='order-total-sum'>
-                        <span class='total-sum'>
-                            <?php
-                                echo number_format($productSum, 2, ',', '');
-                            ?>
-                        </span>
-                        <span> zł</span
-                    </span>
-                </div>
-            </div>
 
-            <input type='hidden' name='place-order' value='yes'>
-            <button type='button' onclick="location.href='/sklep/order/shipping.php'">Wróć</button>
-            <button type='submit' class='pink-button'>Zamawiam</button>
-        </form>
+                <div class='shipping-payment'>
+                    <h3>Wybrana metoda płatności</h3>
+                    <?php
+                        echo $paymentMethod['rodzaj'];
+                    ?>
+                    <h3>Wybrana metoda dostawy</h3>
+                    <?php
+                        echo $shippingMethod['rodzaj'];
+                    ?>
+                </div>
+
+                <div class='products'>
+                    <h3>Zamówione produkty</h3>
+                    <?php
+                        echo "
+                        <div class='shopping-cart-with-products'>
+                        <table class='cart'>
+                            <thead>
+                                <tr>
+                                    <th class='first'></th>
+                                    <th class='table-header uppercase'>Cena</th>
+                                    <th class='table-header uppercase'>Ilość</th>
+                                    <th class='table-header uppercase'>Wartość</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                            foreach ( $cartProducts as $cartProduct ) {
+                                echo "
+                                <tr class='product-container'>
+                                    <td class='product-image product-name'>
+                                        <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><img src='".$cartProduct['zdjecie']."'></a>
+                                        <a href='/sklep/product.php?id=".$cartProduct['produkt_id']."'><h3>".$cartProduct['nazwa']."</h3></a>
+                                    </td>
+                                    <td class='product-price'>
+                                        <span><span class='price'>".number_format($cartProduct['cena'], 2, ',')."</span><span> zł</span</span>
+                                    </td>
+                                    <td class='product-quantity'>
+                                        <span class='quantity-display' data-cart_id='".$cartProduct['koszyk_id']."'>".$cartProduct['ilosc']."</span>
+                                    </td>
+                                    <td class='product-total-price'>
+                                        <span>
+                                            <span class='product-total'>".number_format(($cartProduct['ilosc']*$cartProduct['cena']), 2, ',', '')."</span><span> zł</span
+                                        </span>
+                                    </td>
+                                </tr>";
+                            }
+                        
+                        echo "</table>
+                        </div>";
+                    ?>
+                </div>
+
+                <div class='order-cost'>
+                    <div class='order-cost-row'>
+                        <span>Wartość zamówienia</span>
+                        <span class='order-product-sum'>
+                            <span class='product-sum'>
+                                <?php
+                                    echo number_format($productSum, 2, ',', '');
+                                ?>
+                            </span>
+                            <span>  zł</span>
+                        </span>
+                    </div>
+                    <div class='order-cost-row'>
+                        <span>Dostawa</span>
+                        <span class='order-shipping-price'>
+                            <span class='shipping-price'>
+                                <?php
+                                echo number_format($shippingMethod['cena'], 2, ',', '');
+                                ?>
+                            </span>
+                            <span> zł</span>
+                        </span>
+                    </div>
+                    <div class='order-cost-row'>
+                        <span>Razem</span>
+                        <span class='order-total-sum'>
+                            <span class='total-sum'>
+                                <?php
+                                    echo number_format($productSum, 2, ',', '');
+                                ?>
+                            </span>
+                            <span> zł</span
+                        </span>
+                    </div>
+                </div>
+
+                <input type='hidden' name='place-order' value='yes'>
+                
+                <div class='buttons'>
+                    <button type='submit' class='pink-button'>Zamawiam</button>
+                    <button type='button' class='white-button go-back' onclick="location.href='/sklep/order/shipping.php'">Wróć</button>
+                </div>
+            </form>
+        </div>
     </main>
 
     <?php 

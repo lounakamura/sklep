@@ -125,18 +125,15 @@
                     </table>
 
                     <div class='clear-cart'>
-                        <button type='button' class='clear-cart-button'>Wyczyść koszyk</button>
+                    
+                        <button type='button' class='clear-cart-button'>
+                            <img src='/sklep/images/ui/delete.svg'>
+                            <span>Wyczyść koszyk</span>
+                        </button>
                     </div>
 
                     <div class='shopping-cart-footer'>
                         <div class='footer-left'>
-                            <div class='add-discount-code'>
-                                <span style='padding-bottom:2px'>Dodaj kod rabatowy</span>
-                                <div style='display:inline-flex'>
-                                    <input class='discount-code' type='text' name='discount-code'>
-                                    <button class='button-activate pink-button'>Aktywuj</button>
-                                </div>
-                            </div>
                             <button onclick='location.href=\"/sklep/index.php\"' class='button-back white-button'>Kontynuuj zakupy</button>
                         </div>
                         <div class='footer-right'>

@@ -11,6 +11,16 @@
         checkIfSessionExists($connection);
     }
 
+    if(!isset($_SESSION['loggedin'])){
+        header('Location: login.php');
+    }
+
+    $query = "SELECT koszyk_id FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];
+    $result = $connection->query($query);
+    if(mysqli_num_rows($result)<=0){
+        header('Location: ../cart.php');
+    }
+
     $paymentMethods = [];
     $shippingMethods = [];
 
@@ -136,8 +146,10 @@
                     </div>
                 </div>
                 <input type='hidden' name='previous' value='shipping'>
-                <button type='button' onclick="location.href='/sklep/order/information.php'">Wróć</button>
-                <button type='submit' class='pink-button'>Przejdź dalej</button>
+                <div class='buttons'>
+                    <button type='submit' class='pink-button'>Przejdź dalej</button>
+                    <button type='button' class='white-button go-back' onclick="location.href='/sklep/order/information.php'">Wróć</button>
+                </div>
             </form>
         </div>
     </main>

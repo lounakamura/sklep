@@ -31,13 +31,18 @@ a.promo-banner-container {
 }
 
 .promo-banner-container:nth-of-type(1) .promo-banner {
-  background-image: url(/sklep/images/main/promo_banner_1.jpg);
+  background-image: url(/sklep/images/main/promo_banner_1.webp);
 }
 
 .promo-banner-container:nth-of-type(2) .promo-banner {
-  background-image: url(/sklep/images/main/promo_banner_2.jpg);
+  background-image: url(/sklep/images/main/promo_banner_2.webp);
 }
 
 .promo-banner-container:nth-of-type(3) .promo-banner {
-  background-image: url(/sklep/images/main/promo_banner_3.jpg);
+  background-image: url(/sklep/images/main/promo_banner_3.webp);
+}
+
+.promo-banner-container:nth-of-type(2),
+.promo-banner-container:nth-of-type(3) {
+  display: none;
 }

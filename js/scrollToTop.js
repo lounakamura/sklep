@@ -9,5 +9,5 @@ window.addEventListener ("scroll", function () {
 })
 
 toTop.addEventListener("click", function() {
-    $('window').animate({ scrollTop: 0 });
+  window.scrollTo({top: 0, behavior: 'smooth'});
 })

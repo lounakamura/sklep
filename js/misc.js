@@ -11,9 +11,6 @@ function displayLoadingScreen(){
 $('.sort').select2({
     minimumResultsForSearch: Infinity
 });
-$('.pageAmt').select2({
-  minimumResultsForSearch: Infinity
-});
 $('.admin-select2').select2({
     language: "pl",
     minimumResultsForSearch: 5

@@ -1,0 +1,77 @@
+/*      Shipping & payment      */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shipping-payment {
+  width: 600px;
+}
+
+.payment-forms,
+.shipping-forms {
+  width: 100%;
+  padding: 5px 0 5px 0;
+}
+
+.payment-forms > div,
+.shipping-forms > div {
+  display: flex;
+  height: 50px;
+  padding: 15px;
+  border-color: #c2c2c2;
+  border-style: solid;
+  border-width: 0px 1px 1px 1px;
+}
+
+.payment-forms > div:first-of-type,
+.shipping-forms > div:first-of-type {
+  border-width: 1px 1px 1px 1px;
+}
+
+.payment-forms img,
+.shipping-forms img {
+  height: 100%;
+}
+
+.payment-forms span,
+.shipping-forms span {
+  height: 100%;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.shipping-forms > div,
+.payment-forms > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shipping-forms > div div,
+.payment-forms > div div {
+  height: 100%;
+  display: flex;
+}
+
+.shipping-forms > div div:first-of-type,
+.payment-forms > div div:first-of-type {
+  flex-direction: column;
+}
+
+.shipping-forms > div div:last-of-type,
+.payment-forms > div div:last-of-type {
+  width: 30%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.shipping-forms > div div:first-of-type span:last-of-type,
+.payment-forms > div div:first-of-type span:last-of-type {
+  font-weight: 400;
+  font-size: 13px;
+}
