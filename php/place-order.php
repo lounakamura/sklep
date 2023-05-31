@@ -46,6 +46,6 @@
     $result = $connection->query($query);
 
     header('Location: ..\order\payment.php');
-    
+
     $connection->close();
 ?>

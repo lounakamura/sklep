@@ -48,16 +48,12 @@
                 <div>
                     <input type='checkbox' id='accept-rules' required><label for='accept-rules'>Akceptuję warunki <a>regulaminu</a></label>
                 </div>
-                <div>
-                    <input type='checkbox' name='newsletter' id='newsletter-add'><label for='newsletter-add'>Chcę zapisać się do newslettera</label>
-                </div>
                 <input class='register-button-confirm pink-button' type='submit' value='Zarejestruj się'>
             </form>
         </div>
     </main>
 
     <?php 
-        require_once __DIR__.'\..\page-components\newsletter.html';
         require_once __DIR__.'\..\page-components\social-media.html'; 
         require_once __DIR__.'\..\page-components\footer.html';
         require_once __DIR__.'\..\page-components\extras.html';

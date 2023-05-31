@@ -57,7 +57,6 @@
     </main>
 
     <?php 
-        require_once __DIR__.'\..\page-components\newsletter.html';
         require_once __DIR__.'\..\page-components\social-media.html'; 
         require_once __DIR__.'\..\page-components\footer.html';
         require_once __DIR__.'\..\page-components\extras.html';

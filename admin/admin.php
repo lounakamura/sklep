@@ -470,7 +470,6 @@
     </main>
 
     <?php 
-        require_once __DIR__.'\..\page-components\newsletter.html';
         require_once __DIR__.'\..\page-components\social-media.html'; 
         require_once __DIR__.'\..\page-components\footer.html';
         require_once __DIR__.'\..\page-components\extras.html';
@@ -485,5 +484,10 @@
 <script src="/sklep/admin/js/addProduct-CategoryDisplay.js"></script>
 
 <?php
+    if(isset($_SESSION['message']) && isset($_SESSION['message-type'])){
+        echo "<script>spop('".$_SESSION['message']."', '".$_SESSION['message-type']."');</script>";
+        unset($_SESSION["message"]);
+        unset($_SESSION["message-type"]);
+    }
     $connection->close();
 ?>

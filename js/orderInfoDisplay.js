@@ -16,9 +16,11 @@ function changeFormDisplay(company) {
     if(company.value === "yes"){
       input.removeClass("not-displayed");
       $(input).find('input').attr("required", "");
+      $(input).find('input').prop("disabled", false)
     } else {
       input.addClass("not-displayed");
       $(input).find('input').removeAttr("required");
+      $(input).find('input').prop("disabled", true)
     }
   });
 }

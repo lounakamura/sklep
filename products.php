@@ -26,7 +26,7 @@
         }
         header('Location: products.php?'.$newUrl);
     }
-
+    
     require_once __DIR__.'\page-components\required.php';
 
     $products = [];
@@ -45,7 +45,9 @@
             $baseSelectionOn = 'WHERE k1.kategoria_id=' . $_GET['category'];
             $displayedCategory = $_GET['category'];
             $categoryTable = 'kategoria_1';
-            $query = "SELECT k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_1 AS k1 JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k1.kategoria_id=$displayedCategory";
+            $query = "SELECT k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_1 AS k1
+            JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) 
+            WHERE k1.kategoria_id=$displayedCategory";
             $result = $connection->query($query);
             $displayedCategoryParents =  $result->fetch_assoc();
             $result->free();
@@ -53,7 +55,10 @@
             $baseSelectionOn = 'WHERE k2.kategoria_id=' . $_GET['subcategory'];
             $displayedCategory = $_GET['subcategory'];
             $categoryTable = 'kategoria_2';
-            $query = "SELECT k1.kategoria AS k1_nazwa, k1.kategoria_id AS k1_id, k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_2 AS k2 JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) WHERE k2.kategoria_id=$displayedCategory";
+            $query = "SELECT k1.kategoria AS k1_nazwa, k1.kategoria_id AS k1_id, k.kategoria AS k_nazwa, k.kategoria_id AS k_id FROM kategoria_2 AS k2 
+            JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) 
+            JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) 
+            WHERE k2.kategoria_id=$displayedCategory";
             $result = $connection->query($query);
             $displayedCategoryParents =  $result->fetch_assoc();
             $result->free();
@@ -71,6 +76,14 @@
         $displayedCategoryName = $displayedBrand;
     }
 
+    if(isset($_GET['search'])){
+        $search = $_GET['search'];
+        $search = htmlspecialchars($search); 
+		$search = $connection->real_escape_string($search);
+	
+        $baseSelectionOn .= " WHERE ((p.nazwa LIKE '%$search%') OR (opis LIKE '%$search%') OR (k2.kategoria LIKE '%$search%') OR (k1.kategoria LIKE '%$search%') OR (k.kategoria LIKE '%$search%') OR (marka LIKE '%$search%')) ";
+    }
+
     // Sorting
     $sortTypes = array(
         'default' => 'nazwa ASC',
@@ -84,13 +97,26 @@
     $sort .= $sortTypes[$_GET['sort']];
     
     // Counting total amount of found products
-    $query = "SELECT COUNT(*) AS ilosc FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) $baseSelectionOn";
+    $query = "SELECT COUNT(*) AS ilosc FROM produkt AS p 
+    JOIN kategoria_2 AS k2 USING (kategoria_id) 
+    JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) 
+    JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) 
+    JOIN marka AS m 
+    USING (marka_id) $baseSelectionOn";
     $result = $connection->query($query);
     $productsFound = $result->fetch_assoc()['ilosc'];
     $result->free();
 
     // Storing currently displayed products
-    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM produkt AS p JOIN kategoria_2 AS k2 USING (kategoria_id) JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) JOIN marka AS m USING (marka_id) JOIN zdjecie AS z USING (produkt_id) $baseSelectionOn GROUP BY p.produkt_id $sort";
+    $query = "SELECT p.produkt_id, p.nazwa, cena, ilosc, k2.kategoria_id AS kategoria_2_id, k2.kategoria AS kategoria_2, k1.kategoria_id AS kategoria_1_id, k1.kategoria AS kategoria_1, k.kategoria_id AS kategoria_id, k.kategoria AS kategoria, m.marka_id AS marka_id, m.marka AS marka, CONCAT(z.sciezka, z.nazwa) AS zdjecie 
+    FROM produkt AS p 
+    JOIN kategoria_2 AS k2 USING (kategoria_id) 
+    JOIN kategoria_1 AS k1 ON (k2.parent_id = k1.kategoria_id) 
+    JOIN kategoria AS k ON (k1.parent_id = k.kategoria_id) 
+    JOIN marka AS m USING (marka_id) 
+    JOIN zdjecie AS z USING (produkt_id) 
+    $baseSelectionOn 
+    GROUP BY p.produkt_id $sort";
     $result = $connection->query($query);
     fetchAllToArray($products, $result);
     $result->free();
@@ -259,6 +285,11 @@
                 </div>
 
                 <div class='products-container'>
+                    <?php
+                        if(isset($_GET['search'])){
+                            echo "<h2>Wyniki wyszukiwania: <span>".$_GET['search']."</span></h2>";
+                        }
+                    ?>
                     <div class='products-misc'>
                         <?php
                             echo "<h3>".$productsFound." wyników</h3>";
@@ -313,7 +344,6 @@
     </main>
 
     <?php 
-        require_once __DIR__.'\page-components\newsletter.html';
         require_once __DIR__.'\page-components\social-media.html'; 
         require_once __DIR__.'\page-components\footer.html';
         require_once __DIR__.'\page-components\extras.html';

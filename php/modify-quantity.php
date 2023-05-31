@@ -7,4 +7,6 @@
 
     $query = "UPDATE koszyk SET ilosc = ".$_POST['quantity']." WHERE koszyk_id=".$_POST['cart_id'];
     $result = $connection->query($query);
+
+    $connection->close();
 ?>

@@ -35,4 +35,6 @@
         // Update cookie responsible for amount of items in the cart
         setcookie('favourites-amount', $favAmount['ilosc'], '0', '/sklep');
     }
+
+    $connection->close();
 ?>

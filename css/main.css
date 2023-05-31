@@ -495,11 +495,9 @@ nav {
 
 footer {
   border-top: 1px solid #e0e0e0;
-  padding-top: 6vh;
-  padding-bottom: 6vh;
 }
 
-footer div {
+footer > div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -510,6 +508,9 @@ footer div {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  padding-top: 6vh;
+  padding-bottom: 6vh;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 footer div div {
@@ -530,6 +531,16 @@ footer a {
 footer h4 {
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
+}
+
+footer span {
+  padding: 5px 0 5px 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  color: #c1c1c1;
+  font-weight: 300;
+  font-size: 15px;
 }
 
 /*      ADDITIONAL     */

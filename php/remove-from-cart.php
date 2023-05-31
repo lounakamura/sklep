@@ -17,4 +17,6 @@
 
     // Update cookie responsible for amount of items in the cart
     setcookie('cart-amount', $cartAmount['ilosc'], '0', '/sklep'); 
+
+    $connection->close();
 ?>
