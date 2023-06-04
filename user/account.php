@@ -45,7 +45,14 @@
     ?>
 
     <main>
-        <h1>Ustawienia konta</h1>
+        <div class='breadcrumbs'>
+            <ul>
+                <li><a href='/sklep/index.php'>Strona Główna</a></li>
+                <li><a href='/sklep/user/account.php'>Konto</a></li>
+                <li><a href='/sklep/user/acount.php'>Twoje konto</a></li>
+            </ul>
+        </div>
+
         <div class="container">
             <label for='state1'>
                 <div class='accordion'>Moje dane</div>

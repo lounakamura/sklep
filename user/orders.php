@@ -37,7 +37,15 @@
     ?>
 
     <main>
-        <span>order info</span>
+        <div class='breadcrumbs'>
+            <ul>
+                <li><a href='/sklep/index.php'>Strona Główna</a></li>
+                <li><a href='/sklep/user/account.php'>Konto</a></li>
+                <li><a href='/sklep/user/orders.php'>Zamówienia</a></li>
+            </ul>
+        </div>
+
+        
     </main>
 
     <?php 

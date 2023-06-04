@@ -79,15 +79,15 @@
     ?>
 
     <main>
+        <div class='breadcrumbs'>
+            <ul>
+                <li><a href='/sklep/index.php'>Strona Główna</a></li>
+                <li><a href='/sklep/user/account.php'>Konto</a></li>
+                <li><a href='/sklep/user/favourites.php'>Ulubione</a></li>
+            </ul>
+        </div>
+        
         <?php
-            echo "<div class='breadcrumbs'>
-                <ul>
-                    <li><a href='/sklep/index.php'>Strona Główna</a></li>
-                    <li><a href='/sklep/user/account.php'>Konto</a></li>
-                    <li><a href='/sklep/user/favourites.php'>Ulubione</a></li>
-                </ul>
-            </div>";
-
             if(!isset($_SESSION['loggedin'])) {
                 echo '
                 <div class="not-logged-in">

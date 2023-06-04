@@ -33,7 +33,16 @@
     ?>
     
     <main>
-
+        <h1>
+            <img class="logo_big" src="/sklep/images/ui/logo-big.svg">
+        </h1>
+        <p>
+            Kosmetykowo to sklep internetowy, który prowadzi sprzedaż wysyłkową z dostawą do domu. W asortymencie znajdują się kultowe marki podbijające Internet, kosmetyki do pielęgnacji oraz zdobywające uznanie polskie, naturalne kosmetyki, a także niszowe kosmetyki.
+        </p>
+        <br>
+        <p>
+            Wysokiej jakości kosmetyki i akcesoria do makijażu które trudno znaleźć w tradycyjnych sklepach z kosmetykami, sprowadzane są przez nas prosto z Wielkiej Brytanii, USA oraz innych zakątków świata. Często są to produkty uznane wśród blogerek, gwiazd show biznesu i najlepszych makijażystek, wyróżnione przez Best Beauty Buys oraz Glamour Glammies.
+        </p>
     </main>
 
     <?php 

@@ -52,6 +52,7 @@
                     }
                     echo '<a href="/sklep/user/account.php" target="_parent">Twoje konto</a>
                     <a href="/sklep/user/orders.php" target="_parent">Zamówienia</a>
+                    <a href="/sklep/user/favourites.php" target="_parent">Ulubione</a>
                     <button onclick="parent.location.href=\'/sklep/php/logout.php\'" class="white-button">Wyloguj</button>';
                 echo "</div>";
             echo "</div>";
