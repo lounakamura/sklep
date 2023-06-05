@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 29, 2023 at 11:02 PM
+-- Generation Time: Cze 05, 2023 at 11:01 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -216,6 +216,13 @@ CREATE TABLE `koszyk` (
   `sesja_id` int(11) NOT NULL,
   `uzytkownik_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `koszyk`
+--
+
+INSERT INTO `koszyk` (`koszyk_id`, `produkt_id`, `ilosc`, `sesja_id`, `uzytkownik_id`) VALUES
+(71, 4, 1, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -479,7 +486,7 @@ INSERT INTO `produkt` (`produkt_id`, `kategoria_id`, `nazwa`, `cena`, `opis`, `m
 (150, 12, 'Hair in Balance by ONLYBIO Stylizator proteinowy do stylizacji włosów kręconych', 24.99, 'Stylizacja fal i loków\r\nNaturalna, wegańska formuła z proteinami lnu, owsa i pszenicy\r\n\r\nZalety produktu:\r\n\r\nJak pachnie?\r\nMaliną i różowym pieprzem – to intrygujące połączenie najpierw Cię zaskoczy, a następnie wprowadzi w świetny nastrój!\r\n\r\nKiedy stosować?\r\nGdy zechcesz, aby skręt włosów był mocniej zdefiniowany i utrwalony. Stosuj również, jeżeli mierzysz się z problemem puszenia.\r\n\r\nJaki efekt?\r\nWłosy delikatnie utrwalone, sprężyste i pełne objętności.\r\n\r\nSposób użycia:\r\nWgnieć niewielką ilość stylizatora w mokre pasma. Po dokładnym rozprowadzeniu produktu wysusz włosy, używając do tego suszarki z dyfuzorem.\r\n\r\nSkład:\r\nAqua, Panthenol, Cellulose Gum, Sucrose, Hydrolyzed Linseed Seed, Hydrolysed Oats, Hydrolyzed Wheat Protein, Xanthan Gum, Polyglyceryl-4 Laurate/Sebacate, Polyglyceryl-6 Caprylate/Caprate, Potassium Sorbate, Sodium Benzoate, Benzyl Alcohol, Benzoic Acid, Dehydroacetic Acid, Tocopherol, Parfum, Hexyl Cinnanal, Limonene, Linalool.', 7, 999),
 (151, 13, 'Hair in Balance by ONLYBIO Mgiełka odbijająca włosy od nasady', 19.99, 'Objętość i nawilżenie\r\nNaturalna, wegańska formuła z maliną i imbirem\r\n\r\nZalety produktu:\r\n\r\nKiedy stosować?\r\nAby cieszyć sprężystymi włosami o zwiększonej objętości, używaj mgiełki po każdym myciu.\r\n\r\nJaki efekt?\r\nWłosy są odbite od nasady, lekkie i miękkie. Mgiełka nie obciąża i nie skleja włosów.\r\n\r\nJak pachnie?\r\nMgiełka ma energetyzujący, rześki, a przy tym delikatnie słodki zapach pina colady, który będzie zachwycać Cię przy każdym użyciu.\r\n\r\nSposób użycia:\r\nRozpyl mgiełkę na mokre włosy, tuż przy skórze głowy. Pozwól pasmom wyschnąć i gotowe!\r\n\r\nSkład:\r\nAqua, Polyquaternium-110, Zingiber Officinale Root Extract, Rubus Chamaemorus Fruit Extract, Panthenol, Niacinamide, Glycerin, Helianthus Annuus (Sunflower) Seed Oil, Cetrimonium Chloride, PVP, Polyglyceryl-4 Laurate/Sebacate, Polyglyceryl-6 Caprylate/Caprate, Benzyl Alcohol, Benzoic Acid, Dehydroacetic Acid, Tocopherol, Parfum, Limonene.', 7, 999),
 (152, 9, 'Hair in Balance by ONLYBIO Pianka utrwalająca do stylizacji fal i loków', 22.99, 'Zdefiniowane loki i fale\r\n\r\nPodkreśl naturalny skręt włosów – Pianka utrwalająca do stylizacji fal i loków z linii Hair in Balance pomoże Ci w wydobyciu ich piękna. Produkt sprawia, że kosmyki zyskują miękkość i sprężystość, a skręt jest delikatnie podkreślony, bez sklejania czy efektu obciążenia. Jego wegańska formuła to aż 98% składników pochodzenia naturalnego, w tym ekstrakt z lnu oraz proteiny roślinne.\r\n\r\n·        Jak pachnie? Zapach smoczego owocu jest egzotyczny i energetyzujący – po prostu wyjątkowy!\r\n\r\n·        Kiedy stosować? Gdy włosy są cienkie i delikatne, puszą się, a ich skręt potrzebuje podkreślenia.\r\n\r\n·        Jak stosować? Wgnieć niewielką ilość pianki w wilgotne włosy, następnie wysusz je suszarką z dyfuzorem.\r\n\r\n·        Jaki efekt? Delikatnie utrwalone, sprężyste loki lub fale.\r\n\r\nPianka utrwalająca od Onlybio idealnie sprawdza się do wydobywania skrętu popularnymi metodami, takimi jak wgniatanie oraz plopping. Zacznij świadomą stylizację włosów z Hair in Balance!\r\n\r\nSkładniki: \r\nAqua, Sodium Polyitaconate,Sodium Cocoyl Sarcosinate, Linum Usitatissimum (Linseed)  Seed  Extract,  Hydrolyzed  Vegetable Protein,  Rubus  Idaeus  (Raspberry)  Seed  Oil, Polyglyceryl-4 Laurate/Sebacate, Polyglyceryl-6 Caprylate/Caprate, Citric Acid, Sodium Benzoate, Potassium Sorbate, Benzyl Alcohol, Benzoic Acid, Dehydroacetic Acid, Tocopherol, Parfum, Linalool.', 7, 999),
-(153, 13, 'Hair in Balance by ONLYBIO Mgiełka odbijająca włosy od nasady', 19.99, 'Objętość i nawilżenie\r\nNaturalna, wegańska formuła z maliną i imbirem\r\n\r\nZalety produktu:\r\n\r\nKiedy stosować?\r\nAby cieszyć sprężystymi włosami o zwiększonej objętości, używaj mgiełki po każdym myciu.\r\n\r\nJaki efekt?\r\nWłosy są odbite od nasady, lekkie i miękkie. Mgiełka nie obciąża i nie skleja włosów.\r\n\r\nJak pachnie?\r\nMgiełka ma energetyzujący, rześki, a przy tym delikatnie słodki zapach pina colady, który będzie zachwycać Cię przy każdym użyciu.\r\n\r\nSposób użycia:\r\nRozpyl mgiełkę na mokre włosy, tuż przy skórze głowy. Pozwól pasmom wyschnąć i gotowe!\r\n\r\nSkład:\r\nAqua, Polyquaternium-110, Zingiber Officinale Root Extract, Rubus Chamaemorus Fruit Extract, Panthenol, Niacinamide, Glycerin, Helianthus Annuus (Sunflower) Seed Oil, Cetrimonium Chloride, PVP, Polyglyceryl-4 Laurate/Sebacate, Polyglyceryl-6 Caprylate/Caprate, Benzyl Alcohol, Benzoic Acid, Dehydroacetic Acid, Tocopherol, Parfum, Limonene.', 7, 999),
+(153, 13, 'Hair in Balance by ONLYBIO Mgiełka odbijająca włosy od nasady', 19.99, 'Objętość i nawilżenie\r\nNaturalna, wegańska formuła z maliną i imbirem\r\n\r\nZalety produktu:\r\n\r\nKiedy stosować?\r\nAby cieszyć sprężystymi włosami o zwiększonej objętości, używaj mgiełki po każdym myciu.\r\n\r\nJaki efekt?\r\nWłosy są odbite od nasady, lekkie i miękkie. Mgiełka nie obciąża i nie skleja włosów.\r\n\r\nJak pachnie?\r\nMgiełka ma energetyzujący, rześki, a przy tym delikatnie słodki zapach pina colady, który będzie zachwycać Cię przy każdym użyciu.\r\n\r\nSposób użycia:\r\nRozpyl mgiełkę na mokre włosy, tuż przy skórze głowy. Pozwól pasmom wyschnąć i gotowe!\r\n\r\nSkład:\r\nAqua, Polyquaternium-110, Zingiber Officinale Root Extract, Rubus Chamaemorus Fruit Extract, Panthenol, Niacinamide, Glycerin, Helianthus Annuus (Sunflower) Seed Oil, Cetrimonium Chloride, PVP, Polyglyceryl-4 Laurate/Sebacate, Polyglyceryl-6 Caprylate/Caprate, Benzyl Alcohol, Benzoic Acid, Dehydroacetic Acid, Tocopherol, Parfum, Limonene.', 7, 998),
 (154, 13, 'Hair in Balance by ONLYBIO Ochrona przed UV w mgiełce', 26.99, 'Optymalna ochrona\r\n\r\nSłońce sprawia, że Twoje włosy stają się przesuszone, wypłowiałe, a przy tym łatwiej się łamią? Onlybio wie, jak temu przeciwdziałać! Ochrona przed UV w mgiełce Hair in Balance to szybki sposób na zabezpieczenie pasm. Produkt dba o kondycję włosów, których struktura może być osłabiona przez szkodliwe promieniowanie. Dzięki SPF30 wyglądają one zdrowo, a ich kolor nie traci intensywności i głębi. Po kosmetyk sięgaj przed każdą ekspozycją na słońce, a w szczególności wtedy, gdy planujesz spędzić więcej czasu na świeżym powietrzu.\r\n\r\nMgiełka chroniąca przed UV od Onlybio wzbogacona jest ekstraktem z maliny oraz olejem brokułowym. Za ich sprawą włosy są dodatkowo wygładzone oraz lśniące. Jednocześnie lekka formuła powoduje, że kosmyki pozostają lekkie i nieobciążone. Kosmetyk jest wegański.\r\n\r\n·        Jak pachnie? Słodki zapach soczystego arbuza przypomni Ci wspomnienia z błogich wakacji!\r\n\r\n·        Kiedy stosować? Przed każdą ekspozycją na słońce.\r\n\r\n·        Jak stosować? Mocno wstrząśnij opakowanie. Rozpyl mgiełkę na włosy z odległości około 15 centymetrów od głowy, następnie przeczesz je szczotką lub grzebieniem, rozprowadzając produkt.\r\n\r\n·        Jaki efekt? Włosy chronione przed blaknięciem i przesuszeniem, bez obciążenia.\r\n\r\nSkładniki/Ingredients:\r\nAqua, Ethylhexyl Methoxycinnamate, Cyclopentasiloxane, Ethylhexyl Salicylate, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Dicaprylyl Ether, Rubus Chamaemorus Fruit Extract, Brassica Oleracea Italica(Broccoli) Seed Oil, Sorbitan Laurate, Helianthus Annuus (Sunflower) Seed Oil, Polyglyceryl-4 Laurate, Solanum Tuberosum Starch, Dilauryl Citrate, Benzyl Alcohol, Ethylhexylglycerin, Citric Acid, Parfum, Citral, Citronellol, Limonene, Linalool.', 7, 999),
 (155, 13, 'Hair in Balance by ONLYBIO Termoochrona w mgiełce', 22.99, 'Zdrowa stylizacja\r\n\r\nStosowanie zabiegów z udziałem wysokiej temperatury źle wpływa na kondycję włosów. Dlatego przed życiem prostownicy, lokówki albo suszarki z gorącym nawiewem warto zabezpieczyć kosmyki przy pomocy Termoochrony w mgiełce od Onlybio! Produkt bogaty w ekstrakt z owoców kasztanowca zapobiega niszczeniu włosów, dzięki czemu te mogą zachwycać zdrowym wyglądem. Lekka formuła mgiełki nie obciąża ich ani nie skleja. Dodatek silikonów wygładza pasma.\r\n\r\n·        Jak pachnie? Orzeźwiającym, cytrynowym sorbetem, który pobudza zmysły i wprowadza w znakomity humor!\r\n\r\n·        Kiedy stosować? Przed każdym suszeniem włosów ciepłym nawiewem lub stylizacją na gorąco.\r\n\r\n·        Jak stosować? Rozpyl mgiełkę równomiernie na włosach, zachowując odległość ok. 15 centymetrów.\r\n\r\n·        Jaki efekt? Wygładzone i zabezpieczone przed temperaturą włosy.\r\n\r\nPokochasz tę wegańską formułę, która zawiera aż 98% składników pochodzenia naturalnego – zacznij świadomą pielęgnację włosów z Hair in Balance!\r\n\r\nSkładniki: \r\nAqua,  Cyclopentasiloxane, Glycerin,  Propanediol,  Cetrimonium  Chloride, Behenamidopropyl  Dimethylamine,  Hydrolyzed Vegetable  Protein,  Hydrolyzed  Chestnut  Extract, Polyglyceryl-4 Laurate/Sebacate, Cetearyl Alcohol, Solanum  Tuberosum  Starch,  Polyglyceryl-6 Caprylate/Caprate, Lactic Acid, Citric Acid, Sodium Benzoate,  Potassium  Sorbate,  Benzyl  Alcohol, Benzoic  Acid,  Dehydroacetic  Acid,  Tocopherol, Parfum, Citral, Hexyl Cinnamal, Limonene, Linalool.', 7, 999);
 
@@ -508,7 +515,9 @@ INSERT INTO `sesja` (`sesja_id`, `data_dodania`) VALUES
 (7, '2023-05-05 13:40:09'),
 (8, '2023-05-05 13:40:14'),
 (9, '2023-05-05 13:40:41'),
-(10, '2023-05-10 15:09:14');
+(10, '2023-05-10 15:09:14'),
+(11, '2023-05-30 12:43:28'),
+(12, '2023-05-31 14:56:39');
 
 -- --------------------------------------------------------
 
@@ -557,7 +566,8 @@ INSERT INTO `ulubiony` (`ulubiony_id`, `uzytkownik_id`, `produkt_id`) VALUES
 (30, 2, 15),
 (32, 2, 150),
 (35, 2, 155),
-(54, 2, 10);
+(54, 2, 10),
+(57, 2, 97);
 
 -- --------------------------------------------------------
 
@@ -582,7 +592,7 @@ CREATE TABLE `uzytkownik` (
 
 INSERT INTO `uzytkownik` (`uzytkownik_id`, `nazwa`, `email`, `haslo`, `admin`, `imie`, `nazwisko`, `numer_telefonu`) VALUES
 (1, 'user', 'email@email.com', '$2y$10$Jgikq3TKjhauN/ectDPzqeT.0NQAwOx/6dm05gC6B4zeGMNL05f2W', 0, NULL, NULL, NULL),
-(2, 'admin', 'admin@admin.com', '$2y$10$6mD55QOIarjOAeBKApLbv.AcxklRZBwPltFVL8TU4zPTc1zqbmBhe', 1, NULL, NULL, NULL);
+(2, 'admin', 'admin@admin.com', '$2y$10$Il8m6UNzmNsAVzdQrp.7a.jqOvaR5sjDlVnsVSBNYlcgIgwbtx7Zu', 1, 'Admin', 'Admin', '123 345 678');
 
 -- --------------------------------------------------------
 
@@ -610,6 +620,7 @@ CREATE TABLE `zamowienie` (
   `adres_kod_pocztowy` varchar(6) NOT NULL,
   `adres_miasto` varchar(50) NOT NULL,
   `adres_kraj_id` int(11) NOT NULL,
+  `data_zlozenia` timestamp NOT NULL DEFAULT current_timestamp(),
   `status_id` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
@@ -617,8 +628,9 @@ CREATE TABLE `zamowienie` (
 -- Dumping data for table `zamowienie`
 --
 
-INSERT INTO `zamowienie` (`zamowienie_id`, `uzytkownik_id`, `metoda_platnosci_id`, `metoda_dostawy_id`, `uwagi`, `do_zaplaty`, `klient_czy_firma`, `klient_imie`, `klient_nazwisko`, `klient_nazwa_firmy`, `klient_nip`, `klient_email`, `klient_telefon`, `adres_ulica`, `adres_nr_domu`, `adres_nr_mieszkania`, `adres_kod_pocztowy`, `adres_miasto`, `adres_kraj_id`, `status_id`) VALUES
-(1, 2, 2, 2, 'test\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nlorem ipsum', 179.86, 0, 'Walter', 'White', '', '', 'email@email.com', '+1 111 111 111', 'Ulica', 1, 0, '34-600', 'Limanowa', 1, 1);
+INSERT INTO `zamowienie` (`zamowienie_id`, `uzytkownik_id`, `metoda_platnosci_id`, `metoda_dostawy_id`, `uwagi`, `do_zaplaty`, `klient_czy_firma`, `klient_imie`, `klient_nazwisko`, `klient_nazwa_firmy`, `klient_nip`, `klient_email`, `klient_telefon`, `adres_ulica`, `adres_nr_domu`, `adres_nr_mieszkania`, `adres_kod_pocztowy`, `adres_miasto`, `adres_kraj_id`, `data_zlozenia`, `status_id`) VALUES
+(1, 2, 2, 2, 'test\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nlorem ipsum', 179.86, 0, 'Walter', 'White', '', '', 'email@email.com', '+1 111 111 111', 'Ulica', 1, 0, '34-600', 'Limanowa', 1, '2023-06-05 20:56:41', 1),
+(2, 2, 2, 3, 'uwaga!', 32.89, 0, 'Elon', 'Musk', '', '', 'email@email.com', '+48 123 456 789', 'Ulica', 4, 0, '34-600', 'Limanowa', 20, '2023-06-05 20:56:41', 1);
 
 -- --------------------------------------------------------
 
@@ -640,7 +652,8 @@ CREATE TABLE `zamowienie_produkt` (
 
 INSERT INTO `zamowienie_produkt` (`zamowienie_produkt_id`, `zamowienie_id`, `produkt_id`, `ilosc`, `cena`) VALUES
 (1, 1, 4, 3, 49.99),
-(2, 1, 30, 1, 16.99);
+(2, 1, 30, 1, 16.99),
+(3, 2, 153, 1, 19.99);
 
 -- --------------------------------------------------------
 
@@ -1144,7 +1157,7 @@ ALTER TABLE `kategoria_2`
 -- AUTO_INCREMENT for table `koszyk`
 --
 ALTER TABLE `koszyk`
-  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `kraj`
@@ -1192,25 +1205,25 @@ ALTER TABLE `status_zamowienia`
 -- AUTO_INCREMENT for table `ulubiony`
 --
 ALTER TABLE `ulubiony`
-  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `uzytkownik`
 --
 ALTER TABLE `uzytkownik`
-  MODIFY `uzytkownik_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `uzytkownik_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `zamowienie`
 --
 ALTER TABLE `zamowienie`
-  MODIFY `zamowienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `zamowienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `zamowienie_produkt`
 --
 ALTER TABLE `zamowienie_produkt`
-  MODIFY `zamowienie_produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `zamowienie_produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `zdjecie`

@@ -15,6 +15,20 @@
         header('Location: login.php');
     }
 
+    $orders = [];
+    
+    $query = "SELECT * FROM zamowienie WHERE uzytkownik_id=".$_SESSION['id'];
+    $result = $connection->query($query);
+    fetchAllToArray($orders, $result);
+    $result->free();
+
+    /* foreach ($orders as $order) {
+        $query = "SELECT z_p.produkt_id, p.nazwa, p.cena, z_p.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM zamowienie_produkt AS z_p JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id) WHERE zamowienie_id=".$orders['zamowienie_id']." GROUP BY p.produkt_id";
+        $result = $connection->query($query);
+        fetchAllToArray($order, $result);
+        $result->free();
+    } */
+
     require_once __DIR__.'\..\page-components\required.php';
 ?>
 
@@ -45,7 +59,9 @@
             </ul>
         </div>
 
-        
+        Nr zamowienia
+        data zlozenia
+        do zaplaty
     </main>
 
     <?php 
