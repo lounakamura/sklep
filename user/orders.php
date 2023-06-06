@@ -59,9 +59,7 @@
             </ul>
         </div>
 
-        Nr zamowienia
-        data zlozenia
-        do zaplaty
+        <h2 style='text-align:center; width:100%'>Ten moduł jest w tej chwili niedostępny</h2>
     </main>
 
     <?php 
@@ -74,6 +72,7 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <?php

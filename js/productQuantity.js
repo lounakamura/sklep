@@ -1,3 +1,5 @@
+//      Custom product quantity controller
+
 const quantityControllers = document.querySelectorAll('.quantity-input-container'); // Container holding each products' quantity and -+ buttons
 let productTotals = document.querySelectorAll('.product-total'); // Product totals displayed on page load
 const cheapestShipping = document.querySelector('.shipping-price');

@@ -1,3 +1,5 @@
+//          Adding and removing favourites on products
+
 const favAmountContainer = document.querySelector(".container-favourites-amount");
 const favAmount = document.querySelector(".favourites-amount");
 

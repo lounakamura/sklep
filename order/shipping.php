@@ -13,6 +13,10 @@
 
     if(!isset($_SESSION['loggedin'])){
         header('Location: login.php');
+    } else if (!isset($_SESSION['previous'])){
+        header('Location: shipping.php');
+    } else if (!($_SESSION['previous'] != 'information') && !($_SESSION['previous'] != 'shipping') && !($_SESSION['previous'] != 'check')){
+        header('Location: information.php');
     }
 
     $query = "SELECT koszyk_id FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];

@@ -1,3 +1,5 @@
+//          Product filtering - implemented sorting
+
 const urlParams = new URLSearchParams(window.location.search);
 
 document.getElementById('sort').onchange = function() {

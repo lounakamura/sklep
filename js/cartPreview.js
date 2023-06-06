@@ -1,3 +1,5 @@
+//          Cart preview on icon hover
+
 window.onload = function () {
     updateCartValue();
 }

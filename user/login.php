@@ -67,16 +67,12 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <script src="/sklep/js/addToCart.js"></script>
 <script src="/sklep/js/removeFromCart.js"></script>
 
 <?php
-    if(isset($_SESSION['message']) && isset($_SESSION['message-type'])){
-        echo "<script>spop('".$_SESSION['message']."', '".$_SESSION['message-type']."');</script>";
-        unset($_SESSION["message"]);
-        unset($_SESSION["message-type"]);
-    }
     $connection->close();
 ?>

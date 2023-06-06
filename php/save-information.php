@@ -38,6 +38,8 @@
     $_SESSION['client-info']['phone'] = $_POST['phone'];
     $_SESSION['client-info']['email'] = $_POST['email'];
     
+    $_SESSION['previous'] = 'information';
+
     header('Location: ..\order\shipping.php');
     
     $connection->close();

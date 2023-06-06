@@ -11,6 +11,8 @@
 
     $_SESSION['order-info']['payment'] = $_POST['payment'];
     $_SESSION['order-info']['shipping'] = $_POST['shipping'];
+
+    $_SESSION['previous'] = 'shipping';
     
     header('Location: ..\order\check.php');
     

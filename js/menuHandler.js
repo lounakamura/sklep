@@ -1,6 +1,8 @@
-const CATEGORY_BUTTONS = document.querySelectorAll(".category");
+//          Categories displayed when hovering navbar
 
-CATEGORY_BUTTONS.forEach((category_button)=>{
+const categoryButtons = document.querySelectorAll(".category");
+
+categoryButtons.forEach((category_button)=>{
     let timer;
     let delay = 300;
     category_button.onmouseenter = function(){
@@ -17,11 +19,11 @@ CATEGORY_BUTTONS.forEach((category_button)=>{
 })
 
 function closeAll(){
-    const CATEGORY_PANNELS = document.querySelectorAll('.categories-bg');
-    CATEGORY_PANNELS.forEach((category_pannel)=>{
+    const categoryPannels = document.querySelectorAll('.categories-bg');
+    categoryPannels.forEach((category_pannel)=>{
         category_pannel.classList.add('off');
     })
-    CATEGORY_BUTTONS.forEach((category_button)=>{
+    categoryButtons.forEach((category_button)=>{
         category_button.setAttribute('active', 'no');
     })
 }

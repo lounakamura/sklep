@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 05, 2023 at 11:01 PM
+-- Generation Time: Cze 06, 2023 at 11:10 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sklep`
 --
+CREATE DATABASE IF NOT EXISTS `sklep` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci;
+USE `sklep`;
 
 -- --------------------------------------------------------
 
@@ -216,13 +218,6 @@ CREATE TABLE `koszyk` (
   `sesja_id` int(11) NOT NULL,
   `uzytkownik_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-
---
--- Dumping data for table `koszyk`
---
-
-INSERT INTO `koszyk` (`koszyk_id`, `produkt_id`, `ilosc`, `sesja_id`, `uzytkownik_id`) VALUES
-(71, 4, 1, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -501,24 +496,6 @@ CREATE TABLE `sesja` (
   `data_dodania` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
---
--- Dumping data for table `sesja`
---
-
-INSERT INTO `sesja` (`sesja_id`, `data_dodania`) VALUES
-(1, '2023-04-22 15:10:19'),
-(2, '2023-04-22 15:10:19'),
-(3, '2023-04-22 15:11:38'),
-(4, '2023-05-05 13:38:55'),
-(5, '2023-05-05 13:39:20'),
-(6, '2023-05-05 13:39:33'),
-(7, '2023-05-05 13:40:09'),
-(8, '2023-05-05 13:40:14'),
-(9, '2023-05-05 13:40:41'),
-(10, '2023-05-10 15:09:14'),
-(11, '2023-05-30 12:43:28'),
-(12, '2023-05-31 14:56:39');
-
 -- --------------------------------------------------------
 
 --
@@ -557,17 +534,11 @@ CREATE TABLE `ulubiony` (
 --
 
 INSERT INTO `ulubiony` (`ulubiony_id`, `uzytkownik_id`, `produkt_id`) VALUES
-(8, 2, 135),
-(11, 2, 11),
-(23, 2, 153),
-(26, 2, 148),
-(28, 2, 13),
 (29, 2, 12),
 (30, 2, 15),
 (32, 2, 150),
 (35, 2, 155),
-(54, 2, 10),
-(57, 2, 97);
+(54, 2, 10);
 
 -- --------------------------------------------------------
 
@@ -592,7 +563,7 @@ CREATE TABLE `uzytkownik` (
 
 INSERT INTO `uzytkownik` (`uzytkownik_id`, `nazwa`, `email`, `haslo`, `admin`, `imie`, `nazwisko`, `numer_telefonu`) VALUES
 (1, 'user', 'email@email.com', '$2y$10$Jgikq3TKjhauN/ectDPzqeT.0NQAwOx/6dm05gC6B4zeGMNL05f2W', 0, NULL, NULL, NULL),
-(2, 'admin', 'admin@admin.com', '$2y$10$Il8m6UNzmNsAVzdQrp.7a.jqOvaR5sjDlVnsVSBNYlcgIgwbtx7Zu', 1, 'Admin', 'Admin', '123 345 678');
+(2, 'admin', 'admin@admin.com', '$2y$10$Il8m6UNzmNsAVzdQrp.7a.jqOvaR5sjDlVnsVSBNYlcgIgwbtx7Zu', 1, 'Admin', 'Admin', '111111111');
 
 -- --------------------------------------------------------
 
@@ -624,14 +595,6 @@ CREATE TABLE `zamowienie` (
   `status_id` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
---
--- Dumping data for table `zamowienie`
---
-
-INSERT INTO `zamowienie` (`zamowienie_id`, `uzytkownik_id`, `metoda_platnosci_id`, `metoda_dostawy_id`, `uwagi`, `do_zaplaty`, `klient_czy_firma`, `klient_imie`, `klient_nazwisko`, `klient_nazwa_firmy`, `klient_nip`, `klient_email`, `klient_telefon`, `adres_ulica`, `adres_nr_domu`, `adres_nr_mieszkania`, `adres_kod_pocztowy`, `adres_miasto`, `adres_kraj_id`, `data_zlozenia`, `status_id`) VALUES
-(1, 2, 2, 2, 'test\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nlorem ipsum', 179.86, 0, 'Walter', 'White', '', '', 'email@email.com', '+1 111 111 111', 'Ulica', 1, 0, '34-600', 'Limanowa', 1, '2023-06-05 20:56:41', 1),
-(2, 2, 2, 3, 'uwaga!', 32.89, 0, 'Elon', 'Musk', '', '', 'email@email.com', '+48 123 456 789', 'Ulica', 4, 0, '34-600', 'Limanowa', 20, '2023-06-05 20:56:41', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -645,15 +608,6 @@ CREATE TABLE `zamowienie_produkt` (
   `ilosc` int(11) NOT NULL,
   `cena` decimal(10,2) NOT NULL COMMENT 'zł'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-
---
--- Dumping data for table `zamowienie_produkt`
---
-
-INSERT INTO `zamowienie_produkt` (`zamowienie_produkt_id`, `zamowienie_id`, `produkt_id`, `ilosc`, `cena`) VALUES
-(1, 1, 4, 3, 49.99),
-(2, 1, 30, 1, 16.99),
-(3, 2, 153, 1, 19.99);
 
 -- --------------------------------------------------------
 
@@ -1157,7 +1111,7 @@ ALTER TABLE `kategoria_2`
 -- AUTO_INCREMENT for table `koszyk`
 --
 ALTER TABLE `koszyk`
-  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `koszyk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `kraj`
@@ -1187,13 +1141,13 @@ ALTER TABLE `metoda_platnosci`
 -- AUTO_INCREMENT for table `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `sesja`
 --
 ALTER TABLE `sesja`
-  MODIFY `sesja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `sesja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `status_zamowienia`
@@ -1205,7 +1159,7 @@ ALTER TABLE `status_zamowienia`
 -- AUTO_INCREMENT for table `ulubiony`
 --
 ALTER TABLE `ulubiony`
-  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `ulubiony_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `uzytkownik`
@@ -1229,7 +1183,7 @@ ALTER TABLE `zamowienie_produkt`
 -- AUTO_INCREMENT for table `zdjecie`
 --
 ALTER TABLE `zdjecie`
-  MODIFY `zdjecie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=426;
+  MODIFY `zdjecie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=430;
 
 --
 -- Constraints for dumped tables

@@ -123,13 +123,14 @@
                     </div>
                     <div class='phone'>
                         <label for='phone' class='required'>Numer telefonu</label>
-                        <input class='info-field' type='tel' name='phone' id='phone' value='".$userInfo['numer_telefonu']."' minlength='9' maxlength='50' required>
+                        <input class='info-field' type='tel' pattern='[0-9]{9}' name='phone' id='phone' value='".$userInfo['numer_telefonu']."' minlength='9' maxlength='9' required>
                     </div>
                     <div class='email'>
                         <label for='email' class='required'>Adres email</label>
                         <input class='info-field' type='email' name='email' id='email' value='".$userInfo['email']."' minlength='6' maxlength='254' required>
                     </div>
                     <div class='buttons'>
+                        <input type='hidden' name='previous' value='information'>
                         <button type='submit' class='pink-button'>Przejdź dalej</button>
                         <button type='button' class='white-button go-back' onclick='location.href=\"/sklep/cart.php\"'>Wróć</button>
                     </div>";

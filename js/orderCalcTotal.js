@@ -1,3 +1,5 @@
+//          Calculating order total
+
 const productSum = document.querySelector(".product-sum");
 const shippingPrice = document.querySelector(".shipping-price");
 const totalPrice = document.querySelector(".total-sum");

@@ -1,3 +1,5 @@
+//      Slideshow gallery for the homepage with promo banners
+
 const slides = Array.from(document.querySelectorAll(".promo-banner-container"));
 
 let currentSlide = -1;

@@ -1,3 +1,5 @@
+//      Order information field display based on whether client is a private person or a company
+
 const personInputs = [$('div.name'), $('div.last-name')];
 const companyInputs = [$('div.company-name'), $('div.nip')];
 

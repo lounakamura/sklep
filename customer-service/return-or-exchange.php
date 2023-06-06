@@ -20,7 +20,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Zwrot i wymiana towaru | Drogeria internetowa Kosmetykowo.pl</title>
     <?php
         require_once __DIR__.'\..\page-components\head.html';
     ?>
@@ -86,6 +86,7 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <?php

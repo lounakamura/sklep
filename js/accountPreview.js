@@ -1,3 +1,5 @@
+//          Account preview on icon hover
+
 const accPrev = document.querySelector(".account-container");
 const accBtn = document.querySelector(".header-account");
 

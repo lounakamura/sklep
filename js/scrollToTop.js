@@ -1,3 +1,5 @@
+//      Scroll to the top of page button
+
 let toTop = document.querySelector(".to-top");
 
 window.addEventListener ("scroll", function () {

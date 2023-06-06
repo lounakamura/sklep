@@ -21,28 +21,28 @@
         header('Location: ..\user\register.php');
     }
     
-    if ($stmt = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE nazwa = ?')) {
-        $stmt->bind_param('s', $_POST['username']);
-        $stmt->execute();
-        $stmt->store_result();
-        if ($stmt->num_rows > 0) {
+    if ($query = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE nazwa = ?')) {
+        $query->bind_param('s', $_POST['username']);
+        $query->execute();
+        $query->store_result();
+        if ($query->num_rows > 0) {
             $_SESSION['message'] = 'Istnieje już konto o podanej nazwie użytkownika!';
             $_SESSION['message-type'] = 'error';
             header('Location: ..\user\register.php');
         } else {
-            if ($stmt = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE email = ?')) {
-                $stmt->bind_param('s', $_POST['email']);
-                $stmt->execute();
-                $stmt->store_result();
-                if ($stmt->num_rows > 0) {
+            if ($query = $connection->prepare('SELECT uzytkownik_id, haslo FROM uzytkownik WHERE email = ?')) {
+                $query->bind_param('s', $_POST['email']);
+                $query->execute();
+                $query->store_result();
+                if ($query->num_rows > 0) {
                     $_SESSION['message'] = 'Istnieje już konto o podanym emailu!';
                     $_SESSION['message-type'] = 'error';
                     header('Location: ..\user\register.php');
                 } else {
-                    if ($stmt = $connection->prepare('INSERT INTO uzytkownik (nazwa, email, haslo) VALUES (?, ?, ?)')) {
+                    if ($query = $connection->prepare('INSERT INTO uzytkownik (nazwa, email, haslo) VALUES (?, ?, ?)')) {
                         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                        $stmt->bind_param('sss', $_POST['username'], $_POST['email'], $password);
-                        $stmt->execute();
+                        $query->bind_param('sss', $_POST['username'], $_POST['email'], $password);
+                        $query->execute();
                         $_SESSION['message'] = 'Twoje konto zostało utworzone! Możesz teraz się zalogować.';
                         $_SESSION['message-type'] = 'success';
                         header('Location: ..\user\login.php');

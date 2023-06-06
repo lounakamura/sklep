@@ -1,3 +1,5 @@
+//          Accordion dropdown category menu for products display page
+
 const accordion = function() {
     const accordion = document.querySelector(".accordion-menu");
     const dropdownBtn = accordion.querySelectorAll(".dropdown-btn");
@@ -5,7 +7,11 @@ const accordion = function() {
     dropdownBtn.forEach((button) => {
         button.addEventListener("mousedown", (e) => {
             const submenuItem = button.parentElement.nextElementSibling;
-            submenuItem.style.display = submenuItem.style.display === "block" ? "none" : "block";
+            if(submenuItem.style.display === "block"){
+                submenuItem.style.display = "none";
+            } else {
+                submenuItem.style.display = "block";
+            }
             button.parentElement.parentElement.classList.toggle("active");
         });
      });

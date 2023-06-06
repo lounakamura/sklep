@@ -1,4 +1,4 @@
-/*      Sticky header & previews      */
+//      Header and header previews sticking to the top of the page on scroll
 
 const header = document.querySelector("header");
 const sticky = 75;

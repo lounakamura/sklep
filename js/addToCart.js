@@ -1,4 +1,4 @@
-updateCartValue();
+//          Adding products to cart
 
 const cartPreviewIframe = document.querySelector("[data-id='preview-cart']");
 const addButtons = document.querySelectorAll(".add-to-cart-button");
@@ -38,3 +38,5 @@ addButtons.forEach(addButton => {
         }
     }
 });
+
+updateCartValue();

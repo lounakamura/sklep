@@ -13,7 +13,13 @@
 
     if(!isset($_SESSION['loggedin'])){
         header('Location: login.php');
+    } else if (!isset($_SESSION['previous'])){
+        header('Location: shipping.php');
+    } else if (!($_SESSION['previous'] != 'shipping')){
+        header('Location: information.php');
     }
+
+    $_SESSION['previous'] = 'check';
 
     $query = "SELECT koszyk_id FROM koszyk WHERE uzytkownik_id=".$_SESSION['id'];
     $result = $connection->query($query);
@@ -77,31 +83,33 @@
         <div class='check-order'>
             <form method='POST' action='/sklep/php/place-order.php'>
                 <h1>Sprawdź poprawność zamówienia</h1>
-                <div class='client-info'>
+                <div class='info-display'>
                     <h2>Dane zamawiającego</h2>
-                    <?php
-                        if($_SESSION['client-info']['isCompany'] == 1){
+                    <div>
+                        <?php
+                            if($_SESSION['client-info']['isCompany'] == 1){
+                                echo "
+                                <span>".$_SESSION['client-info']['company-name']."</span>
+                                <span>".$_SESSION['client-info']['nip']."</span>
+                                ";
+                            } else {
+                                echo "
+                                <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
+                                ";
+                            }
                             echo "
-                            <span>".$_SESSION['client-info']['company-name']."</span>
-                            <span>".$_SESSION['client-info']['nip']."</span>
+                            <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
+                            if($_SESSION['client-info']['house-no']){
+                                echo "/".$_SESSION['client-info']['house-no'];
+                            }
+                            echo "</span>
+                            <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
+                            <span>$country</span>
+                            <span>".$_SESSION['client-info']['email']."</span>
+                            <span>".$_SESSION['client-info']['phone']."</span>
                             ";
-                        } else {
-                            echo "
-                            <span>".$_SESSION['client-info']['first-name']." ".$_SESSION['client-info']['last-name']."</span>
-                            ";
-                        }
-                        echo "
-                        <span>".$_SESSION['client-info']['street']." ". $_SESSION['client-info']['street-no'];
-                        if($_SESSION['client-info']['house-no']){
-                            echo "/".$_SESSION['client-info']['house-no'];
-                        }
-                        echo "</span>
-                        <span>".$_SESSION['client-info']['postal-code']." ".$_SESSION['client-info']['city']."</span>
-                        <span>$country</span>
-                        <span>".$_SESSION['client-info']['email']."</span>
-                        <span>".$_SESSION['client-info']['phone']."</span>
-                        ";
-                    ?>
+                        ?>
+                    </div>
                 </div>
 
                 <div class='remarks'>
@@ -109,19 +117,19 @@
                     <textarea id='remarks' name='remarks' placeholder='Tutaj wpisz uwagi...'></textarea>
                 </div>
 
-                <div class='shipping-payment'>
-                    <h3>Wybrana metoda płatności</h3>
-                    <?php
-                        echo $paymentMethod['rodzaj'];
-                    ?>
-                    <h3>Wybrana metoda dostawy</h3>
-                    <?php
-                        echo $shippingMethod['rodzaj'];
-                    ?>
+                <div class='shipping-payment-display'>
+                    <div>
+                        <h2>Metoda płatności</h2>
+                        <div><img src='<?php echo $paymentMethod['zdjecie_sciezka']; ?>'></div>
+                    </div>
+                    <div>
+                        <h2>Metoda dostawy</h2>
+                        <div><img src='<?php echo $shippingMethod['zdjecie_sciezka']; ?>'></div>
+                    </div>
                 </div>
 
                 <div class='products'>
-                    <h3>Zamówione produkty</h3>
+                    <h2>Zamówione produkty</h2>
                     <?php
                         echo "
                         <div class='shopping-cart-with-products'>

@@ -39,11 +39,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogeria internetowa Kosmetykowo.pl</title>
+    <title>Panel administratora | Drogeria internetowa Kosmetykowo.pl</title>
     <?php
         require_once __DIR__.'\..\page-components\head.html';
     ?>
-    <link rel="stylesheet" href="/sklep/css/admin.css">
+    <link rel="stylesheet" href="/sklep/admin/admin.css">
 </head>
 
 <body>
@@ -63,7 +63,7 @@
             <input type='checkbox' id='state1' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/add-product.php" enctype='multipart/form-data'>
+                    <form method="POST" action="/sklep/admin/php/product-add.php" enctype='multipart/form-data'>
                         <div>
                             <label for="category">Kategoria główna</label>
                             <select name="category" id="category">
@@ -157,7 +157,8 @@
 
                         <div>
                             <label for="images">Zdjęcia</label>
-                            <input name="upload[]" type="file" multiple="multiple" id="images">
+                            <input name="upload[]" type="file" multiple="multiple" id="images" required>
+                            <span style="color:gray">Dodaj przynajmniej jedno zdjęcie! Akceptowane formaty: jpg, jpeg, png, webp</span>
                         </div>
 
                         <button type="submit" class="pink-button">Dodaj</button>
@@ -173,7 +174,7 @@
             <input type='checkbox' id='state2' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/upload-images.php" enctype='multipart/form-data'>
+                    <form method="POST" action="/sklep/admin/php/images-upload.php" enctype='multipart/form-data'>
                         <div>
                             <label>Wybierz produkt z listy</label>
                             <select name="product" class="admin-select2">
@@ -184,7 +185,11 @@
                                 ?>
                             </select>
                         </div>
-                        <input name="upload[]" type="file" multiple="multiple" />
+                        <div>
+                            <label>Zdjęcia</label>
+                            <input name="upload[]" type="file" multiple="multiple" required> 
+                            <span style="color:gray">Akceptowane formaty: jpg, jpeg, png, webp</span>
+                        </div>
                         <button type="submit" class="pink-button">Dodaj</button>
                     </form>
                 </div>
@@ -198,7 +203,7 @@
             <input type='checkbox' id='state3' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/remove-product.php">
+                    <form method="POST" action="/sklep/admin/php/product-remove.php">
                         <div>
                             <label>Wybierz produkt z listy</label>
                             <select name="product" class="admin-select2">
@@ -222,7 +227,7 @@
             <input type='checkbox' id='state4' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/modify-product.php">
+                    <form method="POST" action="/sklep/admin/php/product-modify.php">
                         <div>
                             <label>Wybierz produkt z listy</label>
                             <select name="product" class="admin-select2">
@@ -248,7 +253,7 @@
             <input type='checkbox' id='state5' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/add-maincategory.php">
+                    <form method="POST" action="/sklep/admin/php/maincategory-add.php">
                         <div>
                             <label for='maincategory-name'>Nazwa</label>
                             <input type='text' name='maincategory' id='maincategory-name' required maxlength='25'>
@@ -266,7 +271,7 @@
             <input type='checkbox' id='state6' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/add-category.php">
+                    <form method="POST" action="/sklep/admin/php/category-add.php">
                         <div>
                             <label>Kategoria nadrzędna</label>
                             <select name="parent-category" class="admin-select2">
@@ -294,7 +299,7 @@
             <input type='checkbox' id='state7' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/add-subcategory.php">
+                    <form method="POST" action="/sklep/admin/php/subcategory-add.php">
                         <div>
                             <label>Kategoria nadrzędna</label>
                             <select name="parent-category" class="admin-select2">
@@ -331,7 +336,7 @@
             <input type='checkbox' id='state8' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/remove-maincategory.php">
+                    <form method="POST" action="/sklep/admin/php/maincategory-remove.php">
                         <div>
                             <label>Wybierz kategorię główną</label>
                             <select name="maincategory" class="admin-select2">
@@ -341,6 +346,7 @@
                                     }
                                 ?>
                             </select>
+                            <span style="color:gray">Uważaj, usunięcie kategorii spowoduje usunięcie wszystkich jej podkategorii i należących do niej produktów!</span>
                         </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
@@ -355,7 +361,7 @@
             <input type='checkbox' id='state9' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/remove-category.php">
+                    <form method="POST" action="/sklep/admin/php/category-remove.php">
                         <div>
                             <label>Wybierz podkategorię</label>
                             <select name="category" class="admin-select2">
@@ -374,6 +380,7 @@
                                 }
                                 ?>
                             </select>
+                            <span style="color:gray">Uważaj, usunięcie kategorii spowoduje usunięcie wszystkich jej podkategorii i należących do niej produktów!</span>
                         </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
@@ -388,7 +395,7 @@
             <input type='checkbox' id='state10' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/remove-subcategory.php">
+                    <form method="POST" action="/sklep/admin/php/subcategory-remove.php">
                         <div>
                         <label>Wybierz kategorię produktów</label>
                             <select name="subcategory" class="admin-select2">
@@ -416,6 +423,7 @@
                                     }
                                 ?>
                             </select>
+                            <span style="color:gray">Uważaj, usunięcie kategorii spowoduje usunięcie wszystkich należących do niej produktów!</span>
                         </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
@@ -432,7 +440,7 @@
             <input type='checkbox' id='state11' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/add-brand.php">
+                    <form method="POST" action="/sklep/admin/php/brand-add.php">
                         <div>
                             <label for='brand-name'>Nazwa</label>
                             <input type='text' name='brand' id='brand-name' required maxlength='32'>
@@ -450,7 +458,7 @@
             <input type='checkbox' id='state12' class='state' hidden>
             <div class='accordion-content'>
                 <div class='accordion-inner'>
-                    <form method="POST" action="/sklep/admin/php/remove-brand.php">
+                    <form method="POST" action="/sklep/admin/php/brand-remove.php">
                         <div>
                             <label>Wybierz markę</label>
                             <select name="brand" class="admin-select2">
@@ -460,6 +468,7 @@
                                     }
                                 ?>
                             </select>
+                            <span style="color:gray">Uważaj, usunięcie marki spowoduje usunięcie wszystkich należących do niej produktów!</span>
                         </div>
                         <button type="submit" class="pink-button">Usuń</button>
                     </form>
@@ -479,15 +488,12 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <script src="/sklep/admin/js/addProduct-CategoryDisplay.js"></script>
 
 <?php
-    if(isset($_SESSION['message']) && isset($_SESSION['message-type'])){
-        echo "<script>spop('".$_SESSION['message']."', '".$_SESSION['message-type']."');</script>";
-        unset($_SESSION["message"]);
-        unset($_SESSION["message-type"]);
-    }
+    
     $connection->close();
 ?>

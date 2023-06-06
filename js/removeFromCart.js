@@ -1,3 +1,5 @@
+//          Removing product from cart
+
 let removeButtons = document.querySelectorAll('.remove-from-cart');
 
 removeButtons.forEach(removeButton => {
@@ -16,7 +18,6 @@ removeButtons.forEach(removeButton => {
             }
             displayLoadingScreen();
             document.location.reload();
-            /* spop("Produkt został usunięty z koszyka.", "success"); */
             updateCartValue();
         }
     }

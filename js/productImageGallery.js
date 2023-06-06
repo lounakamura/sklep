@@ -1,3 +1,5 @@
+//          Interactive product image gallery
+
 const currentMainImg = document.querySelector('.gallery-main-img');
 const thumbs = Array.from(document.querySelectorAll('.thumbnail'));
 

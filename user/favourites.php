@@ -154,6 +154,7 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <script src="/sklep/js/addToCart.js"></script>

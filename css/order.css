@@ -1,10 +1,10 @@
 main {
   padding: 0;
-  margin-top: 12vh;
+  margin-top: 9vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 3vh;
+  margin-bottom: 0;
 }
 
 h1 {
@@ -48,6 +48,7 @@ button.go-back {
 .order-navigation {
   display: flex;
   justify-content: center;
+  margin-top: 30px;
 }
 
 .nav {
@@ -324,4 +325,139 @@ label.required:after {
 
 .check-order {
   width: 700px;
+}
+
+.payment {
+  margin-top: -9vh;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("/sklep/images/payment/payment.jpg") center center/cover
+    no-repeat;
+}
+
+button#pay {
+  height: 60px;
+  width: 200px;
+  font-size: larger;
+  background-color: #e83f6f;
+  border-color: #e83f6f;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+button#pay:hover {
+  background-color: #aa2e51;
+  border-color: #aa2e51;
+}
+
+button#pay:active {
+  transform: scale(0.95);
+  background-color: #952847;
+  border-color: #952847;
+}
+
+.info-display {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+}
+
+.info-display span {
+  padding: 3px 0 3px 0;
+  font-size: 17px;
+}
+
+.info-display > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #c2c2c2;
+  padding: 13px;
+}
+
+.shipping-payment-display div > div {
+  border: 1px solid #c2c2c2;
+  padding: 13px;
+  width: 92%;
+  display: flex;
+  align-items: center;
+}
+
+.remarks {
+  width: 45%;
+}
+
+.remarks textarea {
+  height: 180px;
+  width: 100%;
+  font-size: 17px;
+  border-radius: 1px;
+  border: 1px solid #c2c2c2;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.check-order form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.check-order h1 {
+  width: 100%;
+}
+
+.shipping-payment-display {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0 15px 0;
+}
+
+.shipping-payment-display h2 {
+  width: fit-content;
+}
+
+.shipping-payment-display span {
+  padding: 10px 0 10px 0;
+  font-size: 17px;
+}
+
+.shipping-payment-display div {
+  padding: 5px 0 5px 0;
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+}
+
+.shipping-payment-display > div:first-child {
+  width: 45%;
+}
+
+.shipping-payment-display > div:last-child {
+  width: 45%;
+}
+
+.shipping-payment img {
+  height: 80px;
+}
+
+.order-cost {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.buttons {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.check-order h2 {
+  font-size: 22px;
 }

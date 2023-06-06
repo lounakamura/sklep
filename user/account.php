@@ -49,7 +49,6 @@
             <ul>
                 <li><a href='/sklep/index.php'>Strona Główna</a></li>
                 <li><a href='/sklep/user/account.php'>Konto</a></li>
-                <li><a href='/sklep/user/acount.php'>Twoje konto</a></li>
             </ul>
         </div>
 
@@ -64,19 +63,19 @@
                         <div>
                         <?php
                             echo "
-                            <label>Imię</label>
-                            <input name='first-name' type='text' value='".$userInfo['imie']."' minlength='2' maxlength='50'>
-                            <label>Nazwisko</label>
-                            <input name='last-name' type='text' value='".$userInfo['nazwisko']."' minlength='2' maxlength='50'>
-                            <label>Nazwa użytkownika</label>
-                            <input name='username' type='text' value='".$userInfo['nazwa']."' minlength='1' maxlength='50'>
-                            <label>Adres email</label>
-                            <input name='email' type='text' value='".$userInfo['email']."' minlength='6' maxlength='254'>
-                            <label>Numer telefonu</label>
-                            <input name='phone' type='text' value='".$userInfo['numer_telefonu']."' minlength='9' maxlength='50'>";
+                            <label for='first-name'>Imię</label>
+                            <input name='first-name' id='first-name' type='text' value='".$userInfo['imie']."' minlength='2' maxlength='50' pattern='[A-Za-zĄĘĆŻŹŁÓąęćżźłó]{2,50}'>
+                            <label for='last-name'>Nazwisko</label>
+                            <input name='last-name' id='last-name' type='text' value='".$userInfo['nazwisko']."' minlength='2' maxlength='50' pattern='[A-Za-zĄĘĆŻŹŁÓąęćżźłó]{2,50}'>
+                            <label for='username' class='required'>Nazwa użytkownika</label>
+                            <input name='username' id='username' type='text' value='".$userInfo['nazwa']."' minlength='1' maxlength='50' required>
+                            <label for='email' class='required'>Adres email</label>
+                            <input name='email' id='email' type='text' value='".$userInfo['email']."' minlength='6' maxlength='254' required>
+                            <label for='phone'>Numer telefonu</label>
+                            <input name='phone' id='phone' type='tel' pattern='[0-9]{9}' value='".$userInfo['numer_telefonu']."' minlength='9' maxlength='9'>";
                         ?>
                         </div>
-                        <button type="submit" class="pink-button">Zapisz</button>
+                        <button type="submit" class="pink-button">Zapisz zmiany</button>
                     </form>
                 </div>
             </div>
@@ -91,14 +90,14 @@
                 <div class='accordion-inner'>
                     <form method="POST" action="/sklep/php/change-password.php">
                         <div>
-                            <label>Obecne hasło</label>
-                            <input name='current-password' type='password' minlength='5' maxlength='64' required>
-                            <label>Nowe hasło</label>
-                            <input name='new-password' type='password' minlength='5' maxlength='64' required>
-                            <label>Powtórz hasło</label>
-                            <input name='repeat-password' type='password' minlength='5' maxlength='64' required>
+                            <label for='current-password' class='required'>Obecne hasło</label>
+                            <input name='current-password' id='current-password' type='password' minlength='5' maxlength='64' required>
+                            <label for='new-password' class='required'>Nowe hasło</label>
+                            <input name='new-password' id='new-password' type='password' minlength='5' maxlength='64' required>
+                            <label for='repeat-password' class='required'>Powtórz hasło</label>
+                            <input name='repeat-password' id='repeat-password' type='password' minlength='5' maxlength='64' required>
                         </div>
-                        <button type="submit" class="pink-button">Zapisz</button>
+                        <button type="submit" class="pink-button">Zapisz zmiany</button>
                     </form>
                 </div>
             </div>
@@ -115,13 +114,9 @@
 
 <?php 
     require_once __DIR__.'\..\page-components\scripts.html';
+    require_once __DIR__.'\..\page-components\popup-module.php';
 ?>
 
 <?php
-    if(isset($_SESSION['message']) && isset($_SESSION['message-type'])){
-        echo "<script>spop('".$_SESSION['message']."', '".$_SESSION['message-type']."');</script>";
-        unset($_SESSION["message"]);
-        unset($_SESSION["message-type"]);
-    }
     $connection->close();
 ?>

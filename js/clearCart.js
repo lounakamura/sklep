@@ -1,3 +1,5 @@
+//      Clearing cart with a button
+
 let clearButton = document.querySelector('.clear-cart-button');
 
 clearButton.onclick = function() {

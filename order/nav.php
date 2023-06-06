@@ -11,7 +11,11 @@
                     
                     // Storing products in cart
                     $query = "SELECT koszyk_id, p.produkt_id, p.nazwa, p.cena, k.ilosc, CONCAT(z.sciezka, z.nazwa) AS zdjecie FROM koszyk AS k JOIN produkt as p USING (produkt_id) JOIN zdjecie AS z USING (produkt_id) WHERE ";
-                    $query .= "uzytkownik_id=".$_SESSION['id'];
+                    if(isset($_SESSION['loggedin'])) {
+                        $query .= "uzytkownik_id=".$_SESSION['id'];
+                    } else {
+                        $query .= "sesja_id=".$_SESSION['session'];
+                    }
                     $query .= " GROUP BY p.produkt_id";
                     $result = $connection->query($query);
                     fetchAllToArray($cartProducts, $result);

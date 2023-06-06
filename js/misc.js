@@ -22,3 +22,14 @@ spop.defaults = {
 	autoclose : 5000,
 	position  : 'bottom-left'
 };
+
+/*        "Payment"          */
+
+function payment(){
+    displayLoadingScreen();
+    setTimeout(function() {
+            window.location.href = "/sklep/order/paymentSuccess.php";
+        }, 2000
+    );
+    
+}
